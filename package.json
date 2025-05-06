@@ -1,5 +1,6 @@
 {
   "name": "kino",
+  "type": "module",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,6 +11,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "dotenv": "^16.5.0",
     "mongoose": "^8.14.1",
     "next": "15.3.1",
     "react": "^19.0.0",
