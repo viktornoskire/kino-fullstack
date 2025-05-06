@@ -5,7 +5,6 @@ import type { TicketButtonProps } from "@/types/TicketButton.types";
 
 export default function TicketButton({
   children,
-  price,
   ticketType,
   onCountChange,
 }: TicketButtonProps) {
@@ -14,14 +13,14 @@ export default function TicketButton({
   function handleIncrement() {
     const newCount = count + 1;
     setCount(newCount);
-    onCountChange(ticketType, newCount, newCount * price);
+    onCountChange(ticketType, newCount);
   }
 
   function handleDecrement() {
     if (count > 0) {
       const newCount = count - 1;
       setCount(newCount);
-      onCountChange(ticketType, newCount, newCount * price);
+      onCountChange(ticketType, newCount);
     }
   }
 

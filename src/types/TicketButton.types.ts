@@ -4,9 +4,5 @@ export interface TicketButtonProps {
   children: ReactNode;
   price: number;
   ticketType: string;
-  onCountChange: (
-    ticketType: string,
-    count: number,
-    totalPrice: number
-  ) => void;
+  onCountChange: (ticketType: string, count: number) => void;
 }
