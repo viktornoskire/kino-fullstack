@@ -6,17 +6,16 @@ dotenv.config();
 const url =
   process.env.MONGODB_URI || "mongodb://localhost:27017/your_database_name";
 
-export async function connectDB() {
+const connectDB = async () => {
   try {
     if (mongoose.connection.readyState >= 1) {
       return; 
     }
     await mongoose.connect(url);
-
-    console.log("MongoDB connected");
+    console.log('Connected to MongoDB Atlas');
   } catch (error) {
-    console.error("Error to connect to Mongodb:", error);
-    process.exit(1);
+    console.error('MongoDB Connection Error:', error);
   }
-}
-connectDB();
+};
+
+export default connectDB;
