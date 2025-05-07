@@ -1,10 +1,13 @@
+// Uppdaterad CinemaSeating-komponent med tre olika bilder
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 
 interface Seat {
   _id: string;
   row: number;
   seatNumber: number;
+  disabled?: boolean;
 }
 
 type SeatsByRow = {
@@ -50,7 +53,11 @@ const CinemaSeating: React.FC = () => {
     return acc;
   }, {});
 
-  const toggleSeat = (seatId: string): void => {
+  const toggleSeat = (seatId: string, isDisabled: boolean): void => {
+    if (isDisabled) {
+      return;
+    }
+
     setSelectedSeats((prev) => {
       if (prev.includes(seatId)) {
         return prev.filter((id) => id !== seatId);
@@ -60,117 +67,132 @@ const CinemaSeating: React.FC = () => {
     });
   };
 
+  const isDisabledSeat = (row: number, seatNumber: number): boolean => {
+    return row === 6 && [1, 2, 14, 15].includes(seatNumber);
+  };
+
+  // Nya bildkomponenter för de olika sätestillstånden
+  const AvailableSeatIcon = () => (
+    <Image
+      src="/empty-seat.png"
+      alt="Ledigt säte"
+      width={24}
+      height={24}
+      className="w-6 h-6"
+    />
+  );
+
+  const SelectedSeatIcon = () => (
+    <Image
+      src="/selected-seat.png"
+      alt="Valt säte"
+      width={24}
+      height={24}
+      className="w-6 h-6"
+    />
+  );
+
+  const DisabledSeatIcon = () => (
+    <Image
+      src="/disability-icon.png"
+      alt="Handikapplats"
+      width={24}
+      height={24}
+      className="w-6 h-6"
+    />
+  );
+
+  const TakenSeatIcon = () => (
+    <Image
+      src="/taken-seat.png"
+      alt="Handikapplats"
+      width={24}
+      height={24}
+      className="w-6 h-6"
+    />
+  );
+
   return (
     <div
-      className="flex flex-col items-center p-8 rounded-lg"
-      style={{ backgroundColor: "var(--color-kino-darkgrey" }}
+      className="flex flex-col items-center p-8 rounded-lg max-w-2xl mx-auto"
+      style={{ backgroundColor: "var(--color-kino-darkgrey)" }}
     >
-      <h2 className="text-2xl font-bold mb-6">Biograf Sätesbokning</h2>
-
       {/* Skärm */}
-      <div className="w-2/4 h-5 bg-gray-400 rounded mb-12 flex items-center justify-center">
-        <span className="text-white text-sm">SKÄRM</span>
+      <div className="w-3/4 h-5 bg-gray-400 rounded mb-12 flex items-center justify-center">
+        <span className="text-white text-sm">SCREEN</span>
       </div>
 
       {/* Säten */}
       <div className="flex flex-col gap-4">
         {Object.keys(seatsByRow).map((rowNum) => (
           <div key={rowNum} className="flex gap-2 justify-center">
-            <div className="w-6 flex items-center justify-center font-bold">
-              {rowNum}
-            </div>
             {seatsByRow[Number(rowNum)]
               .sort((a, b) => a.seatNumber - b.seatNumber)
-              .map((seat) => (
-                <button
-                  key={seat._id}
-                  onClick={() => toggleSeat(seat._id)}
-                  className={`
-                    w-10 h-10 flex items-center justify-center 
-                    border rounded cursor-pointer
-                    ${
-                      selectedSeats.includes(seat._id)
-                        ? "bg-[#154e10]"
-                        : "bg-kino-darkgrey text-white hover:bg-[#1a1a1a]"
+              .map((seat) => {
+                const isDisabled =
+                  seat.disabled || isDisabledSeat(seat.row, seat.seatNumber);
+
+                return (
+                  <button
+                    key={seat._id}
+                    onClick={() => toggleSeat(seat._id, isDisabled)}
+                    className={`
+                      w-7 h- flex items-center justify-center 
+                       rounded 
+                      ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}
+                      ${
+                        selectedSeats.includes(seat._id)
+                          ? ""
+                          : isDisabled
+                          ? "bg-black-700 text-white"
+                          : "bg-kino-darkgrey text-white hover:bg-[#1a1a1a]"
+                      }
+                    `}
+                    aria-label={
+                      isDisabled
+                        ? "Handikappad plats"
+                        : `Säte ${seat.seatNumber}`
                     }
-                  `}
-                >
-                  {selectedSeats.includes(seat._id) ? (
-                    <svg
-                      viewBox="0 0 100 100"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-6 h-6"
-                    >
-                      <ellipse
-                        cx="50"
-                        cy="62"
-                        rx="28"
-                        ry="20"
-                        fill="currentColor"
-                      />
-                      <circle cx="50" cy="36" r="20" fill="currentColor" />
-
-                      <circle cx="50" cy="36" r="13" fill="currentColor" />
-                    </svg>
-                  ) : (
-                    <svg
-                      viewBox="0 0 100 100"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="w-6 h-6"
-                    >
-                      <ellipse
-                        cx="50"
-                        cy="62"
-                        rx="28"
-                        ry="20"
-                        fill="currentColor"
-                      />
-                      <circle cx="50" cy="36" r="20" fill="currentColor" />
-
-                      <circle cx="50" cy="36" r="13" fill="currentColor" />
-                    </svg>
-                  )}
-                </button>
-              ))}
+                  >
+                    {isDisabled ? (
+                      <DisabledSeatIcon />
+                    ) : selectedSeats.includes(seat._id) ? (
+                      <SelectedSeatIcon />
+                    ) : (
+                      <AvailableSeatIcon />
+                    )}
+                  </button>
+                );
+              })}
           </div>
         ))}
       </div>
 
-      <div className="mt-8 text-center">
-        <p className="font-bold">Valda säten: {selectedSeats.length}</p>
-        <div className="flex gap-4 mt-2 justify-center">
+      <div className="mt-6 text-center">
+        <div className="flex gap-15 mt-4 justify-center">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-kino-darkgrey border rounded flex items-center justify-center text-white">
-              <svg
-                viewBox="0 0 100 100"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-4 h-4"
-              >
-                <ellipse cx="50" cy="62" rx="28" ry="20" fill="currentColor" />
-                <circle cx="50" cy="36" r="20" fill="currentColor" />
-
-                <circle cx="50" cy="36" r="13" fill="currentColor" />
-              </svg>
+            <div className="w-6 h-6 bg-kino-darkgrey rounded flex items-center justify-center text-white">
+              <AvailableSeatIcon />
             </div>
             <span>Tillgängligt</span>
           </div>
           <div className="flex items-center gap-2">
-            <div
-              className="w-6 h-6 border rounded flex items-center justify-center"
-              style={{ backgroundColor: "var(--color-kino-darkgreen)" }}
-            >
-              <svg
-                viewBox="0 0 100 100"
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-4 h-4"
-              >
-                <ellipse cx="50" cy="62" rx="28" ry="20" fill="currentColor" />
-                <circle cx="50" cy="36" r="20" fill="currentColor" />
-
-                <circle cx="50" cy="36" r="13" fill="currentColor" />
-              </svg>
+            <div className="w-6 h-6 rounded flex items-center justify-center">
+              <SelectedSeatIcon />
             </div>
             <span>Valt</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6rounded flex items-center justify-center text-white">
+              <TakenSeatIcon />
+            </div>
+            <span>Upptagen</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-blue-700 rounded flex items-center justify-center text-white">
+              <DisabledSeatIcon />
+            </div>
+            <span>Handikappad</span>
           </div>
         </div>
       </div>
