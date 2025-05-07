@@ -8,6 +8,9 @@ const url =
 
 export async function connectDB() {
   try {
+    if (mongoose.connection.readyState >= 1) {
+      return; 
+    }
     await mongoose.connect(url);
 
     console.log("MongoDB connected");
