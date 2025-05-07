@@ -1,4 +1,3 @@
-// Uppdaterad CinemaSeating-komponent med tre olika bilder
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
@@ -139,7 +138,11 @@ const CinemaSeating: React.FC = () => {
                     className={`
                       w-7 h- flex items-center justify-center 
                        rounded 
-                      ${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}
+                      ${
+                        isDisabled
+                          ? "cursor-not-allowed bg-[#5A5A5A]"
+                          : "cursor-pointer"
+                      }
                       ${
                         selectedSeats.includes(seat._id)
                           ? ""
@@ -174,25 +177,25 @@ const CinemaSeating: React.FC = () => {
             <div className="w-6 h-6 bg-kino-darkgrey rounded flex items-center justify-center text-white">
               <AvailableSeatIcon />
             </div>
-            <span>Tillgängligt</span>
+            <span className="text-sm">Available</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded flex items-center justify-center">
               <SelectedSeatIcon />
             </div>
-            <span>Valt</span>
+            <span className="text-sm">Selected</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-6 h-6rounded flex items-center justify-center text-white">
               <TakenSeatIcon />
             </div>
-            <span>Upptagen</span>
+            <span className="text-sm">Taken</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-blue-700 rounded flex items-center justify-center text-white">
+            <div className="w-6 h-6 bg-[#5A5A5A] rounded flex items-center justify-center text-white">
               <DisabledSeatIcon />
             </div>
-            <span>Handikappad</span>
+            <span className="text-sm">Disabled</span>
           </div>
         </div>
       </div>
