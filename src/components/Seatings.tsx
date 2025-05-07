@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 
-// Definiera typer
+
 interface Seat {
   _id: string;
   row: number;
@@ -16,22 +16,21 @@ const CinemaSeating: React.FC = () => {
   const [seats, setSeats] = useState<Seat[]>([]);
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
 
-  // Simulera hämtning av data från MongoDB
-  // I din CinemaSeating-komponent
+
 useEffect(() => {
-    // Funktion för att hämta säten
+
     const fetchSeats = async () => {
       try {
-        const response = await fetch('/api/seats'); // Justera sökvägen vid behov
+        const response = await fetch('/api/seats'); 
         
         if (!response.ok) {
           throw new Error('Kunde inte hämta säten');
         }
         
         const data = await response.json();
-        console.log('Hämtad data:', data); // Undersök vad du får tillbaka
+        console.log('Hämtad data:', data); 
         
-        // Kontrollera att data har rätt format
+      
         if (Array.isArray(data)) {
           setSeats(data);
         } else if (data.seats && Array.isArray(data.seats)) {
@@ -46,7 +45,7 @@ useEffect(() => {
     
     fetchSeats();
   }, []);
-  // Organisera sätena efter rader
+
   const seatsByRow: SeatsByRow = seats.reduce((acc: SeatsByRow, seat: Seat) => {
     if (!acc[seat.row]) {
       acc[seat.row] = [];
@@ -55,7 +54,7 @@ useEffect(() => {
     return acc;
   }, {});
 
-  // Funktion för att växla valt/ej valt säte
+
   const toggleSeat = (seatId: string): void => {
     setSelectedSeats(prev => {
       if (prev.includes(seatId)) {
@@ -71,7 +70,7 @@ useEffect(() => {
       <h2 className="text-2xl font-bold mb-6">Biograf Sätesbokning</h2>
       
       {/* Skärm */}
-      <div className="w-3/4 h-8 bg-gray-400 rounded mb-12 flex items-center justify-center">
+      <div className="w-2/4 h-5 bg-gray-400 rounded mb-12 flex items-center justify-center">
         <span className="text-white text-sm">SKÄRM</span>
       </div>
       
