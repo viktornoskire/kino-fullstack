@@ -140,7 +140,7 @@ const CinemaSeating: React.FC = () => {
                        rounded 
                       ${
                         isDisabled
-                          ? "cursor-not-allowed bg-[#5A5A5A]"
+                          ? "cursor-pointer bg-[#5A5A5A]"
                           : "cursor-pointer"
                       }
                       ${
