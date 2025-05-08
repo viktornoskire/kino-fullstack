@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { buttonType } from "@/types/types";
+import { buttonType } from "@/types/Buttontypes";
 
 const Button: FC<buttonType> = ({ children, type, style, onClick }) => {
   return (
@@ -9,7 +9,7 @@ const Button: FC<buttonType> = ({ children, type, style, onClick }) => {
       type={type}
       style={style}
       onClick={onClick}
-      className="bg-kino-red rounded-4xl text-xl font-bold pt-2.5 pb-2.5 pl-12 pr-12"
+      className="bg-kino-red rounded-4xl text-xl font-bold pt-2 pb-2 pl-12 pr-12"
     >
       {children}
     </button>
