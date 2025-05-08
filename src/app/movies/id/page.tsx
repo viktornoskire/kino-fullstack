@@ -1,11 +1,13 @@
-import CinemaSeating from "@/components/Seatings";
-
+import CinemaSeating from "./Seatings"
+import TicketSelector from "./TicketSelector"
 
 export default function IndividualMovie() {
     return(
-        <div>
+        <main className="container mx-auto py-8">
+
         <h1>movie individual page</h1>
-        <CinemaSeating />
-        </div>
+            <TicketSelector />
+            <CinemaSeating />
+        </main>
     )
 }
