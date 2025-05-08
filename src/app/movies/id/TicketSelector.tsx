@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import TicketButton from "./TicketButton";
 
-interface TicketPrices {
+interface TicketPrices{
   regular: number;
   kids: number;
   student: number;
