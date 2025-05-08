@@ -1,3 +1,3 @@
 export default function About() {
-  return <h1>current movies</h1>;
+  return <h1>current movieSs</h1>;
 }
