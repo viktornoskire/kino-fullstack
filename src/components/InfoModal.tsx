@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
+import InfoButton from "./InfoButton";
 
 const InfoModal = () => {
   const update = [
@@ -28,16 +28,14 @@ const InfoModal = () => {
       <h3 className="text-2xl">Vanliga frågor</h3>
       <ul>
         <li>
-          <button
+          <InfoButton
             type="button"
-            className="flex flex-row"
             onClick={() => {
               readMore(1);
             }}
           >
-            <Image src="/QnAOpen.png" alt="Open" width={25} height={25} />
-            Kort om biografen
-          </button>
+            {"Kort om biografen"}
+          </InfoButton>
 
           {open[0].display && (
             <p>
@@ -53,16 +51,14 @@ const InfoModal = () => {
           )}
         </li>
         <li>
-          <button
+          <InfoButton
             type="button"
-            className="flex flex-row"
             onClick={() => {
               readMore(2);
             }}
           >
-            <Image src="/QnAOpen.png" alt="Open" width={25} height={25} />
-            Tillgänglighet
-          </button>
+            {"Tillgänglighet"}
+          </InfoButton>
           {open[1].display && (
             <p>
               Kino Sandviken är tillgänglig för alla! Våra lokaler har
@@ -75,16 +71,14 @@ const InfoModal = () => {
           )}
         </li>
         <li>
-          <button
+          <InfoButton
             type="button"
-            className="flex flex-row"
             onClick={() => {
               readMore(3);
             }}
           >
-            <Image src="/QnAOpen.png" alt="Open" width={25} height={25} />
-            Öppettider
-          </button>
+            {"Öppettider"}
+          </InfoButton>
           {open[2].display && (
             <p>Biografen stränger 15 minuter efter föreställningen</p>
           )}
