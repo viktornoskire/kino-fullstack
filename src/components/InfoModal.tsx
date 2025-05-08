@@ -24,8 +24,8 @@ const InfoModal = () => {
   }
 
   return (
-    <div className="bg-kino-darkgrey max-w-[700px] rounded-3xl p-4">
-      <h3 className="text-2xl">Vanliga frågor</h3>
+    <div className="bg-kino-darkgrey max-w-[700px] rounded-2xl p-4">
+      <h3 className="text-2xl mb-2">Vanliga frågor</h3>
       <ul>
         <li>
           <InfoButton
@@ -38,7 +38,7 @@ const InfoModal = () => {
           </InfoButton>
 
           {open[0].display && (
-            <p>
+            <p className="p-2">
               Kino Sandviken är en charmig och modern biograf som ligger i
               hjärtat av den fantastiska staden Sandviken. Biografen erbjuder en
               unik filmupplevelse med sina tre toppmoderna salonger, varav en är
@@ -60,7 +60,7 @@ const InfoModal = () => {
             {"Tillgänglighet"}
           </InfoButton>
           {open[1].display && (
-            <p>
+            <p className="p-2">
               Kino Sandviken är tillgänglig för alla! Våra lokaler har
               rullstolsanpassade ingångar, ramper och sittplatser i varje
               salong. För gäster med nedsatt hörsel erbjuder vi hörslingor och
@@ -80,7 +80,9 @@ const InfoModal = () => {
             {"Öppettider"}
           </InfoButton>
           {open[2].display && (
-            <p>Biografen stränger 15 minuter efter föreställningen</p>
+            <p className="p-2">
+              Biografen stränger 15 minuter efter föreställningen
+            </p>
           )}
         </li>
       </ul>
