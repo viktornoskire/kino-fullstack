@@ -74,7 +74,7 @@ const CinemaSeating: React.FC = () => {
   const AvailableSeatIcon = () => (
     <Image
       src="/empty-seat.png"
-      alt="Ledigt säte"
+      alt="Empty seat"
       width={24}
       height={24}
       className="w-6 h-6"
@@ -84,7 +84,7 @@ const CinemaSeating: React.FC = () => {
   const SelectedSeatIcon = () => (
     <Image
       src="/selected-seat.png"
-      alt="Valt säte"
+      alt="Chosen seat"
       width={24}
       height={24}
       className="w-6 h-6"
@@ -94,7 +94,7 @@ const CinemaSeating: React.FC = () => {
   const DisabledSeatIcon = () => (
     <Image
       src="/disability-icon.png"
-      alt="Handikapplats"
+      alt="Disabled seat"
       width={24}
       height={24}
       className="w-6 h-6"
@@ -104,7 +104,7 @@ const CinemaSeating: React.FC = () => {
   const TakenSeatIcon = () => (
     <Image
       src="/taken-seat.png"
-      alt="Handikapplats"
+      alt="Taken seat"
       width={24}
       height={24}
       className="w-6 h-6"
