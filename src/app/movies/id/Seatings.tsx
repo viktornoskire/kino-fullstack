@@ -118,7 +118,7 @@ const CinemaSeating: React.FC = () => {
     >
       {/* Skärm */}
       <div className="w-3/4 h-5 bg-gray-400 rounded mb-12 flex items-center justify-center">
-        <span className="text-white text-sm">SCREEN</span>
+        <span className="text-white text-sm">SCREEEEN</span>
       </div>
 
       {/* Säten */}
