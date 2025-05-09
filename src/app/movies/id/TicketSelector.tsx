@@ -1,9 +1,8 @@
 "use client";
-
 import { useState, useEffect, useMemo } from "react";
 import TicketButton from "./TicketButton";
 
-interface TicketPrices{
+interface TicketPrices {
   regular: number;
   kids: number;
   student: number;
@@ -17,17 +16,21 @@ interface TicketCounts {
   senior: number;
 }
 
-export default function TicketSelector() {
+interface TicketSelectorProps {
+  onTotalTicketsChange: (totalTickets: number) => void;
+}
+
+export default function TicketSelector({
+  onTotalTicketsChange,
+}: TicketSelectorProps) {
   const [ticketCounts, setTicketCounts] = useState<TicketCounts>({
     regular: 0,
     kids: 0,
     student: 0,
     senior: 0,
   });
-
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [finalPrice, setFinalPrice] = useState<number>(0);
-  
 
   const ticketPrices = useMemo<TicketPrices>(
     () => ({
@@ -48,21 +51,23 @@ export default function TicketSelector() {
 
   useEffect(() => {
     let newTotal = 0;
+    let ticketCount = 0;
 
     Object.entries(ticketCounts).forEach(([type, count]) => {
       newTotal += count * ticketPrices[type as keyof TicketPrices];
+      ticketCount += count;
     });
 
     const discountAmount = Math.round(newTotal * 0.1);
-    setTotalPrice(newTotal)
+    setTotalPrice(newTotal);
     setFinalPrice(newTotal - discountAmount);
-  }, [ticketCounts, ticketPrices])
 
+    onTotalTicketsChange(ticketCount);
+  }, [ticketCounts, ticketPrices, onTotalTicketsChange]);
 
   return (
     <div className="p-6 bg-white-900 rounded-xl mb-10 max-w-sm mx auto">
       <h2 className="mb-6 text-xl font-bold">Select tickets</h2>
-
       <TicketButton
         price={ticketPrices.regular}
         ticketType="regular"
@@ -70,7 +75,6 @@ export default function TicketSelector() {
       >
         Regular
       </TicketButton>
-
       <TicketButton
         price={ticketPrices.kids}
         ticketType="kids"
@@ -78,7 +82,6 @@ export default function TicketSelector() {
       >
         Kids (0-11)
       </TicketButton>
-
       <TicketButton
         price={ticketPrices.student}
         ticketType="student"
@@ -86,7 +89,6 @@ export default function TicketSelector() {
       >
         Student
       </TicketButton>
-
       <TicketButton
         price={ticketPrices.senior}
         ticketType="senior"
@@ -94,7 +96,6 @@ export default function TicketSelector() {
       >
         Senior
       </TicketButton>
-
       <div className="mt-6 p-4 rounded-lg border border-kino-white">
         <div className="flex flex-col space-y-2">
           <div className="flex justify-between">

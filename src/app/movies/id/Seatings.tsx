@@ -1,6 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
+import {
+  AvailableSeatIcon,
+  SelectedSeatIcon,
+  DisabledSeatIcon,
+  TakenSeatIcon,
+} from "./SeatingIcons";
 
 interface Seat {
   _id: string;
@@ -13,7 +18,12 @@ type SeatsByRow = {
   [key: number]: Seat[];
 };
 
-const CinemaSeating: React.FC = () => {
+// Uppdaterade props - vi tar bara emot totalTickets eftersom vi inte använder callback
+interface CinemaSeatingProps {
+  totalTickets: number;
+}
+
+const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
   const [seats, setSeats] = useState<Seat[]>([]);
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
 
@@ -44,6 +54,13 @@ const CinemaSeating: React.FC = () => {
     fetchSeats();
   }, []);
 
+  // Reset valda säten när totalTickets minskar och vi har för många valda
+  useEffect(() => {
+    if (selectedSeats.length > totalTickets) {
+      setSelectedSeats(selectedSeats.slice(0, totalTickets));
+    }
+  }, [totalTickets, selectedSeats]);
+
   const seatsByRow: SeatsByRow = seats.reduce((acc: SeatsByRow, seat: Seat) => {
     if (!acc[seat.row]) {
       acc[seat.row] = [];
@@ -61,7 +78,11 @@ const CinemaSeating: React.FC = () => {
       if (prev.includes(seatId)) {
         return prev.filter((id) => id !== seatId);
       } else {
-        return [...prev, seatId];
+        // Tillåt endast val om vi inte nått biljettgränsen
+        if (prev.length < totalTickets) {
+          return [...prev, seatId];
+        }
+        return prev;
       }
     });
   };
@@ -69,47 +90,6 @@ const CinemaSeating: React.FC = () => {
   const isDisabledSeat = (row: number, seatNumber: number): boolean => {
     return row === 6 && [1, 2, 14, 15].includes(seatNumber);
   };
-
-  // Nya bildkomponenter för de olika sätestillstånden
-  const AvailableSeatIcon = () => (
-    <Image
-      src="/empty-seat.png"
-      alt="Empty seat"
-      width={24}
-      height={24}
-      className="w-6 h-6"
-    />
-  );
-
-  const SelectedSeatIcon = () => (
-    <Image
-      src="/selected-seat.png"
-      alt="Chosen seat"
-      width={24}
-      height={24}
-      className="w-6 h-6"
-    />
-  );
-
-  const DisabledSeatIcon = () => (
-    <Image
-      src="/disability-icon.png"
-      alt="Disabled seat"
-      width={24}
-      height={24}
-      className="w-6 h-6"
-    />
-  );
-
-  const TakenSeatIcon = () => (
-    <Image
-      src="/taken-seat.png"
-      alt="Taken seat"
-      width={24}
-      height={24}
-      className="w-6 h-6"
-    />
-  );
 
   return (
     <div
@@ -141,6 +121,9 @@ const CinemaSeating: React.FC = () => {
                       ${
                         isDisabled
                           ? "cursor-pointer bg-[#5A5A5A]"
+                          : selectedSeats.length >= totalTickets &&
+                            !selectedSeats.includes(seat._id)
+                          ? "cursor-not-allowed opacity-50"
                           : "cursor-pointer"
                       }
                       ${
@@ -155,6 +138,11 @@ const CinemaSeating: React.FC = () => {
                       isDisabled
                         ? "Handikappad plats"
                         : `Säte ${seat.seatNumber}`
+                    }
+                    disabled={
+                      isDisabled ||
+                      (selectedSeats.length >= totalTickets &&
+                        !selectedSeats.includes(seat._id))
                     }
                   >
                     {isDisabled ? (
