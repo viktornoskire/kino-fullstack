@@ -13,7 +13,18 @@ export const authOptions: NextAuthOptions = {
         email: { label: 'Email', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {},
+      async authorize(credentials) {
+        await connectDB();
+
+        const user = await User.findOne({ email: credentials?.email }).select('+password');
+
+        if (!user) throw new Error('Email invalid!');
+
+        const passwordMatch = bcrypt.compare(credentials!.password, user.password);
+
+        if (!passwordMatch) throw new Error('Password incorrect!');
+        return user;
+      },
     }),
   ],
   session: { strategy: 'jwt' },
