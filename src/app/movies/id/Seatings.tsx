@@ -6,22 +6,7 @@ import {
   DisabledSeatIcon,
   TakenSeatIcon,
 } from "./SeatingIcons";
-
-interface Seat {
-  _id: string;
-  row: number;
-  seatNumber: number;
-  disabled?: boolean;
-}
-
-type SeatsByRow = {
-  [key: number]: Seat[];
-};
-
-// Uppdaterade props - vi tar bara emot totalTickets eftersom vi inte använder callback
-interface CinemaSeatingProps {
-  totalTickets: number;
-}
+import { Seat, SeatsByRow, CinemaSeatingProps } from "./types/Seatings.types";
 
 const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
   const [seats, setSeats] = useState<Seat[]>([]);
