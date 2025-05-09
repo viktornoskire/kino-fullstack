@@ -39,7 +39,6 @@ const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
     fetchSeats();
   }, []);
 
-  // Reset valda säten när totalTickets minskar och vi har för många valda
   useEffect(() => {
     if (selectedSeats.length > totalTickets) {
       setSelectedSeats(selectedSeats.slice(0, totalTickets));
@@ -81,12 +80,10 @@ const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
       className="flex flex-col items-center p-8 rounded-lg max-w-2xl mx-auto"
       style={{ backgroundColor: "var(--color-kino-darkgrey)" }}
     >
-      {/* Skärm */}
       <div className="w-3/4 h-5 bg-gray-400 rounded mb-12 flex items-center justify-center">
         <span className="text-white text-sm">SCREEEEN</span>
       </div>
 
-      {/* Säten */}
       <div className="flex flex-col gap-4">
         {Object.keys(seatsByRow).map((rowNum) => (
           <div key={rowNum} className="flex gap-2 justify-center">
