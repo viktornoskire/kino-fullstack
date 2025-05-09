@@ -64,7 +64,7 @@ const Header = () => {
           <Button
             type="button"
             onClick={() => console.log("Sign In clicked")}
-            className="hidden sm:hidden md:hidden lg:inline-block ml-auto hover:text-kino-darkgrey"
+            className="hidden sm:hidden md:hidden lg:inline-block ml-auto border border-kino-white hover:text-kino-darkgrey"
           >
             Sign In
           </Button>
@@ -136,6 +136,7 @@ const Header = () => {
               <Button
                 type="button"
                 onClick={() => console.log("Sign In clicked")}
+                className= "border border-kino-white"
               >
                 Sign In
               </Button>
