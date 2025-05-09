@@ -5,4 +5,5 @@ export type buttonType = {
   type: "button" | "reset" | "submit" | undefined;
   style?: React.CSSProperties;
   onClick?: () => void;
+  className?: string;
 };
