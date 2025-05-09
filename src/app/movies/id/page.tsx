@@ -1,5 +1,6 @@
 import DateDropdown from "./Datedropdown";
 import BookingManager from "./BookingManager";
+import LogScreenings from "./ScreeningTest";
 
 export default function IndividualMovie() {
   return (
@@ -10,6 +11,7 @@ export default function IndividualMovie() {
       {/* DateDropdown positionerad med standard Tailwind-klasser */}
       <div className="absolute right-80 top-140">
         <DateDropdown />
+        <LogScreenings />
       </div>
     </main>
   );
