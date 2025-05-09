@@ -1,19 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
+import {
+  AvailableSeatIcon,
+  SelectedSeatIcon,
+  DisabledSeatIcon,
+  TakenSeatIcon,
+} from "./SeatingIcons";
+import { Seat, SeatsByRow, CinemaSeatingProps } from "./types/Seatings.types";
 
-interface Seat {
-  _id: string;
-  row: number;
-  seatNumber: number;
-  disabled?: boolean;
-}
-
-type SeatsByRow = {
-  [key: number]: Seat[];
-};
-
-const CinemaSeating: React.FC = () => {
+const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
   const [seats, setSeats] = useState<Seat[]>([]);
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
 
@@ -44,6 +39,12 @@ const CinemaSeating: React.FC = () => {
     fetchSeats();
   }, []);
 
+  useEffect(() => {
+    if (selectedSeats.length > totalTickets) {
+      setSelectedSeats(selectedSeats.slice(0, totalTickets));
+    }
+  }, [totalTickets, selectedSeats]);
+
   const seatsByRow: SeatsByRow = seats.reduce((acc: SeatsByRow, seat: Seat) => {
     if (!acc[seat.row]) {
       acc[seat.row] = [];
@@ -61,7 +62,11 @@ const CinemaSeating: React.FC = () => {
       if (prev.includes(seatId)) {
         return prev.filter((id) => id !== seatId);
       } else {
-        return [...prev, seatId];
+        // Tillåt endast val om vi inte nått biljettgränsen
+        if (prev.length < totalTickets) {
+          return [...prev, seatId];
+        }
+        return prev;
       }
     });
   };
@@ -70,58 +75,15 @@ const CinemaSeating: React.FC = () => {
     return row === 6 && [1, 2, 14, 15].includes(seatNumber);
   };
 
-  // Nya bildkomponenter för de olika sätestillstånden
-  const AvailableSeatIcon = () => (
-    <Image
-      src="/empty-seat.png"
-      alt="Empty seat"
-      width={24}
-      height={24}
-      className="w-6 h-6"
-    />
-  );
-
-  const SelectedSeatIcon = () => (
-    <Image
-      src="/selected-seat.png"
-      alt="Chosen seat"
-      width={24}
-      height={24}
-      className="w-6 h-6"
-    />
-  );
-
-  const DisabledSeatIcon = () => (
-    <Image
-      src="/disability-icon.png"
-      alt="Disabled seat"
-      width={24}
-      height={24}
-      className="w-6 h-6"
-    />
-  );
-
-  const TakenSeatIcon = () => (
-    <Image
-      src="/taken-seat.png"
-      alt="Taken seat"
-      width={24}
-      height={24}
-      className="w-6 h-6"
-    />
-  );
-
   return (
     <div
       className="flex flex-col items-center p-8 rounded-lg max-w-2xl mx-auto"
       style={{ backgroundColor: "var(--color-kino-darkgrey)" }}
     >
-      {/* Skärm */}
       <div className="w-3/4 h-5 bg-gray-400 rounded mb-12 flex items-center justify-center">
         <span className="text-white text-sm">SCREEEEN</span>
       </div>
 
-      {/* Säten */}
       <div className="flex flex-col gap-4">
         {Object.keys(seatsByRow).map((rowNum) => (
           <div key={rowNum} className="flex gap-2 justify-center">
@@ -141,6 +103,9 @@ const CinemaSeating: React.FC = () => {
                       ${
                         isDisabled
                           ? "cursor-pointer bg-[#5A5A5A]"
+                          : selectedSeats.length >= totalTickets &&
+                            !selectedSeats.includes(seat._id)
+                          ? "cursor-not-allowed opacity-50"
                           : "cursor-pointer"
                       }
                       ${
@@ -155,6 +120,11 @@ const CinemaSeating: React.FC = () => {
                       isDisabled
                         ? "Handikappad plats"
                         : `Säte ${seat.seatNumber}`
+                    }
+                    disabled={
+                      isDisabled ||
+                      (selectedSeats.length >= totalTickets &&
+                        !selectedSeats.includes(seat._id))
                     }
                   >
                     {isDisabled ? (

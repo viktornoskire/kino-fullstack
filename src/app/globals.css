@@ -20,7 +20,7 @@
 html {
   background-color: var(--color-kino-black);
   color: var(--color-kino-white);
-  font-family: var(--font-poppins, sans-serif);
+  font-family: var(--Poppins, sans-serif);
 }
 body {
   max-width: 1280px;
