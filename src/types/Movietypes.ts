@@ -11,3 +11,8 @@ export type movieType = {
   ageRatingText: string;
   slug: string;
 };
+
+export type displayMovie = {
+  display: movieType[];
+  children?: string;
+};

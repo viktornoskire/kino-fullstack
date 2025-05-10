@@ -1,11 +1,6 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: "Poppins";
-  src: url("https://fonts.googleapis.com/css?family=Poppins");
-}
-
-:root {
+@theme {
   --color-kino-black: #1a1a1a;
   --color-kino-white: #f6f6f6;
   --color-kino-grey: #a8a8a8;
