@@ -1,3 +1,9 @@
+import InfoModal from "@/components/InfoModal";
+
 export default async function Home() {
-  return <h1>HELLO!</h1>;
+  return (
+    <>
+      <InfoModal />
+    </>
+  );
 }
