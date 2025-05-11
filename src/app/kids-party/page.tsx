@@ -5,7 +5,7 @@ import KidsPartyHero from '@/components/KidsPartyHero';
 import KidsPartyOffers from '@/components/KidsPartyOffers';
 
 export default function KidsParty() {
-  const [bookModal, setBookModal] = useState(true);
+  const [bookModal, setBookModal] = useState(false);
 
   return (
     <main className="max-w-6xl mx-auto pb-10 px-4 mt-4 md:px-6 lg:mt-10 bg-neutral-900 text-white">
