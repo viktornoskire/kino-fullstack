@@ -37,7 +37,7 @@ med nybakta pizzor från stans bästa pizzeria"
         <KidsPartyOffers
           bookModal={bookModal}
           setBookModal={setBookModal}
-          imgPath="/pizzaparty.png"
+          imgPath="/glassparty.png"
           width={461}
           height={272}
           title="Pizza Party!"
