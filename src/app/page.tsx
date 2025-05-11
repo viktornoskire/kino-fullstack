@@ -1,9 +1,9 @@
-import Movies from "@/components/Movies";
+import InfoModal from "@/components/InfoModal";
 
 export default async function Home() {
   return (
     <>
-      <Movies />
+      <InfoModal />
     </>
   );
 }
