@@ -7,7 +7,7 @@ const Display: FC<displayMovie> = ({ display, children }) => {
     <>
       <div>
         <h2 className="text-3xl font-bold text-center p-4">{children}</h2>
-        <ul className="flex flex-row">
+        <ul className="flex flex-row justify-center">
           {display.map((movie, index) => {
             return (
               <li key={index} className="p-2 max-w-[240px]">

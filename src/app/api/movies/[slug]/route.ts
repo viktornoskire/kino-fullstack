@@ -1,21 +1,19 @@
-import { NextResponse } from "next/server";
-import { Movie } from "@/models/singleMovie";
+import { NextResponse } from 'next/server';
 import connectDB from "@/lib/db";
+import { movie } from "@/models/movies";
 
 export async function GET(
   request: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
-  try {
-    await connectDB();
-    const foundMovie = await Movie.findOne({ slug: params.slug });
+  const resolvedParams = await params;
+  await connectDB();
 
-    if (!foundMovie) {
-      return NextResponse.json({ error: "Film hittades inte" }, { status: 404 });
-    }
-    
-    return NextResponse.json(foundMovie);
-  } catch (error) {
-    return new NextResponse("Internt serverfel", { status: 500 });
+  const foundMovie = await movie.findOne({ slug: resolvedParams.slug }).lean();
+
+  if (!foundMovie) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
+
+  return NextResponse.json({ movie: foundMovie });
 }
