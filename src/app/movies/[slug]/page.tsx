@@ -1,10 +1,10 @@
 import { notFound } from 'next/navigation';
 import { headers } from 'next/headers';
 import MovieDetail from '@/components/movies/movie-details/MovieDetail';
-import MovieDetailButtons from '@/components/movies/movie-details/MovieDetailButtons';
+import ScreeningSelector from "@/components/movies/movie-details/ScreeningSelector";
 
 export default async function MovieDetailPage({ params }: { params: { slug: string } }) {
-  // NOTE: Using await params here to silence Next.js warning about params.slug
+  // Using await params here to silence Next.js warning about params.slug
   const resolvedParams = await params;
   const resolvedHeaders = await headers();
   const host = resolvedHeaders.get('host');
@@ -22,12 +22,12 @@ export default async function MovieDetailPage({ params }: { params: { slug: stri
     throw new Error('Failed to fetch movie');
   }
 
-  const { movie } = await res.json();
+  const { movie, screenings } = await res.json();
 
   return (
     <>
       <MovieDetail movie={movie} />
-      <MovieDetailButtons slug={movie.slug} />
+      <ScreeningSelector screenings={screenings} />
     </>
   );
 }
