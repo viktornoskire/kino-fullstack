@@ -76,12 +76,14 @@ const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
   };
 
   return (
+    <div className="max-w-2xl mx-auto">
+    <h1 className="text-2xl font-bold mb-4">Select Seats</h1>
     <div
       className="flex flex-col items-center p-8 rounded-lg max-w-2xl mx-auto"
       style={{ backgroundColor: "var(--color-kino-darkgrey)" }}
     >
       <div className="w-3/4 h-5 bg-gray-400 rounded mb-12 flex items-center justify-center">
-        <span className="text-white text-sm">SCREEEEN</span>
+        <span className="text-white text-sm">SCREEN</span>
       </div>
 
       <div className="flex flex-col gap-4">
@@ -105,7 +107,7 @@ const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
                           ? "cursor-pointer bg-[#5A5A5A]"
                           : selectedSeats.length >= totalTickets &&
                             !selectedSeats.includes(seat._id)
-                          ? "cursor-not-allowed opacity-50"
+                          ? "cursor-not-allowed"
                           : "cursor-pointer"
                       }
                       ${
@@ -169,6 +171,7 @@ const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };
