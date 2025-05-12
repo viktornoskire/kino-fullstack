@@ -10,10 +10,9 @@ const SeatSchema: Schema<ISeat> = new Schema(
     row: { type: Number, required: true },
     seatNumber: { type: Number, required: true },
   },
-  { collection: 'seatings' } // Behåll samma collection-namn
+  { collection: 'seatings' } 
 );
 
-// Lägg till denna loggning för att kontrollera vilken databas Mongoose använder
 console.log(`Mongoose använder databas: ${mongoose.connection.db?.databaseName || 'ingen databas än'}`);
 
 const Seat: Model<ISeat> =

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { displayMovie } from "@/types/Movietypes";
 import Image from "next/image";
-
+import Link from "next/link";
 const Display: FC<displayMovie> = ({ display, children }) => {
   return (
     <>
@@ -11,7 +11,7 @@ const Display: FC<displayMovie> = ({ display, children }) => {
           {display.map((movie, index) => {
             return (
               <li key={index} className="p-2 max-w-[240px]">
-                <a href={movie.slug}>
+                <Link href={`movies/${movie.slug}/booking`}>Boka nu</Link>
                   <Image
                     src={movie.posterUrl}
                     alt="Movie poster"
@@ -20,7 +20,7 @@ const Display: FC<displayMovie> = ({ display, children }) => {
                     className="w-auto h-auto rounded-2xl"
                   />
                   <p className="text-xl">{movie.title}</p>
-                </a>
+                
               </li>
             );
           })}
@@ -30,3 +30,6 @@ const Display: FC<displayMovie> = ({ display, children }) => {
   );
 };
 export default Display;
+
+
+ 

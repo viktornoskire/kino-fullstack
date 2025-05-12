@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import type { TicketButtonProps } from "@/app/movies/id/types/TicketButton.types";
+import type { TicketButtonProps } from "./types/TicketButton.types"
 
 export default function TicketButton({
   children,
