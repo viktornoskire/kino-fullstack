@@ -1,5 +1,5 @@
 import { NextAuthOptions } from 'next-auth';
-import User from '@/models/authModels';
+import User from '@/models/userModel';
 import credentials from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import connectDB from './db';
@@ -20,7 +20,7 @@ export const authOptions: NextAuthOptions = {
 
         if (!user) throw new Error('Email invalid!');
 
-        const passwordMatch = bcrypt.compare(credentials!.password, user.password);
+        const passwordMatch = await bcrypt.compare(credentials!.password, user.password);
 
         if (!passwordMatch) throw new Error('Password incorrect!');
         return user;
