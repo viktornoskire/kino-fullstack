@@ -4,7 +4,11 @@ import { useState } from "react";
 import CinemaSeating from "./Seatings";
 import TicketSelector from "./TicketSelector";
 
-export default function BookingManager() {
+type BookingManagerProps = {
+  slug: string;
+};
+
+export default function BookingManager({ slug }: BookingManagerProps) {
   const [totalTickets, setTotalTickets] = useState<number>(0);
 
   const handleTotalTicketsChange = (ticketCount: number) => {
@@ -16,6 +20,7 @@ export default function BookingManager() {
       <div className="max-w-md">
         <TicketSelector onTotalTicketsChange={handleTotalTicketsChange} />
       </div>
+   
 
       <div className="mt-8">
         <CinemaSeating totalTickets={totalTickets} />

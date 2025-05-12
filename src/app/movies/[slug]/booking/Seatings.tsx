@@ -22,7 +22,7 @@ const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
         }
 
         const data = await response.json();
-        console.log("Hämtad data:", data);
+       
 
         if (Array.isArray(data)) {
           setSeats(data);
