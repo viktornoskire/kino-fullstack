@@ -1,7 +1,7 @@
 export default function Spinner() {
   return (
     <div
-      className="animate-spin inline-block size-10 rounded-full border-4 border-t-transparent"
+      className="animate-spin inline-block size-10 rounded-full border-4 border-kino-darkred border-t-transparent"
       role="status"
       aria-label="loading"
     >

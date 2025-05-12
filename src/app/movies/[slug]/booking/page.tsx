@@ -1,6 +1,5 @@
 import BookingManager from "./BookingManager";
 import MoviePageContainer from "./MovieInfoContainer";
-import ScreeningList from "./ScreeningList";
 export default async function BookingPage({
   params,
 }: {
@@ -10,13 +9,11 @@ export default async function BookingPage({
 
   return (
     <main className="w-full px-4 py-8 relative">
-      
-      <BookingManager slug={slug} />
+      <BookingManager />
 
       <div className="absolute right-40 top-0">
         <MoviePageContainer slug={slug} />
       </div>
-
     </main>
   );
 }

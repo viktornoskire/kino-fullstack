@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
-
+import Spinner from "@/components/Spinner";
 type Screening = {
   _id: string;
   screeningTime: string;
@@ -23,11 +23,11 @@ export default function ScreeningList({ slug }: ScreeningListProps) {
       try {
         setIsLoading(true);
         const response = await fetch(`/api/screenings?slug=${slug}`);
-        
+
         if (!response.ok) {
           throw new Error("Could not fetch screenings");
         }
-        
+
         const data = await response.json();
         setScreenings(data);
       } catch (err) {
@@ -41,9 +41,15 @@ export default function ScreeningList({ slug }: ScreeningListProps) {
     fetchScreenings();
   }, [slug]);
 
-  if (isLoading) return <div>Loading screenings...</div>;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center w-full h-full min-h-[200px]">
+        <Spinner />
+      </div>
+    );
   if (error) return <div className="text-red-500">{error}</div>;
-  if (screenings.length === 0) return <div>No screenings available for this movie.</div>;
+  if (screenings.length === 0)
+    return <div>No screenings available for this movie.</div>;
 
   return (
     <div className="mt-30 ">
