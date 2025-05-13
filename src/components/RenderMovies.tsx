@@ -7,11 +7,11 @@ const Display: FC<displayMovie> = ({ display, children }) => {
     <>
       <div>
         <h2 className="text-3xl font-bold text-center p-4">{children}</h2>
-        <ul className="flex flex-row justify-center">
+        <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 justify-center mx-2">
           {display.map((movie, index) => {
             return (
               <li key={index} className="p-2 max-w-[240px]">
-                <a href={movie.slug}>
+                <a href={`/movies/${movie.slug}`}>
                   <Image
                     src={movie.posterUrl}
                     alt="Movie poster"
