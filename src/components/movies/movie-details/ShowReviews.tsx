@@ -30,67 +30,75 @@ const ShowReviews = ({ movie }: { movie: { slug: string } }) => {
     fetchReviews();
   }, [movie?.slug]);
 
- 
   const indexOfLastReview = currentPage * reviewsPerPage;
   const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
   const currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
   const totalPages = Math.ceil(reviews.length / reviewsPerPage);
 
-  
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
+  const renderStars = (rating: number) => {
+    return [...Array(rating)].map((_, index) => (
+      <span key={index} className="text-kino-darkred text-lg">
+        ★
+      </span>
+    ));
+  };
+
   return (
-    <div className="bg-kino-darkgrey p-4 rounded-lg my-10 mx-2 max-w-md">
-      <h2 className="text-2xl font-bold mb-4">Reviews</h2>
+    <>
+      <h3 className="text-lg font-bold ml-3">Reviews</h3>
+      <div className="bg-kino-darkgrey p-4 rounded-lg my-4 mx-2 max-w-xs">
+        {currentReviews.length > 0 ? (
+          currentReviews.map((review, index) => (
+            <div key={index} className="mb-4 pb-4 border-b border-gray-600">
+              <div className="flex justify-end items-end space-x-0.5">
+                {renderStars(review.rating)}
+              </div>
+              <p className="font-bold text-sm">{review.userName}</p>
+              <p className="mt-1 text-sm">{review.comment}</p>              
+            </div>
+          ))
+        ) : (
+          <p>No reviews yet.</p>
+        )}
 
-      {currentReviews.length > 0 ? (
-        currentReviews.map((review, index) => (
-          <div key={index} className="mb-4 pb-4 border-b border-gray-600">
-            <p className="font-bold">{review.userName}</p> - {review.rating}/5
-            <p className="mt-1">{review.comment}</p>
-            <p className="text-sm text-gray-400">
-              {new Date(review.createdAt).toLocaleDateString("sv-SE")}
-            </p>
+        {reviews.length > reviewsPerPage && (
+          <div className="flex justify-between items-center mt-6">
+            <button
+              onClick={() => paginate(currentPage > 1 ? currentPage - 1 : 1)}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 rounded-3xl w-29 ${
+                currentPage === 1
+                  ? "bg-kino-darkgrey border-2 border-kino-red cursor-not-allowed"
+                  : "bg-kino-red hover:bg-kino-darkred"
+              }`}
+            >
+              Previous
+            </button>
+
+            <button
+              onClick={() =>
+                paginate(
+                  currentPage < totalPages ? currentPage + 1 : totalPages
+                )
+              }
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 rounded-3xl w-29 ${
+                currentPage === totalPages
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : "bg-kino-red hover:bg-red-700"
+              }`}
+            >
+              Next
+            </button>
           </div>
-        ))
-      ) : (
-        <p>No reviews yet.</p>
-      )}
-      
-      {reviews.length > reviewsPerPage && (
-        <div className="flex justify-between items-center mt-6">
-          <button
-            onClick={() => paginate(currentPage > 1 ? currentPage - 1 : 1)}
-            disabled={currentPage === 1}
-            className={`px-4 py-2 rounded-3xl w-29 ${
-              currentPage === 1
-                ? "bg-kino-darkgrey border-2 border-kino-red cursor-not-allowed"
-                : "bg-kino-red hover:bg-kino-darkred"
-            }`}
-          >
-            Previous
-          </button>
-
-          <span className="font-medium">
-            Page {currentPage} of {totalPages}
-          </span>
-
-          <button
-            onClick={() =>
-              paginate(currentPage < totalPages ? currentPage + 1 : totalPages)
-            }
-            disabled={currentPage === totalPages}
-            className={`px-4 py-2 rounded-3xl w-29 ${
-              currentPage === totalPages
-                ? "bg-gray-500 cursor-not-allowed"
-                : "bg-kino-red hover:bg-red-700"
-            }`}
-          >
-            Next
-          </button>
-        </div>
-      )}
-    </div>
+        )}
+        <p className="ml-1 mt-3 text-xs text-kino-grey">
+          Page {currentPage} of {totalPages}
+        </p>
+      </div>
+    </>
   );
 };
 
