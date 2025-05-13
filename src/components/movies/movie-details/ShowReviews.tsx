@@ -54,8 +54,8 @@ const ShowReviews = ({ movie }: { movie: { slug: string } }) => {
             <div className="flex justify-end items-end space-x-0.5">
               {renderStars(review.rating)}
             </div>
-            <p className="font-bold text-sm">{review.userName}</p>
-            <p className="mt-1 text-sm">{review.comment}</p>
+            <p className="font-bold text-sm text-kino-grey">{review.userName}</p>
+            <p className="mt-1 text-sm text-kino-grey">{review.comment}</p>
           </div>
         ))
       ) : (
