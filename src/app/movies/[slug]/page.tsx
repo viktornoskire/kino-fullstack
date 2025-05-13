@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { headers } from 'next/headers';
 import MovieDetail from '@/components/movies/movie-details/MovieDetail';
 import MovieDetailButtons from '@/components/movies/movie-details/MovieDetailButtons';
+import ShowReviews from '@/components/movies/movie-details/ShowReviews';
 
 export default async function MovieDetailPage({ params }: { params: { slug: string } }) {
   // NOTE: Using await params here to silence Next.js warning about params.slug
@@ -27,6 +28,7 @@ export default async function MovieDetailPage({ params }: { params: { slug: stri
   return (
     <>
       <MovieDetail movie={movie} />
+      <ShowReviews />
       <MovieDetailButtons slug={movie.slug} />
     </>
   );
