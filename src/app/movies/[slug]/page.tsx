@@ -28,7 +28,7 @@ export default async function MovieDetailPage({ params }: { params: { slug: stri
   return (
     <>
       <MovieDetail movie={movie} />
-      <ShowReviews />
+      <ShowReviews movie={movie}/>
       <MovieDetailButtons slug={movie.slug} />
     </>
   );
