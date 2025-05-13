@@ -46,59 +46,55 @@ const ShowReviews = ({ movie }: { movie: { slug: string } }) => {
   };
 
   return (
-    <>
-      <h3 className="text-lg font-bold ml-3">Reviews</h3>
-      <div className="bg-kino-darkgrey p-4 rounded-lg my-4 mx-2 max-w-xs">
-        {currentReviews.length > 0 ? (
-          currentReviews.map((review, index) => (
-            <div key={index} className="mb-4 pb-4 border-b border-gray-600">
-              <div className="flex justify-end items-end space-x-0.5">
-                {renderStars(review.rating)}
-              </div>
-              <p className="font-bold text-sm">{review.userName}</p>
-              <p className="mt-1 text-sm">{review.comment}</p>
+    <div className="bg-kino-darkgrey p-4 rounded-lg my-4 mx-2 max-w-xs">
+      <h3 className="text-lg font-bold text-center">Reviews</h3>
+      {currentReviews.length > 0 ? (
+        currentReviews.map((review, index) => (
+          <div key={index} className="mb-4 pb-4 border-b border-gray-600">
+            <div className="flex justify-end items-end space-x-0.5">
+              {renderStars(review.rating)}
             </div>
-          ))
-        ) : (
-          <p>No reviews yet.</p>
-        )}
-
-        {reviews.length > reviewsPerPage && (
-          <div className="flex justify-between items-center mt-6">
-            <button
-              onClick={() => paginate(currentPage > 1 ? currentPage - 1 : 1)}
-              disabled={currentPage === 1}
-              className={`px-4 py-2 rounded-3xl w-29 ${
-                currentPage === 1
-                  ? "bg-kino-darkgrey border-2 border-kino-red cursor-not-allowed"
-                  : "bg-kino-red hover:bg-kino-darkred"
-              }`}
-            >
-              Previous
-            </button>
-
-            <button
-              onClick={() =>
-                paginate(
-                  currentPage < totalPages ? currentPage + 1 : totalPages
-                )
-              }
-              disabled={currentPage === totalPages}
-              className={`px-4 py-2 rounded-3xl w-29  ${
-                currentPage === totalPages
-                  ? "bg-kino-dark-grey border-2 border-kino-red cursor-not-allowed"
-                  : "bg-kino-red hover:bg-red-700"
-              }`}
-            >
-              Next
-            </button>
+            <p className="font-bold text-sm">{review.userName}</p>
+            <p className="mt-1 text-sm">{review.comment}</p>
           </div>
-        )}
-        <p className="ml-1 mt-3 text-xs text-kino-grey">
-          Page {currentPage} of {totalPages}
-        </p>
-      </div>
-    </>
+        ))
+      ) : (
+        <p>No reviews yet.</p>
+      )}
+
+      {reviews.length > reviewsPerPage && (
+        <div className="flex justify-between items-center mt-6">
+          <button
+            onClick={() => paginate(currentPage > 1 ? currentPage - 1 : 1)}
+            disabled={currentPage === 1}
+            className={`px-4 py-2 rounded-3xl w-29 ${
+              currentPage === 1
+                ? "bg-kino-darkgrey border-2 border-kino-red cursor-not-allowed"
+                : "bg-kino-red hover:bg-kino-darkred"
+            }`}
+          >
+            Previous
+          </button>
+
+          <button
+            onClick={() =>
+              paginate(currentPage < totalPages ? currentPage + 1 : totalPages)
+            }
+            disabled={currentPage === totalPages}
+            className={`px-4 py-2 rounded-3xl w-29  ${
+              currentPage === totalPages
+                ? "bg-kino-dark-grey border-2 border-kino-red cursor-not-allowed"
+                : "bg-kino-red hover:bg-red-700"
+            }`}
+          >
+            Next
+          </button>
+        </div>
+      )}
+      <p className="ml-1 mt-3 text-xs text-kino-grey">
+        Page {currentPage} of {totalPages}
+      </p>
+    </div>
   );
 };
 
