@@ -39,14 +39,14 @@ const InfoModal = () => {
 
           {open[0].display && (
             <p className="p-2">
-              Kino Sandviken är en charmig och modern biograf som ligger i
-              hjärtat av den fantastiska staden Sandviken. Biografen erbjuder en
-              unik filmupplevelse med sina tre toppmoderna salonger, varav en är
-              utrustad med en exklusiv IMAX-duk för enastående bild- och
-              ljudkvalitet. Med ett brett urval av filmer - från stora
-              blockbusters till indiefilmer och klassiker - har Kino Sandviken
-              något för alla smaker. Det är en självklar mötesplats för
-              filmälskare i alla åldrar!
+              Kino Sandviken is a charming and modern cinema located in the
+              heart of the fantastic city of Sandviken. The cinema offers a
+              unique movie experience with two state-of-the-art auditoriums, one
+              of which is equipped with an exclusive IMAX screen for outstanding
+              picture and sound quality. With a wide selection of films – from
+              major blockbusters to indie films and classics – Kino Sandviken
+              has something for every taste. It is a natural meeting place for
+              movie lovers of all ages!
             </p>
           )}
         </li>
@@ -61,12 +61,13 @@ const InfoModal = () => {
           </InfoButton>
           {open[1].display && (
             <p className="p-2">
-              Kino Sandviken är tillgänglig för alla! Våra lokaler har
-              rullstolsanpassade ingångar, ramper och sittplatser i varje
-              salong. För gäster med nedsatt hörsel erbjuder vi hörslingor och
-              textade visningar, och för de med nedsatt syn finns syntolkning
-              tillgänglig vid utvalda filmer. Vår personal finns alltid på plats
-              för att hjälpa till och göra besöket så smidigt som möjligt.
+              Kino Sandviken is accessible to everyone! Our facilities feature
+              wheelchair-accessible entrances, ramps, and seating in every
+              auditorium. For guests with hearing impairments, we offer hearing
+              loops and subtitled screenings, and for those with visual
+              impairments, audio description is available for selected films.
+              Our staff is always on hand to assist and make your visit as
+              smooth as possible.
             </p>
           )}
         </li>
@@ -81,7 +82,7 @@ const InfoModal = () => {
           </InfoButton>
           {open[2].display && (
             <p className="p-2">
-              Biografen stränger 15 minuter efter föreställningen
+              The cinema closes 15 minutes after the screening.
             </p>
           )}
         </li>
