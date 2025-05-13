@@ -54,7 +54,9 @@ const ShowReviews = ({ movie }: { movie: { slug: string } }) => {
             <div className="flex justify-end items-end space-x-0.5">
               {renderStars(review.rating)}
             </div>
-            <p className="font-bold text-sm text-kino-grey">{review.userName}</p>
+            <p className="font-bold text-sm text-kino-grey">
+              {review.userName}
+            </p>
             <p className="mt-1 text-sm text-kino-grey">{review.comment}</p>
           </div>
         ))
@@ -65,6 +67,7 @@ const ShowReviews = ({ movie }: { movie: { slug: string } }) => {
       {reviews.length > reviewsPerPage && (
         <div className="flex justify-between items-center mt-6">
           <button
+            aria-label="Previous three reviews"
             onClick={() => paginate(currentPage > 1 ? currentPage - 1 : 1)}
             disabled={currentPage === 1}
             className={`px-4 py-2 rounded-3xl w-29 ${
@@ -77,6 +80,7 @@ const ShowReviews = ({ movie }: { movie: { slug: string } }) => {
           </button>
 
           <button
+          aria-label="next three reviews"
             onClick={() =>
               paginate(currentPage < totalPages ? currentPage + 1 : totalPages)
             }
