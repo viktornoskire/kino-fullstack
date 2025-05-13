@@ -1,6 +1,6 @@
 "use client";
 import { openType } from "@/types/Opentype";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const InfoKino = () => {
   const weekday = [
@@ -13,16 +13,15 @@ const InfoKino = () => {
     "Saturday",
   ];
 
-  const [week, setWeek] = useState(weekday);
   const [open, setOpen] = useState<openType[]>([]);
-  const date = new Date();
+  const date = useMemo(() => new Date(), []);
 
   useEffect(() => {
     async function loadHours() {
       try {
         const response = await fetch("/api/hours");
-        const hour = await response.json();
-        setOpen(hour);
+        const data = await response.json();
+        setOpen(data);
       } catch (err) {
         console.error("Couldn't get opening hours", err);
       }
@@ -30,19 +29,20 @@ const InfoKino = () => {
     loadHours();
   }, []);
 
-  useEffect(() => {
-    const spliceFrom = date.getDay();
-    const pastDays = week.splice(0, spliceFrom);
-    setWeek(week.concat(pastDays));
-  }, []);
+  type dates = {
+    weekday: string;
+    date: string;
+  };
 
-  const dateDays = [];
+  const dateDays: dates[] = [];
 
   for (let i = 0; i < 7; i++) {
     const dateToday = new Date(date);
     const timestamp = dateToday.setDate(date.getDate() + i);
     const getDate = new Date(timestamp);
+    const getDay = weekday[getDate.getDay()];
     dateDays.push({
+      weekday: getDay,
       date: getDate.toLocaleDateString("en-GB", {
         day: "numeric",
         month: "numeric",
@@ -50,11 +50,20 @@ const InfoKino = () => {
     });
   }
 
-  const openToday = open.find((check) => check.day === week[0]);
+  useEffect(() => {}, []);
 
-  console.log(dateDays);
-  console.log("openToday", openToday);
-  console.log(week);
+  const display = open.map((a) => {
+    const sameDay = dateDays.find((b) => a.day === b.weekday);
+    return { day: sameDay?.weekday, date: sameDay?.date, hours: a.hours };
+  });
+
+  /* function sortWeek(week){
+   const spliceFrom = date.getDay();
+    const pastDays = week.splice(0, spliceFrom);
+    setWeek(week.concat(pastDays));
+}
+ */
+  console.log(display);
 
   return (
     <>
