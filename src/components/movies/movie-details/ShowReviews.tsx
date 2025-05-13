@@ -56,7 +56,7 @@ const ShowReviews = ({ movie }: { movie: { slug: string } }) => {
                 {renderStars(review.rating)}
               </div>
               <p className="font-bold text-sm">{review.userName}</p>
-              <p className="mt-1 text-sm">{review.comment}</p>              
+              <p className="mt-1 text-sm">{review.comment}</p>
             </div>
           ))
         ) : (
@@ -84,9 +84,9 @@ const ShowReviews = ({ movie }: { movie: { slug: string } }) => {
                 )
               }
               disabled={currentPage === totalPages}
-              className={`px-4 py-2 rounded-3xl w-29 ${
+              className={`px-4 py-2 rounded-3xl w-29  ${
                 currentPage === totalPages
-                  ? "bg-gray-500 cursor-not-allowed"
+                  ? "bg-kino-dark-grey border-2 border-kino-red cursor-not-allowed"
                   : "bg-kino-red hover:bg-red-700"
               }`}
             >
