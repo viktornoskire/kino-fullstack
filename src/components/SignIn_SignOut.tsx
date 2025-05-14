@@ -16,7 +16,7 @@ const SignIn_SignOut: FC<Props> = ({ onToggleModal }) => {
         onClick={() => {
           signOut({ redirect: false });
         }}
-        className='hidden sm:hidden md:hidden lg:inline-block ml-auto border border-kino-white hover:text-kino-darkgrey'>
+        className='hidden text-xs sm:hidden md:hidden lg:inline-block ml-auto border border-kino-white hover:kino-red'>
         Sign Out
       </Button>
     );
@@ -25,7 +25,7 @@ const SignIn_SignOut: FC<Props> = ({ onToggleModal }) => {
       <Button
         type='button'
         onClick={onToggleModal}
-        className='hidden sm:hidden md:hidden lg:inline-block ml-auto border border-kino-white hover:text-kino-darkgrey'>
+        className='hidden text-xs sm:hidden md:hidden lg:inline-block ml-auto border border-kino-white hover:kino-red'>
         Sign In
       </Button>
     );

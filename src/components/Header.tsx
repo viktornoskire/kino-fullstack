@@ -53,7 +53,7 @@ const Header = () => {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className={`text-sm flex items-center gap-x-2 p-1 hover:text-kino-darkgrey ${
+                    className={`text-xs flex items-center gap-x-2 p-1 hover:text-kino-darkgrey ${
                       isActive(item.href) ? 'font-bold' : ''
                     }`}>
                     {item.text}

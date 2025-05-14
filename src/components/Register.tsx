@@ -51,10 +51,14 @@ const Register: FC<Props> = ({ showModal, onToggleRegister }) => {
               });
               const { created, message } = await res.json();
 
-              !created ? setError(message) : setError('');
-
-              onToggleRegister();
-              resetRegisterForm(event);
+              if (!created) {
+                setError(message);
+                return;
+              } else {
+                setError('');
+                onToggleRegister();
+                resetRegisterForm(event);
+              }
             } catch (error) {
               console.log(error as string);
               throw new Error(error as string);
