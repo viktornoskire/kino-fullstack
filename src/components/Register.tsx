@@ -6,10 +6,11 @@ import Button from './Button';
 
 type Props = {
   showModal: string;
-  onToggleRegister: () => void;
+  onToggleModal: () => void;
+  onResetForm: (event: FormEvent<HTMLFormElement>) => void;
 };
 
-const Register: FC<Props> = ({ showModal, onToggleRegister }) => {
+const Register: FC<Props> = ({ showModal, onToggleModal, onResetForm }) => {
   const [error, setError] = useState<string>('');
   const resetError = () => {
     if (error !== '') {
@@ -17,17 +18,12 @@ const Register: FC<Props> = ({ showModal, onToggleRegister }) => {
     }
   };
 
-  const resetRegisterForm = (event: FormEvent<HTMLFormElement>) => {
-    const registerForm = event.target as HTMLFormElement;
-    registerForm.reset();
-  };
-
   return (
     <div>
       <div
-        className={`fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 ${showModal}`}
+        className={`fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-51 ${showModal}`}
         onClick={() => {
-          onToggleRegister();
+          onToggleModal();
         }}></div>
       <div
         className={`place-content-center flex items-center justify-center z-999 bg-neutral-800 text-white w-100 p-8 rounded-xl shadow-lg fixed flex-col right-2 left-2 ml-auto mr-auto overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 ${showModal}`}>
@@ -56,8 +52,8 @@ const Register: FC<Props> = ({ showModal, onToggleRegister }) => {
                 return;
               } else {
                 setError('');
-                onToggleRegister();
-                resetRegisterForm(event);
+                onToggleModal();
+                onResetForm(event);
               }
             } catch (error) {
               console.log(error as string);
@@ -94,7 +90,7 @@ const Register: FC<Props> = ({ showModal, onToggleRegister }) => {
           <p
             className='hover:text-gray-300 text-center mt-4 cursor-pointer'
             onClick={() => {
-              onToggleRegister();
+              onToggleModal();
             }}>
             Close
           </p>
