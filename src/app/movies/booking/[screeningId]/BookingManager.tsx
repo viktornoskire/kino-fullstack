@@ -6,7 +6,8 @@ import BookingScreeningSelector from "./BookingScreeningSelector";
 import TicketSelector from "./TicketSelector";
 import CinemaSeating from "./Seatings";
 import Spinner from "@/components/Spinner";
-
+import Button from "@/components/Button";
+import Link from "next/link";
 interface Screening {
   _id: string;
   movieId: string;
@@ -21,6 +22,7 @@ interface Movie {
   genre: string[];
   durationMinutes: number;
   ageLimit: number;
+  slug: string;
 }
 
 interface BookingPageWrapperProps {
@@ -71,7 +73,7 @@ export default function BookingPageWrapper({
     <main className="w-full px-4 py-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row gap-8 mb-8">
-          <div className="w-full md:w-1/1 space-y-8">
+          <div className="w-full md:w-1/1 space-y-2">
             <BookingDetails movie={movie} screening={selectedScreening} />
 
             <BookingScreeningSelector
@@ -91,6 +93,25 @@ export default function BookingPageWrapper({
         <div className="w-full flex justify-center">
           <CinemaSeating totalTickets={totalTickets} />
         </div>
+      </div>
+      <div className="flex flex-col items-center justify-center gap-4 mt-8">
+        <Button
+          variant="primary"
+          type="button"
+          onClick={() => console.log("Primär knapp klickad")}
+        >
+          Book
+        </Button>
+
+        <Link href={`/movies/${movie.slug}`}>
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={() => console.log("Sekundär knapp klickad")}
+          >
+            Back
+          </Button>
+        </Link>
       </div>
     </main>
   );

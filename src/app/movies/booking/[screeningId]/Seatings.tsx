@@ -22,7 +22,6 @@ const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
         }
 
         const data = await response.json();
-       
 
         if (Array.isArray(data)) {
           setSeats(data);
@@ -77,29 +76,29 @@ const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
 
   return (
     <div className="max-w-2xl mx-auto">
-    <h1 className="text-2xl font-bold mb-4">Select Seats</h1>
-    <div
-      className="flex flex-col items-center p-8 rounded-lg max-w-2xl mx-auto"
-      style={{ backgroundColor: "var(--color-kino-darkgrey)" }}
-    >
-      <div className="w-3/4 h-5 bg-gray-400 rounded mb-12 flex items-center justify-center">
-        <span className="text-white text-sm">SCREEN</span>
-      </div>
+      <h1 className="text-2xl font-bold mb-4">Select Seats</h1>
+      <div
+        className="flex flex-col items-center p-8 rounded-lg max-w-2xl mx-auto"
+        style={{ backgroundColor: "var(--color-kino-darkgrey)" }}
+      >
+        <div className="w-3/4 h-5 bg-gray-400 rounded mb-12 flex items-center justify-center">
+          <span className="text-white text-sm">SCREEN</span>
+        </div>
 
-      <div className="flex flex-col gap-4">
-        {Object.keys(seatsByRow).map((rowNum) => (
-          <div key={rowNum} className="flex gap-2 justify-center">
-            {seatsByRow[Number(rowNum)]
-              .sort((a, b) => a.seatNumber - b.seatNumber)
-              .map((seat) => {
-                const isDisabled =
-                  seat.disabled || isDisabledSeat(seat.row, seat.seatNumber);
+        <div className="flex flex-col gap-4">
+          {Object.keys(seatsByRow).map((rowNum) => (
+            <div key={rowNum} className="flex gap-2 justify-center">
+              {seatsByRow[Number(rowNum)]
+                .sort((a, b) => a.seatNumber - b.seatNumber)
+                .map((seat) => {
+                  const isDisabled =
+                    seat.disabled || isDisabledSeat(seat.row, seat.seatNumber);
 
-                return (
-                  <button
-                    key={seat._id}
-                    onClick={() => toggleSeat(seat._id, isDisabled)}
-                    className={`
+                  return (
+                    <button
+                      key={seat._id}
+                      onClick={() => toggleSeat(seat._id, isDisabled)}
+                      className={`
                       w-7 h- flex items-center justify-center 
                        rounded 
                       ${
@@ -118,60 +117,60 @@ const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
                           : "bg-kino-darkgrey text-white hover:bg-[#1a1a1a]"
                       }
                     `}
-                    aria-label={
-                      isDisabled
-                        ? "Handikappad plats"
-                        : `Säte ${seat.seatNumber}`
-                    }
-                    disabled={
-                      isDisabled ||
-                      (selectedSeats.length >= totalTickets &&
-                        !selectedSeats.includes(seat._id))
-                    }
-                  >
-                    {isDisabled ? (
-                      <DisabledSeatIcon />
-                    ) : selectedSeats.includes(seat._id) ? (
-                      <SelectedSeatIcon />
-                    ) : (
-                      <AvailableSeatIcon />
-                    )}
-                  </button>
-                );
-              })}
-          </div>
-        ))}
-      </div>
+                      aria-label={
+                        isDisabled
+                          ? "Handikappad plats"
+                          : `Säte ${seat.seatNumber}`
+                      }
+                      disabled={
+                        isDisabled ||
+                        (selectedSeats.length >= totalTickets &&
+                          !selectedSeats.includes(seat._id))
+                      }
+                    >
+                      {isDisabled ? (
+                        <DisabledSeatIcon />
+                      ) : selectedSeats.includes(seat._id) ? (
+                        <SelectedSeatIcon />
+                      ) : (
+                        <AvailableSeatIcon />
+                      )}
+                    </button>
+                  );
+                })}
+            </div>
+          ))}
+        </div>
 
-      <div className="mt-6 text-center">
-        <div className="flex gap-15 mt-4 justify-center">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-kino-darkgrey rounded flex items-center justify-center text-white">
-              <AvailableSeatIcon />
+        <div className="mt-6 text-center">
+          <div className="flex gap-15 mt-4 justify-center">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 bg-kino-darkgrey rounded flex items-center justify-center text-white">
+                <AvailableSeatIcon />
+              </div>
+              <span className="text-sm">Available</span>
             </div>
-            <span className="text-sm">Available</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded flex items-center justify-center">
-              <SelectedSeatIcon />
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded flex items-center justify-center">
+                <SelectedSeatIcon />
+              </div>
+              <span className="text-sm">Selected</span>
             </div>
-            <span className="text-sm">Selected</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6rounded flex items-center justify-center text-white">
-              <TakenSeatIcon />
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6rounded flex items-center justify-center text-white">
+                <TakenSeatIcon />
+              </div>
+              <span className="text-sm">Taken</span>
             </div>
-            <span className="text-sm">Taken</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-[#5A5A5A] rounded flex items-center justify-center text-white">
-              <DisabledSeatIcon />
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 bg-[#5A5A5A] rounded flex items-center justify-center text-white">
+                <DisabledSeatIcon />
+              </div>
+              <span className="text-sm">Disabled</span>
             </div>
-            <span className="text-sm">Disabled</span>
           </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };

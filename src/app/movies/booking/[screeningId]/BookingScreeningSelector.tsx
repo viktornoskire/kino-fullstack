@@ -64,10 +64,8 @@ export default function BookingScreeningSelector({
 
   return (
     <div>
-      <div className="border border-[color:var(--color-kino-grey)] rounded-lg p-4 mb-4 mt-4 max-w-xl mx-2">
-        <h2 className="text-2xl text-[color:var(--color-kino-white)] font-bold mb-4">
-          Available Dates
-        </h2>
+      <div className="border border-kino-grey rounded-lg p-4 mb-4 mt-4 max-w-xl mx-2">
+        <h2 className="text-2xl font-bold mb-4">Available Dates</h2>
         <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-[15px]">
           {limitedScreeningsArray.map((screening, idx) => {
             const isSelected =
@@ -79,8 +77,8 @@ export default function BookingScreeningSelector({
                 onClick={() => setSelectedDate(screening.date)}
                 className={`flex flex-col items-center justify-center px-4 py-2 rounded-lg border ${
                   isSelected
-                    ? "bg-[color:var(--color-kino-darkred)] text-[color:var(--color-kino-white)] border-[color:var(--color-kino-darkred)]"
-                    : "text-[color:var(--color-kino-white)] border-[color:var(--color-kino-grey)]"
+                    ? "bg-kino-darkred border-kino-darkred"
+                    : "border-kino-grey"
                 }`}
               >
                 <span className="font-bold">
@@ -98,10 +96,8 @@ export default function BookingScreeningSelector({
         </div>
       </div>
 
-      <div className="border border-[color:var(--color-kino-grey)] rounded-lg p-4 mb-4 max-w-xl mx-2">
-        <h2 className="text-2xl text-[color:var(--color-kino-white)] font-bold mb-4">
-          Available Times
-        </h2>
+      <div className="border border-kino-grey rounded-lg p-4 mb-4 max-w-xl mx-2">
+        <h2 className="text-2xl font-bold mb-4">Available Times</h2>
         <div className="flex flex-wrap gap-[15px]">
           {availableScreenings.length > 0 ? (
             availableScreenings.map((screening) => {
@@ -112,24 +108,20 @@ export default function BookingScreeningSelector({
                   onClick={() => onScreeningSelect(screening)}
                   className={`flex flex-col items-center justify-center px-4 py-2 rounded-lg border ${
                     isSelected
-                      ? "bg-[color:var(--color-kino-darkred)] text-[color:var(--color-kino-white)] border-[color:var(--color-kino-darkred)]"
-                      : "text-[color:var(--color-kino-white)] border-[color:var(--color-kino-grey)]"
+                      ? "bg-kino-darkred border-kino-darkred"
+                      : "border-kino-grey"
                   }`}
                 >
                   <span className="font-bold text-lg">
                     {format(new Date(screening.screeningTime), "HH:mm")}
                   </span>
                   <span className="text-sm">{screening.auditorium}</span>
-                  <span className="text-sm text-[color:var(--color-kino-grey)]">
-                    93 of 93
-                  </span>
+                  <span className="text-sm text-kino-grey">93 of 93</span>
                 </button>
               );
             })
           ) : (
-            <p className="text-[color:var(--color-kino-white)]">
-              No available times
-            </p>
+            <p>No available times</p>
           )}
         </div>
       </div>

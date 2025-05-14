@@ -66,7 +66,7 @@ export default function TicketSelector({
   }, [ticketCounts, ticketPrices, onTotalTicketsChange]);
 
   return (
-    <div className="pt-3 bg-white-900 rounded-xl max-w-sm mx auto">
+    <div className=" bg-white-900 rounded-xl max-w-sm mx auto">
       <h2 className="mb-6 text-2xl font-bold">Select tickets</h2>
       <TicketButton
         price={ticketPrices.regular}
