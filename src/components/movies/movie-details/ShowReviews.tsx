@@ -46,7 +46,7 @@ const ShowReviews = ({ movie }: { movie: { slug: string } }) => {
   };
 
   return (
-    <div className="bg-kino-darkgrey p-4 rounded-lg my-4 mx-2 max-w-xs">
+    <div className="bg-kino-darkgrey p-4 rounded-lg w-full">
       <h3 className="text-lg font-bold text-center">Reviews</h3>
       {currentReviews.length > 0 ? (
         currentReviews.map((review, index) => (
