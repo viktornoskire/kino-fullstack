@@ -8,6 +8,7 @@ import CinemaSeating from "./Seatings";
 import Spinner from "@/components/Spinner";
 import Button from "@/components/Button";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface Screening {
   _id: string;
@@ -31,12 +32,16 @@ interface BookingManagerProps {
 }
 
 export default function BookingManager({ screeningId }: BookingManagerProps) {
+  const router = useRouter();
   const [selectedScreening, setSelectedScreening] = useState<Screening | null>(
     null
   );
   const [screenings, setScreenings] = useState<Screening[]>([]);
   const [movie, setMovie] = useState<Movie | null>(null);
   const [totalTickets, setTotalTickets] = useState<number>(0);
+  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+  const [finalPrice, setFinalPrice] = useState<number>(0);
+  const [isBooking, setIsBooking] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,6 +64,47 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
 
     fetchData();
   }, [screeningId]);
+
+  const handleSelectedSeatsChange = (seats: string[]) => {
+    setSelectedSeats(seats);
+  };
+  const handleFinalPriceChange = (price: number) => {
+    setFinalPrice(price);
+  };
+
+  const handleBooking = async () => {
+    if (selectedSeats.length !== totalTickets || totalTickets === 0) {
+      alert("Choose as many seats as tickets please.");
+      return;
+    }
+    setIsBooking(true);
+
+    try {
+      const response = await fetch("/api/movies/booking/reservation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          screeningId: selectedScreening?._id,
+          seats: selectedSeats,
+          usersId: "temp-user-id", //THIS SHOULD BE SWITCHED LATER TO THE LOGGED IN USER !!
+          totalPrice: finalPrice,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error("Booking failed");
+      }
+
+      const data = await response.json();
+      router.push(`/booking/confirmation/${data.reservationId}`);
+    } catch (error) {
+      console.log("Booking error", error);
+      alert("Error while booking");
+    } finally {
+      setIsBooking(false);
+    }
+  };
 
   if (!selectedScreening || !movie) {
     return (
@@ -87,18 +133,35 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
 
           <div className="w-full md:w-1/2 flex justify-end">
             <div className="w-full max-w-md ml-auto">
-              <TicketSelector onTotalTicketsChange={setTotalTickets} />
+              <TicketSelector
+                onTotalTicketsChange={setTotalTickets}
+                onFinalPriceChange={handleFinalPriceChange}
+              />
             </div>
           </div>
         </div>
 
         <div className="w-full flex justify-center">
-          <CinemaSeating totalTickets={totalTickets} />
+          <CinemaSeating
+            totalTickets={totalTickets}
+            screeningId={selectedScreening._id}
+            onSelectedSeatsChange={handleSelectedSeatsChange}
+          />
         </div>
       </div>
       <div className="flex flex-col items-center justify-center gap-4 mt-8">
-        <Button variant="primary" type="button">
-          Book
+        <Button
+          variant="primary"
+          type="button"
+          onClick={handleBooking}
+          disabled={
+            totalTickets === 0 ||
+            selectedSeats.length !== totalTickets ||
+            isBooking
+          }
+        >
+          {isBooking ? "Booking..." : "Book"}{" "}
+          {/* MAYBE KEEP THIS FOR LOADING??*/}
         </Button>
 
         <Link href={`/movies/${movie.slug}`}>

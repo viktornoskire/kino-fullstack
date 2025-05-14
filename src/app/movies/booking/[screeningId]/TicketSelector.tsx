@@ -18,10 +18,12 @@ interface TicketCounts {
 
 interface TicketSelectorProps {
   onTotalTicketsChange: (totalTickets: number) => void;
+  onFinalPriceChange: (finalPrice: number) => void;
 }
 
 export default function TicketSelector({
   onTotalTicketsChange,
+  onFinalPriceChange,
 }: TicketSelectorProps) {
   const [ticketCounts, setTicketCounts] = useState<TicketCounts>({
     regular: 0,
@@ -59,11 +61,13 @@ export default function TicketSelector({
     });
 
     const discountAmount = Math.round(newTotal * 0.1);
+    const newFinalPrice = newTotal - discountAmount;
     setTotalPrice(newTotal);
-    setFinalPrice(newTotal - discountAmount);
+    setFinalPrice(newFinalPrice);
 
     onTotalTicketsChange(ticketCount);
-  }, [ticketCounts, ticketPrices, onTotalTicketsChange]);
+    onFinalPriceChange(newFinalPrice);
+  }, [ticketCounts, ticketPrices, onTotalTicketsChange, onFinalPriceChange]);
 
   return (
     <div className=" bg-white-900 rounded-xl max-w-sm mx auto ml-12">

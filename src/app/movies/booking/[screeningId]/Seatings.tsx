@@ -7,42 +7,54 @@ import {
   TakenSeatIcon,
 } from "./SeatingIcons";
 import { Seat, SeatsByRow, CinemaSeatingProps } from "./types/Seatings.types";
+import Spinner from "@/components/Spinner";
 
-const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
+interface UpdatedCinemaSeatingProps extends CinemaSeatingProps {
+  screeningId: string;
+  onSelectedSeatsChange: (seats: string[]) => void;
+}
+
+const CinemaSeating: React.FC<UpdatedCinemaSeatingProps> = ({
+  totalTickets,
+  screeningId,
+  onSelectedSeatsChange,
+}) => {
   const [seats, setSeats] = useState<Seat[]>([]);
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchSeats = async () => {
       try {
-        const response = await fetch("/api/seats");
+        const response = await fetch(`/api/seats/${screeningId}`);
 
         if (!response.ok) {
-          throw new Error("Kunde inte hämta säten");
+          throw new Error("Not able to fetch seats");
         }
 
         const data = await response.json();
-
-        if (Array.isArray(data)) {
-          setSeats(data);
-        } else if (data.seats && Array.isArray(data.seats)) {
-          setSeats(data.seats);
-        } else {
-          console.error("Ogiltig datastruktur:", data);
-        }
+        setSeats(data);
+        setSelectedSeats([]);
       } catch (error) {
-        console.error("Fel vid hämtning av säten:", error);
+        console.error("Error fetching seats:", error);
+      } finally {
+        setLoading(false);
       }
     };
-
-    fetchSeats();
-  }, []);
+    if (screeningId) {
+      fetchSeats();
+    }
+  }, [screeningId]);
 
   useEffect(() => {
     if (selectedSeats.length > totalTickets) {
       setSelectedSeats(selectedSeats.slice(0, totalTickets));
     }
   }, [totalTickets, selectedSeats]);
+
+  useEffect(() => {
+    onSelectedSeatsChange(selectedSeats);
+  }, [selectedSeats, onSelectedSeatsChange]);
 
   const seatsByRow: SeatsByRow = seats.reduce((acc: SeatsByRow, seat: Seat) => {
     if (!acc[seat.row]) {
@@ -61,7 +73,6 @@ const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
       if (prev.includes(seatId)) {
         return prev.filter((id) => id !== seatId);
       } else {
-        // Tillåt endast val om vi inte nått biljettgränsen
         if (prev.length < totalTickets) {
           return [...prev, seatId];
         }
@@ -73,6 +84,10 @@ const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
   const isDisabledSeat = (row: number, seatNumber: number): boolean => {
     return row === 6 && [1, 2, 14, 15].includes(seatNumber);
   };
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -93,6 +108,7 @@ const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
                 .map((seat) => {
                   const isDisabled =
                     seat.disabled || isDisabledSeat(seat.row, seat.seatNumber);
+                  const isBooked = seat.isBooked;
 
                   return (
                     <button
@@ -103,7 +119,9 @@ const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
                        rounded 
                       ${
                         isDisabled
-                          ? "cursor-pointer bg-[#5A5A5A]"
+                          ? "cursor-not-allowed bg-[#5a5a5a]"
+                          : isBooked
+                          ? "cursor-not-allowed"
                           : selectedSeats.length >= totalTickets &&
                             !selectedSeats.includes(seat._id)
                           ? "cursor-not-allowed"
@@ -113,23 +131,26 @@ const CinemaSeating: React.FC<CinemaSeatingProps> = ({ totalTickets }) => {
                         selectedSeats.includes(seat._id)
                           ? ""
                           : isDisabled
-                          ? "bg-black-700 text-white"
+                          ? "bg-[#5A5A5A] text-white"
+                          : isBooked
+                          ? "bg-[#333333] text-white"
                           : "bg-kino-darkgrey text-white hover:bg-[#1a1a1a]"
                       }
                     `}
                       aria-label={
-                        isDisabled
-                          ? "Handikappad plats"
-                          : `Säte ${seat.seatNumber}`
+                        isDisabled ? "Disable seat" : `Säte ${seat.seatNumber}`
                       }
                       disabled={
                         isDisabled ||
+                        isBooked ||
                         (selectedSeats.length >= totalTickets &&
                           !selectedSeats.includes(seat._id))
                       }
                     >
                       {isDisabled ? (
                         <DisabledSeatIcon />
+                      ) : isBooked ? (
+                        <TakenSeatIcon />
                       ) : selectedSeats.includes(seat._id) ? (
                         <SelectedSeatIcon />
                       ) : (

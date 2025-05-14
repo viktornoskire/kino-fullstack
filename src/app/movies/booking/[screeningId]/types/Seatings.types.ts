@@ -3,6 +3,7 @@ export interface Seat {
   row: number;
   seatNumber: number;
   disabled?: boolean;
+  isBooked: boolean;
 }
 
 export type SeatsByRow = {
