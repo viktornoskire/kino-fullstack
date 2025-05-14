@@ -1,9 +1,10 @@
-// import Button from "@/components/Button";
+"use client";
+import Button from "@/components/Button";
 
 const PostReview = () => {
-//     const handleClick = () => {
-//   console.log("Review submitted");
-// };
+    const handleClick = () => {
+  console.log("Review submitted");
+};
 
 
   return (
@@ -11,7 +12,7 @@ const PostReview = () => {
       <h2 className="mb-2 text-center">Submit a review</h2>
       <input
         type="text"
-        placeholder="Your review"
+        placeholder="Write review"
         className="border border-kino-red rounded-lg p-2 mb-2 w-full h-16"
       />
       <div  className= "border border-kino-red rounded-lg p-2 mb-2">
@@ -30,12 +31,12 @@ const PostReview = () => {
         placeholder="Name"
         className="border border-kino-red rounded-lg p-2 mb-2"
       />
-      {/* <Button 
+      <Button 
         type="submit"
-        className="bg-kino-red hover:bg-kino-darkred text-white font-bold py-2 px-4 rounded-lg w-full"
+        className="bg-kino-red text-xs hover:bg-kino-darkred text-kino-white py-2 px-4"
         onClick={handleClick}>
-        Submit Review
-        </Button>     */}
+        Submit
+        </Button>    
     </div>
   );
 };
