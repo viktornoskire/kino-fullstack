@@ -1,5 +1,5 @@
 import { NextAuthOptions } from 'next-auth';
-import User from '@/models/userModel';
+import User from '@/models/authModels';
 import credentials from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import connectDB from './db';
