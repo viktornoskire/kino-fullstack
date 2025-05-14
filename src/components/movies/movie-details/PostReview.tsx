@@ -12,56 +12,59 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
   }>(null);
 
   useEffect(() => {
-  if (feedback) {
-    const timer = setTimeout(() => {
-      setFeedback(null);
-    }, 5000);
-    return () => clearTimeout(timer);
-  }
-}, [feedback]);
+    if (feedback) {
+      const timer = setTimeout(() => {
+        setFeedback(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [feedback]);
 
   const handleClick = async () => {
-  if (!comment || !rating || !userName) {
-    setFeedback({ message: "Please fill in all fields.", type: "error" });
-    return;
-  }
-
-  const ratingNum = Number(rating);
-  if (isNaN(ratingNum) || ratingNum < 1 || ratingNum > 5) {
-    setFeedback({ message: "Rating must be between 1 and 5.", type: "error" });
-    return;
-  }
-
-  try {
-    const res = await fetch(`/api/movies/${movie.slug}/reviews`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        slug: movie.slug,
-        userName,
-        rating: ratingNum,
-        comment,
-      }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.error || "Failed to submit review");
+    if (!comment || !rating || !userName) {
+      setFeedback({ message: "Please fill in all fields.", type: "error" });
+      return;
     }
 
-    setFeedback({ message: "Thank's for your review!", type: "success" });
-    setComment("");
-    setRating("");
-    setUserName("");
-  } catch (err) {
-    console.error("Submission error:", err);
-    setFeedback({
-      message: err instanceof Error ? err.message : "Failed to submit review",
-      type: "error",
-    });
-  }
-};
+    const ratingNum = Number(rating);
+    if (isNaN(ratingNum) || ratingNum < 1 || ratingNum > 5) {
+      setFeedback({
+        message: "Rating must be between 1 and 5.",
+        type: "error",
+      });
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/movies/${movie.slug}/reviews`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slug: movie.slug,
+          userName,
+          rating: ratingNum,
+          comment,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to submit review");
+      }
+
+      setFeedback({ message: "Thank's for your review!", type: "success" });
+      setComment("");
+      setRating("");
+      setUserName("");
+    } catch (err) {
+      console.error("Submission error:", err);
+      setFeedback({
+        message: err instanceof Error ? err.message : "Failed to submit review",
+        type: "error",
+      });
+    }
+  };
 
   return (
     <div className="bg-kino-darkgrey p-4 rounded-lg my-4 mx-2 max-w-xs">
@@ -97,7 +100,9 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
       {feedback && (
         <div
           className={`mb-2 text-xs text-center ${
-            feedback.type === "success" ? "text-kino-darkgreen" : "text-kino-red"
+            feedback.type === "success"
+              ? "text-kino-darkgreen"
+              : "text-kino-red"
           }`}
         >
           {feedback.message}

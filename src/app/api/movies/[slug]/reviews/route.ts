@@ -28,7 +28,6 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    
 
     if (!body.slug) {
       return NextResponse.json(
@@ -38,13 +37,9 @@ export async function POST(request: Request) {
     }
 
     const foundMovie = await movie.findOne({ slug: body.slug });
-     
 
     if (!foundMovie) {
-      return NextResponse.json(
-        { error: "Movie not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Movie not found" }, { status: 404 });
     }
 
     if (!body.userName || !body.rating || !body.comment) {
@@ -73,7 +68,7 @@ export async function POST(request: Request) {
       { message: "Review added successfully", review: newReview },
       { status: 201 }
     );
-  } catch (error) {    
+  } catch (error) {
     return NextResponse.json(
       { error: "Internal server error", details: (error as Error).message },
       { status: 500 }
