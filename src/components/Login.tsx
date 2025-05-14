@@ -34,11 +34,15 @@ const Login: FC<Props> = ({ showModal, onToggleModal, onResetForm }) => {
           onSubmit={async (event: FormEvent<HTMLFormElement>) => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
-            signIn('credentials', {
-              email: formData.get('email'),
-              password: formData.get('password'),
-              redirect: false,
-            });
+            try {
+              const sign = await signIn('credentials', {
+                email: formData.get('email'),
+                password: formData.get('password'),
+                redirect: false,
+              });
+            } catch (error) {
+              throw new Error('Error signing in!');
+            }
           }}>
           <input
             onChange={resetError}
