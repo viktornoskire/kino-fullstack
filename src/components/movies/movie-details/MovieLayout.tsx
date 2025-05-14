@@ -14,7 +14,7 @@ export default function MovieLayout({ movie, screenings }: any) {
 
       {/* Create review – mobil: under MovieDetail */}
       <div className="col-span-1 md:col-start-16 md:col-end-25 md:row-start-1 md:row-end-2 md:mt-[87px]">
-        <PostReview/>
+        <PostReview movie={movie}/>
       </div>
 
       {/* ScreeningSelector */}
