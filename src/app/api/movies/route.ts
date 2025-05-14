@@ -7,7 +7,6 @@ export async function GET(req: NextRequest) {
     await connectDB();
     const movieTag = req.nextUrl.searchParams.get("tags");
     const movies = await movie.find({ tags: movieTag });
-    console.log("movies", movies);
     return NextResponse.json(movies);
   } catch (error) {
     console.error("Kunde inte hämta filmer:", error);
