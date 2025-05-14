@@ -50,41 +50,35 @@ const InfoKino = () => {
     });
   }
 
-  useEffect(() => {}, []);
-
-  const display = open.map((a) => {
-    const sameDay = dateDays.find((b) => a.day === b.weekday);
-    return { day: sameDay?.weekday, date: sameDay?.date, hours: a.hours };
+  const disp = dateDays.map((a) => {
+    const thisDay = open.find((b) => a.weekday === b.day);
+    return { day: thisDay?.day, date: a.date, hours: thisDay?.hours };
   });
-
-  /* function sortWeek(week){
-   const spliceFrom = date.getDay();
-    const pastDays = week.splice(0, spliceFrom);
-    setWeek(week.concat(pastDays));
-}
- */
-  console.log(display);
 
   return (
     <>
       <div>
         <h1>Kino Sandviken</h1>
-        <p>Open hours today </p>
+        <p>Open hours today {disp[0].hours}</p>
       </div>
+
       <div className="bg-kino-darkgrey rounded-2xl p-4 max-w-[500px]">
         <h2>Opening hours</h2>
         <p>The cinema closes 15 minutes after the screening</p>
-        <div className="flex flex-row justify-between">
-          <p>Weekday</p>
-          <p>Date</p>
-          <p>Opening hours</p>
+
+        <div className="grid grid-cols-3">
+          <p className="col-start-1">Weekday</p>
+          <p className="col-start-2">Date</p>
+          <p className="col-start-3">Opening hours</p>
         </div>
 
-        <ul className="flex flex-col justify-center">
-          {open.map((show, index) => {
+        <ul className="">
+          {disp.map((show, index) => {
             return (
-              <li key={index} className="p-2 max-w-[240px]">
-                {show.day}:{show.hours}
+              <li key={index} className="p-2  grid grid-cols-3">
+                <span className="col-start-1">{show.day} </span>{" "}
+                <span className="col-start-2">{show.date}</span>
+                <span className="col-start-3">{show.hours}</span>
               </li>
             );
           })}
