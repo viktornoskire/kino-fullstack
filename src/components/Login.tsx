@@ -40,6 +40,19 @@ const Login: FC<Props> = ({ showModal, onToggleModal, onResetForm }) => {
                 password: formData.get('password'),
                 redirect: false,
               });
+
+              if (!sign?.ok) {
+                const error = sign?.error;
+                if (error !== null && error !== undefined) {
+                  setError(error);
+                  return;
+                } else {
+                  setError('Invalid credentials');
+                }
+              } else {
+                onResetForm(event);
+                onToggleModal();
+              }
             } catch (error) {
               throw new Error('Error signing in!');
             }
