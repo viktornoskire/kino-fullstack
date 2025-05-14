@@ -15,11 +15,11 @@ const Display: FC<displayMovie> = ({ display, children }) => {
                   <Image
                     src={movie.posterUrl}
                     alt="Movie poster"
-                    width={130}
-                    height={180}
-                    className="w-auto h-auto rounded-2xl"
+                    width={300}
+                    height={450}
+                    className="w-auto h-auto mb-2 rounded-2xl"
                   />
-                  <p className="text-xl">{movie.title}</p>
+                  <p className="text-xl mb-4">{movie.title}</p>
                 </a>
               </li>
             );

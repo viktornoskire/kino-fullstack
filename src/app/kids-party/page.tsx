@@ -29,9 +29,14 @@ export default function KidsParty() {
           width={461}
           height={272}
           title="Pizza Party!"
-          description="Boka kalas där barnen får en fantastisk upplevelse 
-med nybakta pizzor från stans bästa pizzeria"
-          listItems={['Pizza', 'Läsk och saft', 'Specialplats för födelsebarnet', 'Extraordinär filmupplevelse']}
+          description="Book a party where the children will enjoy an amazing experience
+with freshly baked pizzas from the best pizzeria in town!"
+          listItems={[
+            'Pizza',
+            'Soda and juice',
+            'A special seat for the birthday child',
+            'An extraordinary movie experience',
+          ]}
           buttonText="Book now!"
         />
         <KidsPartyOffers
@@ -40,10 +45,14 @@ med nybakta pizzor från stans bästa pizzeria"
           imgPath="/glassparty.png"
           width={461}
           height={272}
-          title="Pizza Party!"
-          description="Boka kalas där barnen får en fantastisk upplevelse 
-med nybakta pizzor från stans bästa pizzeria"
-          listItems={['Pizza', 'Läsk och saft', 'Specialplats för födelsebarnet', 'Extraordinär filmupplevelse']}
+          title="Ice Cream Party!"
+          description="Book a party where the children will get a chilling experience they'll never forget – with ice cream from Sweden's top ice cream experts!"
+          listItems={[
+            'Ice cream galore',
+            'Loads of toppings',
+            'A special seat for the birthday child',
+            'An extraordinary movie experience',
+          ]}
           buttonText="Book now!"
         />
       </div>

@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation';
 import { headers } from 'next/headers';
-import MovieDetail from '@/components/movies/movie-details/MovieDetail';
-import ScreeningSelector from "@/components/movies/movie-details/ScreeningSelector";
+import MovieLayout from '@/components/movies/movie-details/MovieLayout';
 
 export default async function MovieDetailPage({ params }: { params: { slug: string } }) {
   // Using await params here to silence Next.js warning about params.slug
@@ -26,8 +25,7 @@ export default async function MovieDetailPage({ params }: { params: { slug: stri
 
   return (
     <>
-      <MovieDetail movie={movie} />
-      <ScreeningSelector screenings={screenings} />
+      <MovieLayout movie={movie} screenings={screenings} />
     </>
   );
 }

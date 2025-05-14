@@ -76,7 +76,7 @@ export default function ScreeningSelector({ screenings }: ScreeningSelectorProps
   return (
     <div>
       {/* Screening dates */}
-      <div className="border border-[color:var(--color-kino-grey)] rounded-lg p-4 mb-4 max-w-3xl mx-2">
+      <div className="border border-[color:var(--color-kino-grey)] rounded-lg p-4 mb-4 w-full">
         <h2 className="text-2xl text-[color:var(--color-kino-white)] font-bold mb-4">
           Available Dates
         </h2>
@@ -108,7 +108,7 @@ export default function ScreeningSelector({ screenings }: ScreeningSelectorProps
       </div>
 
       {/* Screening times */}
-      <div className="border border-[color:var(--color-kino-grey)] rounded-lg p-4 mb-4 max-w-3xl mx-2">
+      <div className="border border-[color:var(--color-kino-grey)] rounded-lg p-4 mb-4 w-full">
         <h2 className="text-2xl text-[color:var(--color-kino-white)] font-bold mb-4">
           Available Times
         </h2>

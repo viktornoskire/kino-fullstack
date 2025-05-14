@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { Provider } from './provider';
 
 export const metadata: Metadata = {
   title: 'Kino - is da best',
@@ -14,17 +15,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-            <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins&display=swap"
-          rel="stylesheet"
-        />
+    <html lang='en'>
+      <head>
+        <link href='https://fonts.googleapis.com/css2?family=Poppins&display=swap' rel='stylesheet' />
       </head>
       <body>
-        <Header />
-        {children}
-        <Footer />
+        <Provider>
+          <Header />
+          {children}
+          <Footer />
+        </Provider>
       </body>
     </html>
   );
