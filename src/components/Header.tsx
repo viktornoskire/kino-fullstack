@@ -50,7 +50,7 @@ const Header = () => {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className={`text-sm flex items-center gap-x-2 p-1 hover:text-kino-darkgrey ${
+                    className={`text-xs flex items-center gap-x-2 p-1 hover:text-kino-darkgrey ${
                       isActive(item.href) ? "font-bold" : ""
                     }`}
                   >
@@ -64,7 +64,7 @@ const Header = () => {
           <Button
             type="button"
             onClick={() => console.log("Sign In clicked")}
-            className="hidden sm:hidden md:hidden lg:inline-block ml-auto border border-kino-white hover:text-kino-darkgrey"
+            className="hidden text-xs sm:hidden md:hidden lg:inline-block ml-auto border border-kino-white hover:kino-red"
           >
             Sign In
           </Button>
