@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { headers } from 'next/headers';
 import MovieDetail from '@/components/movies/movie-details/MovieDetail';
+import ShowReviews from '@/components/movies/movie-details/ShowReviews';
 import ScreeningSelector from "@/components/movies/movie-details/ScreeningSelector";
 
 export default async function MovieDetailPage({ params }: { params: { slug: string } }) {
@@ -27,6 +28,7 @@ export default async function MovieDetailPage({ params }: { params: { slug: stri
   return (
     <>
       <MovieDetail movie={movie} />
+      <ShowReviews movie={movie}/>      
       <ScreeningSelector screenings={screenings} />
     </>
   );
