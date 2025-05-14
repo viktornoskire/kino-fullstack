@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import Register from './Register';
 import Login from './Login';
-import SignIn_SignOut from './SignIn_SignOut';
+import { SISO_Desktop, SISO_Mobile } from './SignIn_SignOut';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,7 +64,7 @@ const Header = () => {
           </div>
 
           {
-            <SignIn_SignOut
+            <SISO_Desktop
               onToggleModal={() => {
                 showModal === 'hidden' ? setModal('') : setModal('hidden');
               }}
@@ -116,7 +116,7 @@ const Header = () => {
             ))}
             <li className='mt-2'>
               {
-                <SignIn_SignOut
+                <SISO_Mobile
                   onToggleModal={() => {
                     showModal === 'hidden' ? setModal('') : setModal('hidden');
                   }}
