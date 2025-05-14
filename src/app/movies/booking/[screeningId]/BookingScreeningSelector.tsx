@@ -44,7 +44,7 @@ export default function BookingScreeningSelector({
     today.setHours(0, 0, 0, 0);
     const filtered = screeningsArray.filter((s) => s.date >= today);
     const sorted = filtered.sort((a, b) => a.date.getTime() - b.date.getTime());
-    return sorted.slice(0, 5);
+    return sorted.slice(0, 7);
   });
 
   const [selectedDate, setSelectedDate] = useState<Date>(
@@ -60,7 +60,7 @@ export default function BookingScreeningSelector({
         format(day.date, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd")
     );
     setAvailableScreenings(selectedDay ? selectedDay.screenings : []);
-  }, [selectedDate]);
+  }, [selectedDate, limitedScreeningsArray]);
 
   return (
     <div>

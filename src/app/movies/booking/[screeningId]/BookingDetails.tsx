@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
-
+import Image from "next/image";
 interface BookingDetailsProps {
   movie: {
     title: string;
@@ -15,7 +15,10 @@ interface BookingDetailsProps {
   };
 }
 
-export default function BookingDetails({ movie, screening }: BookingDetailsProps) {
+export default function BookingDetails({
+  movie,
+  screening,
+}: BookingDetailsProps) {
   const hours = Math.floor(movie.durationMinutes / 60);
   const minutes = movie.durationMinutes % 60;
 
@@ -31,12 +34,16 @@ export default function BookingDetails({ movie, screening }: BookingDetailsProps
             <span className="px-2 py-1 border rounded-md text-xs font-semibold border-[color:var(--color-kino-grey)]">
               {movie.ageLimit}+
             </span>
-            <span>{hours} h {minutes} min</span>
+            <span>
+              {hours} h {minutes} min
+            </span>
             <span>{movie.genre.join(", ")}</span>
           </p>
 
           <p className="text-sm sm:text-base text-[color:var(--color-kino-white)] font-medium mb-1">
-            {format(new Date(screening.screeningTime), "EEEE d MMM, HH:mm", { locale: enGB })}
+            {format(new Date(screening.screeningTime), "EEEE d MMM, HH:mm", {
+              locale: enGB,
+            })}
           </p>
 
           <p className="text-xs sm:text-sm text-[color:var(--color-kino-grey)]">
@@ -45,9 +52,11 @@ export default function BookingDetails({ movie, screening }: BookingDetailsProps
         </div>
 
         <div className="w-24 sm:w-40 flex-shrink-0">
-          <img
+          <Image
             src={movie.posterUrl}
             alt={movie.title}
+            width={160}
+            height={240}
             className="w-full rounded-xl object-cover"
           />
         </div>
