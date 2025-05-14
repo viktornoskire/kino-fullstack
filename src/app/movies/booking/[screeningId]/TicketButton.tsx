@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import type { TicketButtonProps } from "./types/TicketButton.types"
+import type { TicketButtonProps } from "./types/TicketButton.types";
 
 export default function TicketButton({
   children,
@@ -27,7 +27,7 @@ export default function TicketButton({
   }
 
   return (
-    <div className="flex items-center justify-between w-full max-w-sm p-4 mb-3 border bg-kino-black rounded-lg">
+    <div className="flex items-center justify-between w-full max-w-sm p-4 mb-3 border border-kino-grey bg-kino-black rounded-lg">
       <div className="flex flex-col">
         <div className="text-lg font-medium">{children}</div>
         <div className="text-sm italic">{price} kr</div>

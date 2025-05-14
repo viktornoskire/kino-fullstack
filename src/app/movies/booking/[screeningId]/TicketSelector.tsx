@@ -18,10 +18,12 @@ interface TicketCounts {
 
 interface TicketSelectorProps {
   onTotalTicketsChange: (totalTickets: number) => void;
+  onFinalPriceChange: (finalPrice: number) => void;
 }
 
 export default function TicketSelector({
   onTotalTicketsChange,
+  onFinalPriceChange,
 }: TicketSelectorProps) {
   const [ticketCounts, setTicketCounts] = useState<TicketCounts>({
     regular: 0,
@@ -59,14 +61,16 @@ export default function TicketSelector({
     });
 
     const discountAmount = Math.round(newTotal * 0.1);
+    const newFinalPrice = newTotal - discountAmount;
     setTotalPrice(newTotal);
-    setFinalPrice(newTotal - discountAmount);
+    setFinalPrice(newFinalPrice);
 
     onTotalTicketsChange(ticketCount);
-  }, [ticketCounts, ticketPrices, onTotalTicketsChange]);
+    onFinalPriceChange(newFinalPrice);
+  }, [ticketCounts, ticketPrices, onTotalTicketsChange, onFinalPriceChange]);
 
   return (
-    <div className="p-6 bg-white-900 rounded-xl mb-10 max-w-sm mx auto">
+    <div className=" bg-white-900 rounded-xl max-w-sm mx auto ml-12">
       <h2 className="mb-6 text-2xl font-bold">Select tickets</h2>
       <TicketButton
         price={ticketPrices.regular}
@@ -96,7 +100,7 @@ export default function TicketSelector({
       >
         Senior
       </TicketButton>
-      <div className="mt-6 p-4 rounded-lg border border-kino-white">
+      <div className="mt-6 p-4 rounded-lg border border-kino-grey">
         <div className="flex flex-col space-y-2">
           <div className="flex justify-between">
             <span className="font-medium">Price:</span>
