@@ -12,9 +12,14 @@ export async function GET(
 
   try {
     await connectDB();
-    const screening = await Screening.findById(screeningId).lean<ScreeningType>();
+    const screening = await Screening.findById(
+      screeningId
+    ).lean<ScreeningType>();
     if (!screening) {
-      return NextResponse.json({ error: "Screening not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Screening not found" },
+        { status: 404 }
+      );
     }
 
     const movieData = await movie.findById(screening.movieId).lean();
@@ -31,8 +36,10 @@ export async function GET(
       movie: movieData,
       screenings: screeningsForThisMovie,
     });
-
-  } catch (err) {
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  } catch {
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
 }
