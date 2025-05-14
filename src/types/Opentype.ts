@@ -3,3 +3,9 @@ export type openType = {
   day: string;
   hours: string;
 };
+
+export type displayOpen = {
+  day?: string;
+  date: string;
+  hours?: string;
+};

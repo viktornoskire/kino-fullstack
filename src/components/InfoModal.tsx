@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import InfoButton from "./InfoButton";
+import { displayOpen } from "@/types/Opentype";
 
-const InfoModal = () => {
+const InfoModal = ({ display }: { display: displayOpen[] }) => {
   const update = [
     { id: 1, display: false },
     { id: 2, display: false },
@@ -25,7 +26,7 @@ const InfoModal = () => {
 
   return (
     <div className="bg-kino-darkgrey max-w-[700px] rounded-2xl p-4">
-      <h3 className="text-2xl mb-2">Vanliga frågor</h3>
+      <h3 className="text-2xl mb-2">Frequently asked questions</h3>
       <ul>
         <li>
           <InfoButton
@@ -81,9 +82,23 @@ const InfoModal = () => {
             {"Öppettider"}
           </InfoButton>
           {open[2].display && (
-            <p className="p-2">
-              The cinema closes 15 minutes after the screening.
-            </p>
+            <div>
+              <p className="p-2">
+                The cinema closes 15 minutes after the screening.
+              </p>
+
+              <ul className="">
+                {display.map((show, index) => {
+                  return (
+                    <li key={index} className="p-2  grid grid-cols-3">
+                      <span className="col-start-1">{show.day} </span>{" "}
+                      <span className="col-start-2">{show.date}</span>
+                      <span className="col-start-3">{show.hours}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           )}
         </li>
       </ul>

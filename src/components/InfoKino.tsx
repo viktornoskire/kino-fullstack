@@ -1,6 +1,8 @@
 "use client";
 import { openType } from "@/types/Opentype";
 import { useEffect, useMemo, useState } from "react";
+import OpeningHours from "./OpeningHours";
+import InfoModal from "./InfoModal";
 
 const InfoKino = () => {
   const weekday = [
@@ -57,32 +59,17 @@ const InfoKino = () => {
 
   return (
     <>
-      <div>
-        <h1>Kino Sandviken</h1>
-        <p>Open hours today {disp[0].hours}</p>
-      </div>
-
-      <div className="bg-kino-darkgrey rounded-2xl p-4 max-w-[500px]">
-        <h2>Opening hours</h2>
-        <p>The cinema closes 15 minutes after the screening</p>
-
-        <div className="grid grid-cols-3">
-          <p className="col-start-1">Weekday</p>
-          <p className="col-start-2">Date</p>
-          <p className="col-start-3">Opening hours</p>
+      <div className="lg: grid lg:grid-cols-2 p-4">
+        <div className="lg:col-span-2 mb-4">
+          <h1 className="text-3xl font-bold">Kino Sandviken</h1>
+          <p>Open hours today {disp[0].hours}</p>
         </div>
-
-        <ul className="">
-          {disp.map((show, index) => {
-            return (
-              <li key={index} className="p-2  grid grid-cols-3">
-                <span className="col-start-1">{show.day} </span>{" "}
-                <span className="col-start-2">{show.date}</span>
-                <span className="col-start-3">{show.hours}</span>
-              </li>
-            );
-          })}
-        </ul>
+        <div className="lg:col-span-2">
+          <InfoModal display={disp} />
+        </div>
+        <div className="hidden lg:block lg:col-start-3 lg:row-start-1 lg:row-span-2">
+          <OpeningHours display={disp} />
+        </div>
       </div>
     </>
   );
