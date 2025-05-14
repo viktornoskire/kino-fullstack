@@ -44,7 +44,7 @@ export default function BookingScreeningSelector({
     today.setHours(0, 0, 0, 0);
     const filtered = screeningsArray.filter((s) => s.date >= today);
     const sorted = filtered.sort((a, b) => a.date.getTime() - b.date.getTime());
-    return sorted.slice(0, 7);
+    return sorted.slice(0, 5);
   });
 
   const [selectedDate, setSelectedDate] = useState<Date>(

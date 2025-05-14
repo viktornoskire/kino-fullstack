@@ -1,4 +1,4 @@
-import BookingPageWrapper from "./BookingPageWrapper";
+import BookingPageWrapper from "./BookingManager";
 
 interface PageProps {
   params: { screeningId: string };
