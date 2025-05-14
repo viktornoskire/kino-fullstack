@@ -15,7 +15,7 @@ export default function MovieDetail({ movie }: MovieDetailProps) {
   const minutes = movie.durationMinutes % 60;
 
   return (
-    <div className="max-w-3xl my-10 mx-2">
+    <div className="w-full">
       <h1 className="text-3xl font-bold text-[color:var(--color-kino-white)] mb-2">
         {movie.title}
       </h1>
