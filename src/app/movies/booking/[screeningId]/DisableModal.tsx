@@ -7,11 +7,18 @@ type Props = {
 const DisableModal = ({ isOpen, onClose }: Props) => {
   if (!isOpen) return null;
 
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  }
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 backdrop-blur-sm"
       aria-modal="true"
       role="dialog"
+      onClick={handleBackdropClick}
     >
       <div className="rounded-lg border border-kino-grey bg-kino-darkgrey shadow-xl p-6 max-w-md w-full mx-4">
         <h2 className="text-xl font-semibold mb-2 text-center">Disabled Seat</h2>

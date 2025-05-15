@@ -8,6 +8,7 @@ import {
 } from "./SeatingIcons";
 import { Seat, SeatsByRow, CinemaSeatingProps } from "./types/Seatings.types";
 import Spinner from "@/components/Spinner";
+import HandicapSeatHandler from "./HandicapSeatHandler";
 
 interface UpdatedCinemaSeatingProps extends CinemaSeatingProps {
   screeningId: string;
@@ -109,6 +110,19 @@ const CinemaSeating: React.FC<UpdatedCinemaSeatingProps> = ({
                   const isDisabled =
                     seat.disabled || isDisabledSeat(seat.row, seat.seatNumber);
                   const isBooked = seat.isBooked;
+
+                  if (isDisabled) {
+                    return (
+                      <HandicapSeatHandler key={seat._id}>
+                        <button
+                          className="w-7 h-7 flex items-center justify-center rounded bg-[#5a5a5a] cursor-pointer"
+                          aria-label="Handikapp säte"
+                        >
+                          <DisabledSeatIcon />
+                        </button>
+                      </HandicapSeatHandler>
+                    );
+                  }
 
                   return (
                     <button
