@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     const existingReservations = await Reservation.find({
       screeningId,
       seats: { $in: seats },
-      status: { $ne: "canceleed" },
+      status: { $ne: "cancelled" },
     });
 
     if (existingReservations.length > 0) {

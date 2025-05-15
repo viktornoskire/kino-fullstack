@@ -25,6 +25,7 @@ export default function TicketSelector({
   onTotalTicketsChange,
   onFinalPriceChange,
 }: TicketSelectorProps) {
+  const isLoggedIn = false; //TEMPORARY SET TO FALSE UNTIL WE IMPLEMENTED LOGIN.
   const [ticketCounts, setTicketCounts] = useState<TicketCounts>({
     regular: 0,
     kids: 0,
@@ -60,8 +61,14 @@ export default function TicketSelector({
       ticketCount += count;
     });
 
-    const discountAmount = Math.round(newTotal * 0.1);
+    let discountAmount = 0;
+    if (isLoggedIn) {
+      discountAmount = Math.round(newTotal * 0.1)
+    }
+
     const newFinalPrice = newTotal - discountAmount;
+
+
     setTotalPrice(newTotal);
     setFinalPrice(newFinalPrice);
 
@@ -106,15 +113,27 @@ export default function TicketSelector({
             <span className="font-medium">Price:</span>
             <span className="font-medium">{totalPrice} kr</span>
           </div>
+
+          {isLoggedIn && (
+            <div className="flex justify-between">
+              <span className="font-medium">Discount (10%)</span>
+              <span className="font-medium">{totalPrice - finalPrice} kr</span>
+              </div>
+          )}
           <div className="flex justify-between">
-            <span className="font-medium">Discount (10%):</span>
-            <span className="font-medium">{totalPrice - finalPrice} kr</span>
+              <span className="font-medium">Discount (10%)</span>
+              <span className="font-medium">Not a member</span>
           </div>
+
           <hr className="my-2 border-t-[0.5px]" />
           <div className="flex justify-between">
             <span className="font-bold">Total:</span>
             <span className="font-bold text-lg">{finalPrice} kr</span>
           </div>
+          <div className="mt-2 text-sm text-kino-grey">
+            <span className="text-kino-darkred">Login </span><span>to recieve discount</span>
+          </div>
+          
         </div>
       </div>
     </div>
