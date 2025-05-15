@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import HandicapSeatHandler from "./HandicapSeatHandler";
 
 interface Seat {
   _id: string;
@@ -131,39 +132,34 @@ const CinemaSeating: React.FC = () => {
                 const isDisabled =
                   seat.disabled || isDisabledSeat(seat.row, seat.seatNumber);
 
+                if (isDisabled) {
+                  return (
+                    <HandicapSeatHandler key={seat._id}>
+                      <button
+                        className="w-7 h- flex items-center justify-center rounded cursor-pointer bg-[#5A5A5A]"
+                        aria-label="Disabled seat"
+                      >
+                        <DisabledSeatIcon />
+                      </button>
+                    </HandicapSeatHandler>
+                  );
+                }
+
+                const isSelected = selectedSeats.includes(seat._id);
+                const isSelectable = selectedSeats.length < 6 || isSelected; // justera om du har ett dynamiskt biljettantal
+
                 return (
                   <button
                     key={seat._id}
-                    onClick={() => toggleSeat(seat._id, isDisabled)}
-                    className={`
-                      w-7 h- flex items-center justify-center 
-                       rounded 
-                      ${
-                        isDisabled
-                          ? "cursor-not-allowed bg-[#5A5A5A]"
-                          : "cursor-pointer"
-                      }
-                      ${
-                        selectedSeats.includes(seat._id)
-                          ? ""
-                          : isDisabled
-                          ? "bg-black-700 text-white"
-                          : "bg-kino-darkgrey text-white hover:bg-[#1a1a1a]"
-                      }
-                    `}
-                    aria-label={
-                      isDisabled
-                        ? "Handikappad plats"
-                        : `Säte ${seat.seatNumber}`
-                    }
+                    onClick={() => toggleSeat(seat._id, false)}
+                    className={`w-7 h- flex items-center justify-center rounded ${
+                      !isSelectable
+                        ? "cursor-not-allowed opacity-50"
+                        : "cursor-pointer"
+                    } bg-kino-darkgrey text-white hover:bg-[#1a1a1a]`}
+                    aria-label={`Säte ${seat.seatNumber}`}
                   >
-                    {isDisabled ? (
-                      <DisabledSeatIcon />
-                    ) : selectedSeats.includes(seat._id) ? (
-                      <SelectedSeatIcon />
-                    ) : (
-                      <AvailableSeatIcon />
-                    )}
+                    {isSelected ? <SelectedSeatIcon /> : <AvailableSeatIcon />}
                   </button>
                 );
               })}
