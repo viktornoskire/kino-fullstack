@@ -1,8 +1,10 @@
 "use client";
 import Button from "@/components/Button";
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react"; 
 
 const PostReview = ({ movie }: { movie: { slug: string } }) => {
+  const { status } = useSession();
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState("");
   const [userName, setUserName] = useState("");
@@ -66,6 +68,15 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
       });
     }
   };
+   if (status === "unauthenticated") {
+    return (
+      <div className="text-center p-4 bg-kino-darkgrey rounded-lg my-4 mx-2 max-w-xs">
+        <p className="text-kino-white mb-2 font-bold">Log in to post a review!</p>
+        <p className="text-kino-white mb-2">And enjoy all our exclusive member benefits!</p>
+        
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-center items-center">
