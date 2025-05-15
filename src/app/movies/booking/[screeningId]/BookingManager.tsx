@@ -80,7 +80,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
     setIsBooking(true);
 
     try {
-      const response = await fetch("/api/movies/booking/reservation", {
+      const response = await fetch(`/api/movies/booking/${screeningId}/reservation`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -88,7 +88,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
         body: JSON.stringify({
           screeningId: selectedScreening?._id,
           seats: selectedSeats,
-          usersId: "temp-user-id", //THIS SHOULD BE SWITCHED LATER TO THE LOGGED IN USER !!
+          userId: "temp-user-id", //THIS SHOULD BE SWITCHED LATER TO THE LOGGED IN USER !!
           totalPrice: finalPrice,
         }),
       });

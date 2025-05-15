@@ -39,7 +39,7 @@ const ReservationSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection: "reservations" }
 );
 
 export const Reservation =
