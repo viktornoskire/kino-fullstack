@@ -71,6 +71,7 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
       <h2 className="mb-2 text-center">Submit a review</h2>
       <textarea
         placeholder="Write review"
+        aria-label="Write your review here"
         className="border border-kino-red rounded-lg text-xs p-2 mb-2 w-full h-24 resize-none"
         value={comment}
         onChange={(e) => setComment(e.target.value)}
@@ -78,9 +79,11 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
       <div className="border border-kino-red rounded-lg p-2 mb-2">
         <label htmlFor="rating" className="text-sm text-kino-grey"></label>
         <select
+          id="rating"
           className="bg-kino-darkgrey text-kino-white text-xs"
           value={rating}
           onChange={(e) => setRating(e.target.value)}
+          aria-describedby="rating-help"
         >
           <option value="">Choose rating</option>
           <option value="1">1</option>
@@ -89,10 +92,14 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
           <option value="4">4</option>
           <option value="5">5</option>
         </select>
+        <p id="rating-help" className="sr-only">
+          Select a rating from 1 to 5
+        </p>
       </div>
       <input
         type="text"
         placeholder="Name"
+        aria-label="Enter your name"
         className="border border-kino-red text-xs rounded-lg p-2 mb-2"
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
@@ -104,6 +111,7 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
               ? "text-kino-darkgreen"
               : "text-kino-red"
           }`}
+          role="alert"
         >
           {feedback.message}
         </div>
@@ -111,6 +119,7 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
 
       <Button
         type="submit"
+        aria-label="Submit your review"
         className="bg-kino-red text-xs hover:bg-kino-darkred text-kino-white py-2 px-4"
         onClick={handleClick}
       >
