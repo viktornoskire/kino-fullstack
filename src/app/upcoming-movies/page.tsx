@@ -1,3 +1,9 @@
-export default function About() {
-  return <h1>Upcoming</h1>;
+import UpcomingMoviesList from "@/components/upcoming-movies/UpcomingMoviesList"
+
+export default function CurrentMoviesPage() {
+  return (
+    <main>
+      <UpcomingMoviesList />
+    </main>
+  )
 }
