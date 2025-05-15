@@ -9,6 +9,7 @@ import Spinner from "@/components/Spinner";
 import Button from "@/components/Button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import BookingConfirmationModal from "./BookingConfirmationModal";
 
 interface Screening {
   _id: string;
@@ -42,6 +43,8 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   const [finalPrice, setFinalPrice] = useState<number>(0);
   const [isBooking, setIsBooking] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [reservationId, setReservationId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,30 +83,43 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
     setIsBooking(true);
 
     try {
-      const response = await fetch(`/api/movies/booking/${screeningId}/reservation`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          screeningId: selectedScreening?._id,
-          seats: selectedSeats,
-          userId: "temp-user-id", //THIS SHOULD BE SWITCHED LATER TO THE LOGGED IN USER !!
-          totalPrice: finalPrice,
-        }),
-      });
+      const response = await fetch(
+        `/api/movies/booking/${screeningId}/reservation`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            screeningId: selectedScreening?._id,
+            seats: selectedSeats,
+            userId: "temp-user-id", //THIS SHOULD BE SWITCHED LATER TO THE LOGGED IN USER !!
+            totalPrice: finalPrice,
+          }),
+        }
+      );
       if (!response.ok) {
         throw new Error("Booking failed");
       }
 
       const data = await response.json();
-      router.push(`/booking/confirmation/${data.reservationId}`);
+      setReservationId(data.reservationId);
+      setIsModalOpen(true);
     } catch (error) {
       console.log("Booking error", error);
       alert("Error while booking");
     } finally {
       setIsBooking(false);
     }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleContinue = () => {
+    //Implement code here to go to the next steps in the payment modal.
+    alert("Continue to payment...(WILL BE IMPLEMENTED LATER)");
   };
 
   if (!selectedScreening || !movie) {
@@ -170,6 +186,18 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
           </Button>
         </Link>
       </div>
+      {selectedScreening && (
+        <BookingConfirmationModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          reservationId={reservationId}
+          movieTitle={movie.title}
+          screeningTime={selectedScreening.screeningTime}
+          seats={selectedSeats}
+          totalPrice={finalPrice}
+          onContinue={handleContinue}
+        />
+      )}
     </main>
   );
 }
