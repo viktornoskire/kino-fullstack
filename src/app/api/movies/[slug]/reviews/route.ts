@@ -18,7 +18,7 @@ export async function GET(
     return NextResponse.json({ error: "Movie not found" }, { status: 404 });
   }
 
-  const reviews = await review.find({ movieId: foundMovie._id }).lean();
+  const reviews = await review.find({ movieId: foundMovie._id }).sort({ createdAt: -1 }).lean();
 
   return NextResponse.json({ reviews }, { status: 200 });
 }
