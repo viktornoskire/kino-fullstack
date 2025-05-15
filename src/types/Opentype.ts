@@ -1,10 +1,11 @@
 export type openType = {
   _id: string;
-  monday: Date;
-  tuesday: Date;
-  wensday: Date;
-  thursday: Date;
-  friday: Date;
-  saturday: Date;
-  sunday: Date;
+  day: string;
+  hours: string;
+};
+
+export type displayOpen = {
+  day?: string;
+  date: string;
+  hours?: string;
 };

@@ -19,7 +19,8 @@ const Display: FC<displayMovie> = ({ display, children }) => {
                     height={450}
                     className="w-auto h-auto mb-2 rounded-2xl"
                   />
-                  <p className="text-xl mb-4">{movie.title}</p>
+                  <p className="text-xl mb-1">{movie.title}</p>
+                  <p className="text-[color:var(--color-kino-grey)]">{movie.genre.slice(0, 2).join(", ")}</p>
                 </a>
               </li>
             );

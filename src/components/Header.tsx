@@ -1,18 +1,28 @@
 'use client';
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import Button from './Button';
 import Register from './Register';
+import Login from './Login';
+import { SISO_Desktop, SISO_Mobile } from './SignIn_SignOut';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showModal, setRegister] = useState<string>('hidden');
+  const [showModal, setModal] = useState<string>('hidden');
   const pathname = usePathname();
 
   const isActive = (path: string) => {
     return pathname === path;
+  };
+
+  const resetForm = (event: FormEvent<HTMLFormElement>) => {
+    const userForm = event.target as HTMLFormElement;
+    userForm.reset();
+  };
+
+  const toggleModal = () => {
+    showModal === 'hidden' ? setModal('') : setModal('hidden');
   };
 
   return (
@@ -53,14 +63,13 @@ const Header = () => {
             </ul>
           </div>
 
-          <Button
-            type='button'
-            onClick={() => {
-              showModal === 'hidden' ? setRegister('') : setRegister('hidden');
-            }}
-            className='hidden text-xs sm:hidden md:hidden lg:inline-block ml-auto border border-kino-white hover:kino-red'>
-            Sign In
-          </Button>
+          {
+            <SISO_Desktop
+              onToggleModal={() => {
+                showModal === 'hidden' ? setModal('') : setModal('hidden');
+              }}
+            />
+          }
           <button
             onClick={() => setIsOpen(!isOpen)}
             className='lg:hidden bg-transparent border-transparent text-color-kino-white hover:bg-kino-red p-2 rounded-md ml-auto'>
@@ -106,24 +115,19 @@ const Header = () => {
               </li>
             ))}
             <li className='mt-2'>
-              <Button
-                type='button'
-                onClick={() => {
-                  showModal === 'hidden' ? setRegister('') : setRegister('hidden');
-                }}
-                className='border border-kino-white'>
-                Sign In
-              </Button>
+              {
+                <SISO_Mobile
+                  onToggleModal={() => {
+                    showModal === 'hidden' ? setModal('') : setModal('hidden');
+                  }}
+                />
+              }
             </li>
           </ul>
         </div>
       </nav>
-      <Register
-        showModal={showModal}
-        onToggleRegister={() => {
-          showModal === 'hidden' ? setRegister('') : setRegister('hidden');
-        }}
-      />
+      {/* <Register showModal={showModal} onToggleModal={toggleModal} onResetForm={resetForm} /> */}
+      <Login showModal={showModal} onToggleModal={toggleModal} onResetForm={resetForm} />
     </header>
   );
 };

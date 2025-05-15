@@ -34,10 +34,10 @@ export default function MovieDetail({ movie }: MovieDetailProps) {
         <img
           src={movie.posterUrl}
           alt={movie.title}
-          className="rounded-4xl w-full md:w-1/2 object-cover"
+          className="rounded-4xl w-full md:w-1/2 max-h-[550px]"
         />
 
-        <div className="bg-[color:var(--color-kino-darkgrey)] rounded-4xl p-4 text-xl leading-relaxed md:w-1/2 text-[color:var(--color-kino-white)]">
+        <div className="bg-[color:var(--color-kino-darkgrey)] rounded-4xl p-4 text-lg leading-relaxed md:w-1/2 text-[color:var(--color-kino-white)] max-h-[550px]">
           {movie.description}
         </div>
       </div>
