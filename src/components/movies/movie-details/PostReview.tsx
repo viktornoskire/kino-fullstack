@@ -56,7 +56,8 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
       setFeedback({ message: "Thank's for your review!", type: "success" });
       setComment("");
       setRating("");
-      setUserName("");
+      setUserName("");      
+      
     } catch (err) {
       console.error("Submission error:", err);
       setFeedback({
@@ -69,7 +70,7 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
   return (
     <div className="flex justify-center items-center">
     <div className="grid grid-cols-2 grid-rows-5 gap-4 p-4 bg-kino-darkgrey rounded-lg my-4 mx-2 max-w-xs">
-      <h2 className="col-span-2 text-center">Submit a review</h2>
+      <h2 className="font-bold col-span-2 text-center">Submit a review</h2>
       <textarea
         placeholder="Write review"
         aria-label="Write your review here"
