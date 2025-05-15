@@ -67,15 +67,17 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
   };
 
   return (
-    <div className="bg-kino-darkgrey p-4 rounded-lg my-4 mx-2 max-w-xs">
-      <h2 className="mb-2 text-center">Submit a review</h2>
+    <div className="flex justify-center items-center">
+    <div className="grid grid-cols-2 grid-rows-5 gap-4 p-4 bg-kino-darkgrey rounded-lg my-4 mx-2 max-w-xs">
+      <h2 className="col-span-2 text-center">Submit a review</h2>
       <textarea
         placeholder="Write review"
         aria-label="Write your review here"
-        className="border border-kino-red rounded-lg text-xs p-2 mb-2 w-full h-24 resize-none"
+        className="col-span-2 row-span-3 border border-kino-red rounded-lg text-xs p-2 mb-2 w-full resize-none"
         value={comment}
         onChange={(e) => setComment(e.target.value)}
       />
+      
       <div className="border border-kino-red rounded-lg p-2 mb-2">
         <label htmlFor="rating" className="text-sm text-kino-grey"></label>
         <select
@@ -116,15 +118,15 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
           {feedback.message}
         </div>
       )}
-
       <Button
         type="submit"
         aria-label="Submit your review"
-        className="bg-kino-red text-xs hover:bg-kino-darkred text-kino-white py-2 px-4"
+        className="row-start-6 col-start-2 bg-kino-red text-xs hover:bg-kino-darkred text-kino-white py-2 px-4"
         onClick={handleClick}
       >
         Submit
       </Button>
+    </div>
     </div>
   );
 };
