@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import { movie } from "@/models/movies";
 import { review } from "@/models/reviews";
+import { authOptions } from '@/lib/auth';  
+import { getServerSession } from 'next-auth';
 
 export async function GET(
   request: Request,
@@ -25,6 +27,14 @@ export async function GET(
 
 export async function POST(request: Request) {
   await connectDB();
+
+   const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return new Response(JSON.stringify({ error: "Not signed in" }), {
+      status: 401,
+    });
+  }
 
   try {
     const body = await request.json();
