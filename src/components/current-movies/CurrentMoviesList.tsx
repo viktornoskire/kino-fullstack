@@ -1,7 +1,7 @@
 "use client"
 import { useEffect, useState } from "react"
 import { movieType } from "@/types/Movietypes"
-import Display from "./RenderCurrentMovies"
+import RenderCurrentMovies from "./RenderCurrentMovies"
 
 export default function CurrentMoviesList() {
   const [movies, setMovies] = useState<movieType[]>([])
@@ -26,5 +26,9 @@ export default function CurrentMoviesList() {
   if (error) return <p>{error}</p>
   if (movies.length === 0) return <p>Loading...</p>
 
-  return <Display display={movies}> Now showing on Kino cinema </Display>
+  return (
+    <div>
+      <RenderCurrentMovies movies={movies} title="Now showing on Kino cinema" />;
+    </div>
+  );
 }
