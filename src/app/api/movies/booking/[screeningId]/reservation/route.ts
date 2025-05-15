@@ -35,17 +35,21 @@ export async function POST(request: Request) {
       );
     }
 
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
     const reservation = await Reservation.create({
       screeningId,
       seats,
       userId,
       status: "reserved",
       totalPrice,
+      expiresAt,
     });
 
     return NextResponse.json({
       success: true,
       reservationId: reservation._id,
+      expiryTime: expiresAt.toISOString(),
     });
   } catch (error) {
     console.error("Error creating reservation:", error);

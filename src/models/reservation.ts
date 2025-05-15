@@ -9,6 +9,7 @@ export interface ReservationType extends Document {
   totalPrice: number;
   createdAt: Date;
   updatedAt: Date;
+  expiresAt: Date;
 }
 
 const ReservationSchema = new Schema(
@@ -38,9 +39,23 @@ const ReservationSchema = new Schema(
       type: Number,
       required: true,
     },
+
+    expiresAt: {
+      type: Date,
+      default: function() {
+        return new Date(Date.now() + 10 * 60 * 1000) // CAN BE CHANGED, 10MIN RIGHT NOW.
+      },
+      required: function(this: any) {
+        return this.status === "reserved"
+      }
+    }
   },
   { timestamps: true, collection: "reservations" }
 );
+
+ReservationSchema.index({ expiresAt: 1}, {expireAfterSeconds: 0})
+
+ReservationSchema.index({ screeningId: 1, seats: 1, status: 1})
 
 export const Reservation =
   mongoose.models.Reservation ||
