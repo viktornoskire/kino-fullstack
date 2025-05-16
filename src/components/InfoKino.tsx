@@ -1,18 +1,19 @@
-"use client";
-import { openType } from "@/types/Opentype";
-import { useEffect, useMemo, useState } from "react";
-import OpeningHours from "./OpeningHours";
-import InfoModal from "./InfoModal";
+'use client';
+import { openType } from '@/types/Opentype';
+import { useEffect, useMemo, useState } from 'react';
+import OpeningHours from './OpeningHours';
+import InfoModal from './InfoModal';
+import Spinner from './Spinner';
 
 const InfoKino = () => {
   const weekday = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
   ];
 
   const [open, setOpen] = useState<openType[]>([]);
@@ -21,7 +22,7 @@ const InfoKino = () => {
   useEffect(() => {
     async function loadHours() {
       try {
-        const response = await fetch("/api/hours");
+        const response = await fetch('/api/hours');
         const data = await response.json();
         setOpen(data);
       } catch (err) {
@@ -30,6 +31,11 @@ const InfoKino = () => {
     }
     loadHours();
   }, []);
+
+  if (open.length === 0) return;
+  <div className="text-center">
+    <Spinner />
+  </div>;
 
   type dates = {
     weekday: string;
@@ -45,9 +51,9 @@ const InfoKino = () => {
     const getDay = weekday[getDate.getDay()];
     dateDays.push({
       weekday: getDay,
-      date: getDate.toLocaleDateString("en-GB", {
-        day: "numeric",
-        month: "numeric",
+      date: getDate.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'numeric',
       }),
     });
   }
