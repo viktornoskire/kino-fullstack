@@ -1,7 +1,8 @@
-"use client";
-import { movieType } from "@/types/Movietypes";
-import { useState, useEffect } from "react";
-import Display from "./RenderMovies";
+'use client';
+import { movieType } from '@/types/Movietypes';
+import { useState, useEffect } from 'react';
+import Display from './RenderMovies';
+import Spinner from './Spinner';
 
 const Movies = () => {
   const [movies, setMovies] = useState<movieType[]>([]);
@@ -9,7 +10,7 @@ const Movies = () => {
   useEffect(() => {
     async function loadMovies() {
       try {
-        const response = await fetch("/api/movies?tags=nowShowing");
+        const response = await fetch('/api/movies?tags=nowShowing');
         const dataMovies: movieType[] = await response.json();
         setMovies(dataMovies);
       } catch (err) {
@@ -32,6 +33,13 @@ const Movies = () => {
   }
 
   const display = movies.slice(0, 5);
+
+  if (movies.length === 0)
+    return (
+      <div className="text-center">
+        <Spinner />
+      </div>
+    );
 
   return (
     <>

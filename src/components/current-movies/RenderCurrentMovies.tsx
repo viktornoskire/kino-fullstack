@@ -1,14 +1,21 @@
 import { FC } from "react";
-import { displayMovie } from "@/types/Movietypes";
+import { movieType } from "@/types/Movietypes";
 import Image from "next/image";
 
-const Display: FC<displayMovie> = ({ display, children }) => {
+interface RenderCurrentMoviesProps {
+  movies: movieType[];
+  title?: string;
+}
+
+const RenderCurrentMovies: FC<RenderCurrentMoviesProps> = ({ movies, title }) => {
   return (
     <>
       <div>
-        <h2 className="text-3xl font-bold text-center p-4">{children}</h2>
+        <h2 className="text-2xl sm:text-2xl md:text-3xl font-bold text-center pt-4 pb-4 sm:pb-4">
+          {title}
+        </h2>
         <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 justify-center mx-2">
-          {display.map((movie, index) => {
+          {movies.map((movie, index) => {
             return (
               <li key={index} className="p-2 max-w-[240px]">
                 <a href={`/movies/${movie.slug}`}>
@@ -20,7 +27,7 @@ const Display: FC<displayMovie> = ({ display, children }) => {
                     className="w-auto h-auto mb-2 rounded-2xl"
                   />
                   <p className="text-xl mb-1">{movie.title}</p>
-                  <p className="text-[color:var(--color-kino-grey)]">{movie.genre.slice(0, 2).join(", ")}</p>
+                  <p className="text-kino-grey">{movie.genre.slice(0, 2).join(", ")}</p>
                 </a>
               </li>
             );
@@ -30,4 +37,4 @@ const Display: FC<displayMovie> = ({ display, children }) => {
     </>
   );
 };
-export default Display;
+export default RenderCurrentMovies;
