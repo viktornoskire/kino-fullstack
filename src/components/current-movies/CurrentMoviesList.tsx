@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react"
 import { movieType } from "@/types/Movietypes"
 import RenderCurrentMovies from "./RenderCurrentMovies"
+import Spinner from "../Spinner"
 
 export default function CurrentMoviesList() {
   const [movies, setMovies] = useState<movieType[]>([])
@@ -24,7 +25,11 @@ export default function CurrentMoviesList() {
   }, [])
 
   if (error) return <p>{error}</p>
-  if (movies.length === 0) return <p>Loading...</p>
+  if (movies.length === 0) return (
+    <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <Spinner />
+    </div>
+  );
 
   return (
     <div>
