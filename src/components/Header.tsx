@@ -9,7 +9,8 @@ import { SISO_Desktop, SISO_Mobile } from './SignIn_SignOut';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showModal, setModal] = useState<string>('hidden');
+  const [showLoginModal, setLoginModal] = useState<string>('hidden');
+  const [showRegisterModal, setRegisterModal] = useState<string>('hidden');
   const pathname = usePathname();
 
   const isActive = (path: string) => {
@@ -21,8 +22,12 @@ const Header = () => {
     userForm.reset();
   };
 
-  const toggleModal = () => {
-    showModal === 'hidden' ? setModal('') : setModal('hidden');
+  const toggleModal = (modal: string) => {
+    if (modal === 'login') {
+      showLoginModal === 'hidden' ? setLoginModal('') : setLoginModal('hidden');
+    } else {
+      showRegisterModal === 'hidden' ? setRegisterModal('') : setRegisterModal('hidden');
+    }
   };
 
   return (
@@ -63,13 +68,7 @@ const Header = () => {
             </ul>
           </div>
 
-          {
-            <SISO_Desktop
-              onToggleModal={() => {
-                showModal === 'hidden' ? setModal('') : setModal('hidden');
-              }}
-            />
-          }
+          {<SISO_Desktop onToggleModal={toggleModal} />}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className='lg:hidden bg-transparent border-transparent text-color-kino-white hover:bg-kino-red p-2 rounded-md ml-auto'>
@@ -114,20 +113,12 @@ const Header = () => {
                 </Link>
               </li>
             ))}
-            <li className='mt-2'>
-              {
-                <SISO_Mobile
-                  onToggleModal={() => {
-                    showModal === 'hidden' ? setModal('') : setModal('hidden');
-                  }}
-                />
-              }
-            </li>
+            <li className='mt-2'>{<SISO_Mobile onToggleModal={toggleModal} />}</li>
           </ul>
         </div>
       </nav>
-      {/* <Register showModal={showModal} onToggleModal={toggleModal} onResetForm={resetForm} /> */}
-      <Login showModal={showModal} onToggleModal={toggleModal} onResetForm={resetForm} />
+      <Register showRegisterModal={showRegisterModal} onToggleModal={toggleModal} onResetForm={resetForm} />
+      <Login showLoginModal={showLoginModal} onToggleModal={toggleModal} onResetForm={resetForm} />
     </header>
   );
 };
