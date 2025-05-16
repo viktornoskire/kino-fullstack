@@ -30,11 +30,11 @@ const InfoMeber = () => {
         <div>
           <h2 className="text-2xl">Userinfo</h2>
           <p>Name: {session?.user?.name}</p>
-          <p>E-mail: {session?.user?.email}.</p>
+          <p>E-mail: {session?.user?.email}</p>
         </div>
 
         <div>
-          <h2>Update userinfro</h2>
+          <h2>Update userinfo</h2>
           <label>Name:</label>
           <input
             type="text"
