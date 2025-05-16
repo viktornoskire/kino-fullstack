@@ -5,7 +5,7 @@ export interface ReservationType extends Document {
   screeningId: mongoose.Types.ObjectId;
   seats: mongoose.Types.ObjectId[];
   userId: string;
-  status: "reserved" | "confirmed" | "cancelled";
+  status: "reserved" | "confirmed" | "cancelled"; //MIGHT BE UNNECESSARY
   totalPrice: number;
   createdAt: Date;
   updatedAt: Date;
@@ -32,7 +32,7 @@ const ReservationSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["reserved", "confirmed", "cancelled"],
+      enum: ["reserved", "confirmed", "cancelled"], // Might be unnecessary
       default: "reserved",
     },
     totalPrice: {
@@ -42,20 +42,20 @@ const ReservationSchema = new Schema(
 
     expiresAt: {
       type: Date,
-      default: function() {
-        return new Date(Date.now() + 10 * 60 * 1000) // CAN BE CHANGED, 10MIN RIGHT NOW.
+      default: function () {
+        return new Date(Date.now() + 10 * 60 * 1000); // CAN BE CHANGED, 10MIN RIGHT NOW.
       },
-      required: function(this: any) {
-        return this.status === "reserved"
-      }
-    }
+      required: function (this: ReservationType) {
+        return this.status === "reserved";
+      },
+    },
   },
   { timestamps: true, collection: "reservations" }
 );
 
-ReservationSchema.index({ expiresAt: 1}, {expireAfterSeconds: 0})
+ReservationSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
-ReservationSchema.index({ screeningId: 1, seats: 1, status: 1})
+ReservationSchema.index({ screeningId: 1, seats: 1, status: 1 });
 
 export const Reservation =
   mongoose.models.Reservation ||

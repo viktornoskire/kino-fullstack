@@ -8,8 +8,9 @@ import CinemaSeating from "./Seatings";
 import Spinner from "@/components/Spinner";
 import Button from "@/components/Button";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import BookingConfirmationModal from "./BookingConfirmationModal";
+import { Seat } from "./types/Seatings.types";
 
 interface Screening {
   _id: string;
@@ -33,7 +34,7 @@ interface BookingManagerProps {
 }
 
 export default function BookingManager({ screeningId }: BookingManagerProps) {
-  const router = useRouter();
+  // const router = useRouter();
   const [selectedScreening, setSelectedScreening] = useState<Screening | null>(
     null
   );
@@ -45,6 +46,9 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
   const [isBooking, setIsBooking] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [reservationId, setReservationId] = useState<string | null>(null);
+  const [seatDetails, setSeatDetails] = useState<
+    Map<string, { row: number; seatNumber: number }>
+  >(new Map());
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,11 +72,46 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
     fetchData();
   }, [screeningId]);
 
+  useEffect(() => {
+    const fetchSeatDetails = async () => {
+      if (!selectedScreening || selectedSeats.length === 0) return;
+
+      try {
+        const response = await fetch(`/api/seats/${selectedScreening._id}`);
+
+        if (!response.ok) {
+          throw new Error("Could not fetch seat details");
+        }
+        const data = await response.json();
+
+        const seatDetailsMap = new Map();
+        data.forEach((seat: Seat) => {
+          seatDetailsMap.set(seat._id, {
+            row: seat.row,
+            seatNumber: seat.seatNumber,
+          });
+        });
+        setSeatDetails(seatDetailsMap);
+      } catch (error) {
+        console.error("error fetching seat", error);
+      }
+    };
+
+    fetchSeatDetails();
+  }, [selectedScreening, selectedSeats]);
+
   const handleSelectedSeatsChange = (seats: string[]) => {
     setSelectedSeats(seats);
   };
   const handleFinalPriceChange = (price: number) => {
     setFinalPrice(price);
+  };
+
+  const formatSeatLabels = (seatIds: string[]) => {
+    return seatIds.map((id) => {
+      const details = seatDetails.get(id);
+      return details ? `Row ${details.row}, Seat ${details.seatNumber}` : id;
+    });
   };
 
   const handleBooking = async () => {
@@ -193,7 +232,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
           reservationId={reservationId}
           movieTitle={movie.title}
           screeningTime={selectedScreening.screeningTime}
-          seats={selectedSeats}
+          seats={formatSeatLabels(selectedSeats)}
           totalPrice={finalPrice}
           onContinue={handleContinue}
         />
