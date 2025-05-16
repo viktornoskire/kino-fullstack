@@ -16,7 +16,7 @@ const SISO_Desktop: FC<Props> = ({ onToggleModal }) => {
         onClick={() => {
           signOut({ redirect: false });
         }}
-        className='hidden text-xs sm:hidden md:hidden lg:inline-block ml-auto border border-kino-white hover:kino-red'>
+        className='hidden text-sm leading-none sm:hidden md:hidden lg:inline-block ml-auto border border-kino-white hover:kino-red'>
         Sign Out
       </Button>
     );
@@ -27,7 +27,7 @@ const SISO_Desktop: FC<Props> = ({ onToggleModal }) => {
         onClick={() => {
           onToggleModal('login');
         }}
-        className='hidden text-xs sm:hidden md:hidden lg:inline-block ml-auto border border-kino-white hover:kino-red'>
+        className='hidden text-sm leading-none sm:hidden md:hidden lg:inline-block ml-auto border border-kino-white hover:kino-red'>
         Sign In
       </Button>
     );
@@ -55,7 +55,7 @@ const SISO_Mobile: FC<Props> = ({ onToggleModal }) => {
         onClick={() => {
           onToggleModal('login');
         }}
-        className='border border-kino-white'>
+        className='className="w-fit text-sm px-4 py-1 border border-kino-white hover:bg-kino-red transition rounded-full'>
         Sign In
       </Button>
     );
