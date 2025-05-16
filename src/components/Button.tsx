@@ -19,14 +19,15 @@ const Button: FC<ExtendedButtonType> = ({
   disabled = false,
 }) => {
   const baseClasses =
-    "rounded-3xl text-xl font-bold pt-2 pb-2 pl-12 pr-12 text-[color:var(--color-kino-white)] cursor-pointer transition-colors duration-200";
+    "rounded-3xl font-bold pt-2 pb-2 px-6 text-kino-white cursor-pointer transition-colors duration-200";
 
   const variantClasses =
     variant === "primary"
-      ? "bg-[color:var(--color-kino-darkred)] text-[color:var(--color-kino-white)] border border-[color:var(--color-kino-darkred)] hover:bg-[color:var(--color-kino-red)] hover:border-[color:var(--color-kino-red)]"
+      ? "bg-kino-darkred text-kino-white border border-kino-darkred hover:bg-kino-red hover:border-kino-red"
       : variant === "secondary"
-      ? "bg-transparent text-[color:var(--color-kino-darkred)] border border-[color:var(--color-kino-darkred)] hover:bg-[color:var(--color-kino-red)] hover:text-[color:var(--color-kino-white)] hover:border-[color:var(--color-kino-red)]"
-      : "bg-transparent text-[color:var(--color-kino-white)] hover:opacity-80";
+        ? "bg-transparent text-kino-darkred border border-kino-darkred hover:bg-kino-red hover:text-kino-white hover:border-kino-red"
+        : "bg-transparent text-kino-white hover:opacity-80";
+
 
   return (
     <button

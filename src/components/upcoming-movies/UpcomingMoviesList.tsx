@@ -26,5 +26,9 @@ export default function CurrentMoviesList() {
   if (error) return <p>{error}</p>
   if (movies.length === 0) return <p>Loading...</p>
 
-  return <RenderUpcomingMovies movies={movies} title="All upcoming movies" />;
+  return (
+    <div>
+        <RenderUpcomingMovies movies={movies} title="All upcoming movies" />;
+    </div>
+  );
 }

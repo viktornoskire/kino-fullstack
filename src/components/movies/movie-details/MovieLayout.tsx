@@ -1,11 +1,10 @@
 import MovieDetail from "./MovieDetail";
 import ScreeningSelector from "./ScreeningSelector";
-import ShowReviews from '@/components/movies/movie-details/ShowReviews';
+import ShowReviews from "@/components/movies/movie-details/ShowReviews";
 
 export default function MovieLayout({ movie, screenings }: any) {
   return (
     <div className="max-w-[1280px] mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-24 gap-6">
-
       {/* Movie info */}
       <div className="col-span-1 md:col-start-1 md:col-end-15">
         <MovieDetail movie={movie} />

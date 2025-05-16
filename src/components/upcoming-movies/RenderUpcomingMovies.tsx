@@ -16,7 +16,9 @@ const RenderUpcomingMovies: FC<RenderUpcomingMoviesProps> = ({ movies, title }) 
 
   return (
     <div>
-      <h2 className="text-3xl font-bold text-center p-4">{title || "Upcoming Movies"}</h2>
+      <h2 className="text-2xl sm:text-2xl md:text-3xl font-bold text-center pt-4 pb-4 sm:pb-4">
+        {title}
+      </h2>
       <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 justify-center mx-2">
         {sortedMovies.map((movie, index) => (
           <li key={index} className="p-2 max-w-[240px]">
@@ -29,7 +31,7 @@ const RenderUpcomingMovies: FC<RenderUpcomingMoviesProps> = ({ movies, title }) 
                 className="w-auto h-auto mb-2 rounded-2xl"
               />
               <p className="text-xl mb-1">{movie.title}</p>
-              <p className="text-[color:var(--color-kino-grey)] mb-1">{movie.genre.slice(0, 2).join(", ")}</p>
+              <p className="text-kino-grey mb-1">{movie.genre.slice(0, 2).join(", ")}</p>
               <p className="text-sm)]">
                 Premiere: {format(new Date(movie.premiereDate), "d MMM yyyy")}
               </p>
