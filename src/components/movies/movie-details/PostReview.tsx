@@ -126,7 +126,7 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
           <div
             className={`mb-2 text-xs text-center ${
               feedback.type === "success"
-                ? "text-kino-darkgreen"
+                ? "text-lime-500"
                 : "text-kino-red"
             }`}
             role="alert"
