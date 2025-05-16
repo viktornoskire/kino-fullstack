@@ -29,6 +29,17 @@ const Login: FC<Props> = ({ showLoginModal, onToggleModal, onResetForm }) => {
       <div
         className={`w-full max-w-100 flex items-center z-999 bg-neutral-800 top-1/4 bottom-1/4.5 text-white p-8 rounded-xl shadow-lg fixed flex-col right-2 left-2 ml-auto mr-auto overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 ${showLoginModal}`}>
         <h2 className='text-2xl font-bold mt-4 mb-6'>Login</h2>
+        <p>
+          Not a member?{' '}
+          <span
+            className='underline cursor-pointer'
+            onClick={() => {
+              onToggleModal('login');
+              onToggleModal('signin');
+            }}>
+            Register
+          </span>
+        </p>
         <form
           className=''
           onSubmit={async (event: FormEvent<HTMLFormElement>) => {
