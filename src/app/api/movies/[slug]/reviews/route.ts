@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import { movie } from "@/models/movies";
 import { review } from "@/models/reviews";
+import { authOptions } from '@/lib/auth';  
+import { getServerSession } from 'next-auth';
 
 export async function GET(
   request: Request,
@@ -18,7 +20,7 @@ export async function GET(
     return NextResponse.json({ error: "Movie not found" }, { status: 404 });
   }
 
-  const reviews = await review.find({ movieId: foundMovie._id }).lean();
+  const reviews = await review.find({ movieId: foundMovie._id }).sort({ createdAt: -1 }).lean();
 
   return NextResponse.json({ reviews }, { status: 200 });
 }
@@ -26,30 +28,59 @@ export async function GET(
 export async function POST(request: Request) {
   await connectDB();
 
-  const body = await request.json();
+   const session = await getServerSession(authOptions);
 
-  if (!body.movieId || !body.userName || !body.rating || !body.comment) {
-    return NextResponse.json(
-      { error: "Missing required fields" },
-      { status: 400 }
-    );
+  if (!session) {
+    return new Response(JSON.stringify({ error: "Not signed in" }), {
+      status: 401,
+    });
   }
 
   try {
+    const body = await request.json();
+
+    if (!body.slug) {
+      return NextResponse.json(
+        { error: "Movie slug is required" },
+        { status: 400 }
+      );
+    }
+
+    const foundMovie = await movie.findOne({ slug: body.slug });
+
+    if (!foundMovie) {
+      return NextResponse.json({ error: "Movie not found" }, { status: 404 });
+    }
+
+    if (!body.userName || !body.rating || !body.comment) {
+      return NextResponse.json(
+        { error: "All fields are required" },
+        { status: 400 }
+      );
+    }
+
+    const rating = Number(body.rating);
+    if (isNaN(rating) || rating < 1 || rating > 5) {
+      return NextResponse.json(
+        { error: "Rating must be between 1 and 5" },
+        { status: 400 }
+      );
+    }
+
     const newReview = await review.create({
-      movieId: body.movieId,
+      movieId: foundMovie._id,
       userName: body.userName,
-      rating: body.rating,
+      rating: rating,
       comment: body.comment,
     });
 
-    return NextResponse.json({
-      message: "Review added successfully",
-      review: newReview,
-    });
+    return NextResponse.json(
+      { message: "Review added successfully", review: newReview },
+      { status: 201 }
+    );
   } catch (error) {
     return NextResponse.json(
-      { error: (error as Error).message },
+      { error: "Internal server error", details: (error as Error).message },
       { status: 500 }
     );
   }

@@ -1,6 +1,7 @@
 import MovieDetail from "./MovieDetail";
 import ScreeningSelector from "./ScreeningSelector";
-import ShowReviews from "@/components/movies/movie-details/ShowReviews";
+import ShowReviews from '@/components/movies/movie-details/ShowReviews';
+import PostReview from "./PostReview";
 
 export default function MovieLayout({ movie, screenings }: any) {
   return (
@@ -12,7 +13,7 @@ export default function MovieLayout({ movie, screenings }: any) {
 
       {/* Create review – mobil: under MovieDetail */}
       <div className="col-span-1 md:col-start-16 md:col-end-25 md:row-start-1 md:row-end-2 md:mt-[87px]">
-        {/* Lägg in <CreateReview /> här */}
+        <PostReview movie={movie}/>
       </div>
 
       {/* ScreeningSelector */}

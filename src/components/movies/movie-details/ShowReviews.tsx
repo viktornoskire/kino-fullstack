@@ -80,7 +80,7 @@ const ShowReviews = ({ movie }: { movie: { slug: string } }) => {
           </button>
 
           <button
-          aria-label="next three reviews"
+            aria-label="next three reviews"
             onClick={() =>
               paginate(currentPage < totalPages ? currentPage + 1 : totalPages)
             }
