@@ -35,7 +35,7 @@ const Login: FC<Props> = ({ showLoginModal, onToggleModal, onResetForm }) => {
             className='underline cursor-pointer'
             onClick={() => {
               onToggleModal('login');
-              onToggleModal('signin');
+              onToggleModal('register');
             }}>
             Register
           </span>

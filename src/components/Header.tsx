@@ -23,7 +23,7 @@ const Header = () => {
   const toggleModal = (modal: string) => {
     if (modal === 'login') {
       showLoginModal === 'hidden' ? setLoginModal('') : setLoginModal('hidden');
-    } else {
+    } else if (modal === 'register') {
       showRegisterModal === 'hidden' ? setRegisterModal('') : setRegisterModal('hidden');
     }
   };

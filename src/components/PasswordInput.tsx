@@ -48,7 +48,7 @@ const PasswordInput: FC<Props> = ({ resetError }) => {
   };
 
   return (
-    <>
+    <div className='flex flex-col'>
       <input
         onChange={e => {
           setPassword(e.target.value);
@@ -64,8 +64,8 @@ const PasswordInput: FC<Props> = ({ resetError }) => {
           className={`h-full ${getStrengthColor(passwordStrength)}`}
           style={{ width: `${(passwordStrength / 5) * 100}%` }}></div>
       </div>
-      <small>{getStrengthText(passwordStrength)}</small>
-    </>
+      <small className='text-right'>{getStrengthText(passwordStrength)}</small>
+    </div>
   );
 };
 
