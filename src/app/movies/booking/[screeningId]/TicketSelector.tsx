@@ -63,18 +63,23 @@ export default function TicketSelector({
 
     let discountAmount = 0;
     if (isLoggedIn) {
-      discountAmount = Math.round(newTotal * 0.1)
+      discountAmount = Math.round(newTotal * 0.1);
     }
 
     const newFinalPrice = newTotal - discountAmount;
-
 
     setTotalPrice(newTotal);
     setFinalPrice(newFinalPrice);
 
     onTotalTicketsChange(ticketCount);
     onFinalPriceChange(newFinalPrice);
-  }, [ticketCounts, ticketPrices, onTotalTicketsChange, onFinalPriceChange]);
+  }, [
+    ticketCounts,
+    ticketPrices,
+    onTotalTicketsChange,
+    onFinalPriceChange,
+    isLoggedIn,
+  ]);
 
   return (
     <div className=" bg-white-900 rounded-xl max-w-sm mx auto ml-12">
@@ -118,11 +123,11 @@ export default function TicketSelector({
             <div className="flex justify-between">
               <span className="font-medium">Discount (10%)</span>
               <span className="font-medium">{totalPrice - finalPrice} kr</span>
-              </div>
+            </div>
           )}
           <div className="flex justify-between">
-              <span className="font-medium">Discount (10%)</span>
-              <span className="font-medium">Not a member</span>
+            <span className="font-medium">Discount (10%)</span>
+            <span className="font-medium">Not a member</span>
           </div>
 
           <hr className="my-2 border-t-[0.5px]" />
@@ -131,9 +136,9 @@ export default function TicketSelector({
             <span className="font-bold text-lg">{finalPrice} kr</span>
           </div>
           <div className="mt-2 text-sm text-kino-grey">
-            <span className="text-kino-darkred">Login </span><span>to recieve discount</span>
+            <span className="text-kino-darkred">Login </span>
+            <span>to recieve discount</span>
           </div>
-          
         </div>
       </div>
     </div>
