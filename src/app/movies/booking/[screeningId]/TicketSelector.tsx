@@ -1,32 +1,14 @@
 "use client";
 import { useState, useEffect, useMemo } from "react";
 import TicketButton from "./TicketButton";
-
-interface TicketPrices {
-  regular: number;
-  kids: number;
-  student: number;
-  senior: number;
-}
-
-interface TicketCounts {
-  regular: number;
-  kids: number;
-  student: number;
-  senior: number;
-}
-
-interface TicketSelectorProps {
-  onTotalTicketsChange: (totalTickets: number) => void;
-  onFinalPriceChange: (finalPrice: number) => void;
-}
+import { Tickets, TicketSelectorProps } from "./types/TicketSelector.types";
 
 export default function TicketSelector({
   onTotalTicketsChange,
   onFinalPriceChange,
 }: TicketSelectorProps) {
   const isLoggedIn = false; //TEMPORARY SET TO FALSE UNTIL WE IMPLEMENTED LOGIN.
-  const [ticketCounts, setTicketCounts] = useState<TicketCounts>({
+  const [ticketCounts, setTicketCounts] = useState<Tickets>({
     regular: 0,
     kids: 0,
     student: 0,
@@ -35,7 +17,7 @@ export default function TicketSelector({
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [finalPrice, setFinalPrice] = useState<number>(0);
 
-  const ticketPrices = useMemo<TicketPrices>(
+  const ticketPrices = useMemo<Tickets>(
     () => ({
       regular: 150,
       kids: 70,
@@ -57,7 +39,7 @@ export default function TicketSelector({
     let ticketCount = 0;
 
     Object.entries(ticketCounts).forEach(([type, count]) => {
-      newTotal += count * ticketPrices[type as keyof TicketPrices];
+      newTotal += count * ticketPrices[type as keyof Tickets];
       ticketCount += count;
     });
 

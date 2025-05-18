@@ -6,16 +6,12 @@ import {
   DisabledSeatIcon,
   TakenSeatIcon,
 } from "./SeatingIcons";
-import { Seat, SeatsByRow, CinemaSeatingProps } from "./types/Seatings.types";
+import { Seat, SeatsByRow, CinemaSeatingProps} from "./types/Seatings.types";
 import Spinner from "@/components/Spinner";
 import HandicapSeatHandler from "./HandicapSeatHandler";
 
-interface UpdatedCinemaSeatingProps extends CinemaSeatingProps {
-  screeningId: string;
-  onSelectedSeatsChange: (seats: string[]) => void;
-}
 
-const CinemaSeating: React.FC<UpdatedCinemaSeatingProps> = ({
+const CinemaSeating: React.FC<CinemaSeatingProps> = ({
   totalTickets,
   screeningId,
   onSelectedSeatsChange,

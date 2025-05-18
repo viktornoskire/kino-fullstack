@@ -8,33 +8,13 @@ import CinemaSeating from "./Seatings";
 import Spinner from "@/components/Spinner";
 import Button from "@/components/Button";
 import Link from "next/link";
-// import { useRouter } from "next/navigation";
 import BookingConfirmationModal from "./BookingConfirmationModal";
 import { Seat } from "./types/Seatings.types";
-
-interface Screening {
-  _id: string;
-  movieId: string;
-  screeningTime: string;
-  auditorium: string;
-  status: string;
-}
-
-interface Movie {
-  title: string;
-  posterUrl: string;
-  genre: string[];
-  durationMinutes: number;
-  ageLimit: number;
-  slug: string;
-}
-
-interface BookingManagerProps {
-  screeningId: string;
-}
+import { Movie, Screening } from "./types/Booking.types";
+import { BookingManagerProps } from "./types/Booking.types";
 
 export default function BookingManager({ screeningId }: BookingManagerProps) {
-  // const router = useRouter();
+  
   const [selectedScreening, setSelectedScreening] = useState<Screening | null>(
     null
   );
@@ -156,10 +136,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
     setIsModalOpen(false);
   };
 
-  const handleContinue = () => {
-    //Implement code here to go to the next steps in the payment modal.
-    alert("Continue to payment...(WILL BE IMPLEMENTED LATER)");
-  };
+
 
   if (!selectedScreening || !movie) {
     return (
@@ -234,7 +211,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
           screeningTime={selectedScreening.screeningTime}
           seats={formatSeatLabels(selectedSeats)}
           totalPrice={finalPrice}
-          onContinue={handleContinue}
+          
         />
       )}
     </main>

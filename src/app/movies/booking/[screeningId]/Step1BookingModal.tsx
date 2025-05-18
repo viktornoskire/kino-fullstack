@@ -1,12 +1,6 @@
 "use client";
+import { Step1BookingModalProps } from "./types/BookingModalTypes";
 
-interface Step1BookingModalProps {
-  movieTitle: string;
-  screeningTime: string;
-  seats: string[];
-  totalPrice: number;
-  formatScreeningTime: (time: string) => string;
-}
 
 export default function Step1BookingModal({
   movieTitle,

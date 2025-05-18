@@ -1,16 +1,5 @@
 "use client";
-
-interface UserInfo {
-  email: string;
-  phoneNumber: string;
-  firstName: string;
-  lastName: string;
-}
-
-interface Step2BookingModalProps {
-  userInfo: UserInfo;
-  onInputChange: (name: string, value: string) => void;
-}
+import { Step2BookingModalProps } from "./types/BookingModalTypes";
 
 export default function Step2BookingModal({
   userInfo,

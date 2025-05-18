@@ -1,4 +1,3 @@
-// models/Reservation.ts
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface ReservationType extends Document {

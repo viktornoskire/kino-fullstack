@@ -1,19 +1,7 @@
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
 import Image from "next/image";
-interface BookingDetailsProps {
-  movie: {
-    title: string;
-    posterUrl: string;
-    genre: string[];
-    durationMinutes: number;
-    ageLimit: number;
-  };
-  screening: {
-    screeningTime: string;
-    auditorium: string;
-  };
-}
+import { BookingDetailsProps } from "./types/Booking.types";
 
 export default function BookingDetails({
   movie,

@@ -1,10 +1,6 @@
+import { DisableModalProps } from "./types/Seatings.types";
 
-type Props = {
-  isOpen: boolean;
-  onClose: () => void;
-};
-
-const DisableModal = ({ isOpen, onClose }: Props) => {
+const DisableModal = ({ isOpen, onClose }: DisableModalProps) => {
   if (!isOpen) return null;
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

@@ -1,24 +1,5 @@
 "use client";
-
-interface UserInfo {
-  email: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-}
-
-type PaymentMethod = "swish" | "card" | "atCinema";
-
-interface Step4BookingModalProps {
-  bookingId: string | null;
-  movieTitle: string;
-  screeningTime: string;
-  seats: string[];
-  userInfo: UserInfo;
-  paymentMethod: PaymentMethod;
-  totalPrice: number;
-  formatScreeningTime: (timeString: string) => string;
-}
+import { PaymentMethod, Step4BookingModalProps } from "./types/BookingModalTypes";
 
 export default function Step4BookingModal({
   bookingId,

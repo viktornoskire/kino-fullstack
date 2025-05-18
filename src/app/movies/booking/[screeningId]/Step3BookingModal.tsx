@@ -1,13 +1,6 @@
 "use client";
 
-type PaymentMethod = "swish" | "card" | "atCinema";
-
-interface Step3BookingModalProps {
-  totalPrice: number;
-  selectedMethod: PaymentMethod;
-  onSelectMethod: (method: PaymentMethod) => void;
-  error: string | null;
-}
+import { Step3BookingModalProps, PaymentOptionProps } from "./types/BookingModalTypes";
 
 export default function Step3BookingModal({
   totalPrice,
@@ -64,13 +57,7 @@ export default function Step3BookingModal({
   );
 }
 
-interface PaymentOptionProps {
-  id: string;
-  title: string;
-  description: string;
-  isSelected: boolean;
-  onSelect: () => void;
-}
+
 
 function PaymentOption({
   id,

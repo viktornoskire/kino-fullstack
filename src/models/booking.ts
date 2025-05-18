@@ -1,6 +1,5 @@
 // models/booking.ts
 import mongoose, { Schema, Document } from "mongoose";
-
 export interface BookingType extends Document {
   screeningId: mongoose.Types.ObjectId;
   seatIds: mongoose.Types.ObjectId[];
@@ -70,26 +69,26 @@ const BookingSchema = new Schema(
     },
     customerInfo: {
       type: CustomerInfoSchema,
-      required: false, // We'll enforce this in pre-save middleware instead
+      required: false, 
     },
     paymentMethod: {
       type: String,
       enum: ["swish", "card", "atCinema"],
-      required: false, // We'll enforce this in pre-save middleware instead
+      required: false, 
     },
     paymentStatus: {
       type: String,
       enum: ["pending", "completed", "failed"],
       default: "pending",
-      required: false, // We'll enforce this in pre-save middleware instead
+      required: false, 
     },
   },
   { timestamps: true, collection: "bookings" }
 );
 
-// Pre-save middleware to enforce validation rules
+
 BookingSchema.pre("save", function (next) {
-  // Only enforce these rules for confirmed bookings
+ 
   if (this.status === "confirmed") {
     if (!this.customerInfo) {
       return next(
@@ -104,14 +103,13 @@ BookingSchema.pre("save", function (next) {
     }
 
     if (!this.paymentStatus) {
-      this.paymentStatus = "pending"; // Default value
+      this.paymentStatus = "pending"; 
     }
   }
 
   next();
 });
 
-// Create indexes
 BookingSchema.index({ screeningId: 1 });
 BookingSchema.index({ status: 1 });
 BookingSchema.index({ "customerInfo.email": 1 });

@@ -1,12 +1,9 @@
 "use client";
 import { useState } from "react";
 import DisableModal from "./DisableModal";
+import { HandicapSeatProps } from "./types/Seatings.types";
 
-type Props = {
-  children: React.ReactNode;
-};
-
-const HandicapSeatHandler = ({ children }: Props) => {
+const HandicapSeatHandler = ({ children }: HandicapSeatProps) => {
   const [open, setOpen] = useState(false);
 
   return (

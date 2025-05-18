@@ -6,26 +6,7 @@ import Step1BookingModal from "./Step1BookingModal";
 import Step2BookingModal from "./Step2BookingModal";
 import Step3BookingModal from "./Step3BookingModal";
 import Step4BookingModal from "./Step4BookingModal";
-
-interface BookingConfirmationModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  reservationId: string | null;
-  movieTitle: string;
-  screeningTime: string;
-  seats: string[];
-  totalPrice: number;
-  onContinue: () => void;
-}
-
-interface UserInfo {
-  email: string;
-  phoneNumber: string;
-  firstName: string;
-  lastName: string;
-}
-
-type PaymentMethod = "swish" | "card" | "atCinema";
+import { BookingConfirmationModalProps, UserInfo, PaymentMethod } from "./types/Booking.types";
 
 export default function BookingConfirmationModal({
   isOpen,
@@ -35,7 +16,7 @@ export default function BookingConfirmationModal({
   screeningTime,
   seats,
   totalPrice,
-}: // onContinue, //Not using anymore but keeping for compatibility.
+}: 
 BookingConfirmationModalProps) {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [userInfo, setUserInfo] = useState<UserInfo>({
