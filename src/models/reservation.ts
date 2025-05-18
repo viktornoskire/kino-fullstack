@@ -4,7 +4,7 @@ export interface ReservationType extends Document {
   screeningId: mongoose.Types.ObjectId;
   seats: mongoose.Types.ObjectId[];
   userId: string;
-  status: "reserved" | "confirmed" | "cancelled"; //MIGHT BE UNNECESSARY
+  status: "reserved" | "confirmed" | "cancelled"; 
   totalPrice: number;
   createdAt: Date;
   updatedAt: Date;
@@ -31,7 +31,7 @@ const ReservationSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["reserved", "confirmed", "cancelled"], // Might be unnecessary
+      enum: ["reserved", "confirmed", "cancelled"],
       default: "reserved",
     },
     totalPrice: {
