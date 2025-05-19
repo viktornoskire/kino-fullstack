@@ -1,47 +1,95 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { movieType } from "@/types/Movietypes";
+import { format } from "date-fns";
 import RenderCurrentMovies from "../current-movies/RenderCurrentMovies";
 import Spinner from "../Spinner";
-import Button from "@/components/Button";
+
+import FilterButtons from "./FilterButtons";
+import DateSelector from "./DateSelector";
+import ShowMoreButton from "./ShowMoreButton";
+
+import { movieType } from "@/types/Movietypes";
 
 export default function NowShowingWrapper() {
+  // Store all fetched movies
   const [movies, setMovies] = useState<movieType[]>([]);
-  const [visibleCount, setVisibleCount] = useState(10);
-  const [error, setError] = useState<string | null>(null);
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
+  // Controls how many movies to display
+  const [visibleCount, setVisibleCount] = useState(10);
+
+  // Filter states
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [selectedDate, setSelectedDate] = useState("all");
+
+  // Fetch movies when filters change
   useEffect(() => {
     async function fetchMovies() {
-      try {
-        setLoading(true);
-        const baseUrl = "/api/movies?tags=nowShowing";
-        const fullUrl = selectedTag
-          ? `${baseUrl}&tags=${selectedTag}`
-          : baseUrl;
+      setLoading(true);
+      setError(null);
 
-        const res = await fetch(fullUrl);
+      try {
+        const url = new URL("/api/movies", window.location.origin);
+        url.searchParams.append("tags", "nowShowing");
+
+        // Add extra tag filter if one is selected
+        if (selectedTag) {
+          url.searchParams.append("tags", selectedTag);
+        }
+
+        // Add date filter if applicable
+        const dateFilter = getFormattedDate(selectedDate);
+        if (dateFilter) {
+          url.searchParams.append("screeningDate", dateFilter);
+        }
+
+        const res = await fetch(url.toString());
         if (!res.ok) throw new Error("Could not fetch movies");
+
         const data = await res.json();
         setMovies(data);
+        setVisibleCount(10);
       } catch (err) {
         console.error(err);
         setError("Failed to load movies");
       } finally {
         setLoading(false);
-        setVisibleCount(10);
       }
     }
 
     fetchMovies();
-  }, [selectedTag]);
+  }, [selectedTag, selectedDate]);
 
+  // Convert filter option to date string if needed
+  function getFormattedDate(option: string): string | null {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (option === "all") return null;
+
+    if (option === "today") {
+      return format(today, "yyyy-MM-dd");
+    }
+
+    if (option === "tomorrow") {
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+      return format(tomorrow, "yyyy-MM-dd");
+    }
+
+    return option;
+  }
+
+  // Determine which movies to show right now
   const visibleMovies = movies.slice(0, visibleCount);
-  const hasMore = visibleCount < movies.length;
+  const hasMoreMovies = visibleCount < movies.length;
 
+  // Show error message if something went wrong
   if (error) return <p>{error}</p>;
+
+  // Show loading spinner while fetching
   if (loading) {
     return (
       <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -50,44 +98,14 @@ export default function NowShowingWrapper() {
     );
   }
 
+  // Render filters, movie list and pagination button
   return (
     <div className="mt-10">
-      <div className="ml-4 space-x-2">
-        <button
-          onClick={() => setSelectedTag(null)}
-          className={`cursor-pointer px-6 py-2 rounded-xl border font-semibold transition hover:bg-kino-white
-      ${selectedTag === null
-              ? "bg-kino-white text-kino-black"
-              : "border-kino-grey text-white bg-transparent hover:bg-kino-white hover:text-kino-black"}`}
-        >
-          Now showing
-        </button>
-        <button
-          onClick={() => setSelectedTag("children")}
-          className={`cursor-pointer px-6 py-2 rounded-xl border font-semibold transition hover:bg-kino-white
-      ${selectedTag === "children"
-              ? "bg-kino-white text-kino-black"
-              : "border-kino-grey text-white bg-transparent hover:bg-kino-white hover:text-kino-black"}`}
-        >
-          Children & Family
-        </button>
-      </div>
-
-      <RenderCurrentMovies
-        movies={visibleMovies}
-      />
-
-      {hasMore && (
-        <div className="text-center">
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => setVisibleCount((prev) => prev + 10)}
-            className="mt-10 mb-10 px-14 py-2 text-center"
-          >
-            Show more movies
-          </Button>
-        </div>
+      <FilterButtons selectedTag={selectedTag} onSelect={setSelectedTag} />
+      <DateSelector selectedDate={selectedDate} onChange={setSelectedDate} />
+      <RenderCurrentMovies movies={visibleMovies} />
+      {hasMoreMovies && (
+        <ShowMoreButton onClick={() => setVisibleCount((prev) => prev + 10)} />
       )}
     </div>
   );
