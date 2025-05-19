@@ -62,7 +62,6 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
       setComment("");
       setRating("");
       setUserName("");
-      
     } catch (err) {
       console.error("Submission error:", err);
       setFeedback({
@@ -130,9 +129,7 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
         {feedback && (
           <div
             className={`mb-2 text-xs text-center ${
-              feedback.type === "success"
-                ? "text-lime-500"
-                : "text-kino-red"
+              feedback.type === "success" ? "text-lime-500" : "text-kino-red"
             }`}
             role="alert"
           >
