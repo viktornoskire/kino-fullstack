@@ -5,6 +5,7 @@ import { FC } from 'react';
 import Button from './Button';
 import PasswordInput from './PasswordInput';
 import Image from 'next/image';
+import { fromUnixTime } from 'date-fns';
 
 type Props = {
   showRegisterModal: string;
@@ -49,6 +50,11 @@ const Register: FC<Props> = ({ showRegisterModal, onToggleModal, onResetForm }) 
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
 
+            const firstName = String(formData.get('firstname')).trim();
+            const lastName = String(formData.get('lastname')).trim();
+
+            console.log(firstName + ' ' + lastName);
+
             try {
               const res = await fetch('/api/register', {
                 method: 'POST',
@@ -56,8 +62,8 @@ const Register: FC<Props> = ({ showRegisterModal, onToggleModal, onResetForm }) 
                   'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                  firstname: formData.get('firstname'),
-                  lastname: formData.get('lastname'),
+                  firstname: firstName,
+                  lastname: lastName,
                   email: formData.get('email'),
                   phone: formData.get('phone'),
                   password: formData.get('password'),
