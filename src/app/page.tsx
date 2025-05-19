@@ -1,11 +1,11 @@
 import InfoKino from "@/components/InfoKino";
-import Movies from "@/components/Movies";
+import NowShowingWrapper from "@/components/startpage/NowShowingWrapper";
 
 export default async function Home() {
   return (
     <>
       <InfoKino />
-      <Movies />
+      <NowShowingWrapper  />
     </>
   );
 }
