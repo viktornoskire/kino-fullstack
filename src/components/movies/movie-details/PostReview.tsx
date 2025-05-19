@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 const PostReview = ({ movie }: { movie: { slug: string } }) => {
   const { status } = useSession();
   const [comment, setComment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [rating, setRating] = useState("");
   const [userName, setUserName] = useState("");
   const [feedback, setFeedback] = useState<null | {
@@ -27,6 +28,8 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
       setFeedback({ message: "Please fill in all fields.", type: "error" });
       return;
     }
+
+    setIsSubmitting(true);
 
     const ratingNum = Number(rating);
     if (isNaN(ratingNum) || ratingNum < 1 || ratingNum > 5) {
@@ -66,6 +69,8 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
         message: err instanceof Error ? err.message : "Failed to submit review",
         type: "error",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -139,8 +144,9 @@ const PostReview = ({ movie }: { movie: { slug: string } }) => {
           aria-label="Submit your review"
           className="row-start-6 col-start-2 bg-kino-red text-xs hover:bg-kino-darkred text-kino-white py-2 px-4"
           onClick={handleClick}
+          disabled={isSubmitting}
         >
-          Submit
+          {isSubmitting ? "Submitting..." : "Submit"}
         </Button>
       </div>
     </div>
