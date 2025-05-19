@@ -53,8 +53,6 @@ const Register: FC<Props> = ({ showRegisterModal, onToggleModal, onResetForm }) 
             const firstName = String(formData.get('firstname')).trim();
             const lastName = String(formData.get('lastname')).trim();
 
-            console.log(firstName + ' ' + lastName);
-
             try {
               const res = await fetch('/api/register', {
                 method: 'POST',
