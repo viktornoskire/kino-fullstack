@@ -30,7 +30,7 @@ const Register: FC<Props> = ({ showRegisterModal, onToggleModal, onResetForm }) 
         }}></div>
       <div
         className={`w-full bottom-1/13 top-1/13 max-w-100 h-auto flex items-center z-999 bg-neutral-800 text-white p-8 rounded-xl shadow-lg fixed flex-col right-2 left-2 ml-auto mr-auto overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 ${showRegisterModal}`}>
-        <Image src={'/kinoLogoOverlay.png'} alt='kino logo' width={200} height={120} />
+        <Image src={'/kinoLogoOverlay.png'} alt='kino logo' width={200} height={120} className='w-auto h-auto' />
 
         <h2 className='text-2xl font-bold mt-4 mb-6'>Register</h2>
         <p className=''>
@@ -102,6 +102,7 @@ const Register: FC<Props> = ({ showRegisterModal, onToggleModal, onResetForm }) 
             placeholder='email...'
             name='email'
             className='w-full p-3 bg-neutral-900 rounded-lg text-white mb-4 outline-none focus:ring-2 border-2 border-s-gray-300'
+            autoComplete='email'
           />
           <input
             onChange={resetError}
@@ -109,6 +110,7 @@ const Register: FC<Props> = ({ showRegisterModal, onToggleModal, onResetForm }) 
             placeholder='phone number...'
             name='phone'
             className='w-full p-3 bg-neutral-900 rounded-lg text-white mb-4 outline-none focus:ring-2 border-2 border-s-gray-300'
+            autoComplete='tel'
           />
           <PasswordInput resetError={resetError} />
           <small className='block pb-4 mr-auto ml-auto text-red-500'>{error}</small>

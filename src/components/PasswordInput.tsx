@@ -58,6 +58,8 @@ const PasswordInput: FC<Props> = ({ resetError }) => {
         placeholder='password...'
         name='password'
         className='w-full p-3 bg-neutral-900 rounded-lg text-white mb-4 outline-none focus:ring-2 border-2 border-s-gray-300'
+        autoComplete='new-password'
+        required
       />
       <div className='h-1 w-full bg-gray-200 rounded-full overflow-hidden'>
         <div

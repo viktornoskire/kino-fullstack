@@ -29,7 +29,7 @@ const Login: FC<Props> = ({ showLoginModal, onToggleModal, onResetForm }) => {
         }}></div>
       <div
         className={`w-full max-w-100 flex items-center z-999 bg-neutral-800 top-1/5 bottom-1/5 text-white p-8 rounded-xl shadow-lg fixed flex-col right-2 left-2 ml-auto mr-auto overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 ${showLoginModal}`}>
-        <Image src={'/kinoLogoOverlay.png'} alt='kino logo' width={200} height={120} />
+        <Image src={'/kinoLogoOverlay.png'} alt='kino logo' width={200} height={120} className='w-auto h-auto' />
         <h2 className='text-2xl font-bold mt-4 mb-6'>Login</h2>
         <p>
           Not a member?{' '}
@@ -76,6 +76,7 @@ const Login: FC<Props> = ({ showLoginModal, onToggleModal, onResetForm }) => {
             placeholder='email...'
             name='email'
             className='w-full p-3 bg-neutral-900 rounded-lg text-white mb-4 outline-none focus:ring-2 border-2 border-s-gray-300'
+            autoComplete='email'
           />
           <input
             onChange={resetError}
@@ -83,6 +84,7 @@ const Login: FC<Props> = ({ showLoginModal, onToggleModal, onResetForm }) => {
             placeholder='password...'
             name='password'
             className='w-full p-3 bg-neutral-900 rounded-lg text-white mb-4 outline-none focus:ring-2 border-2 border-s-gray-300'
+            autoComplete='current-password'
           />
           <small className='block pb-4 mr-auto ml-auto'>{error}</small>
           <Button type='submit' className='block mr-auto ml-auto'>
