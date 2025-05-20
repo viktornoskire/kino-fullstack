@@ -14,7 +14,6 @@ import { Movie, Screening } from "./types/Booking.types";
 import { BookingManagerProps } from "./types/Booking.types";
 
 export default function BookingManager({ screeningId }: BookingManagerProps) {
-  
   const [selectedScreening, setSelectedScreening] = useState<Screening | null>(
     null
   );
@@ -29,6 +28,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
   const [seatDetails, setSeatDetails] = useState<
     Map<string, { row: number; seatNumber: number }>
   >(new Map());
+  const [refreshSeats, setRefreshSeats] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -136,8 +136,6 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
     setIsModalOpen(false);
   };
 
-
-
   if (!selectedScreening || !movie) {
     return (
       <div className="flex items-center justify-center w-full h-screen">
@@ -211,7 +209,6 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
           screeningTime={selectedScreening.screeningTime}
           seats={formatSeatLabels(selectedSeats)}
           totalPrice={finalPrice}
-          
         />
       )}
     </main>
