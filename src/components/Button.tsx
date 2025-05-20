@@ -6,6 +6,7 @@ import { buttonType } from '@/types/Buttontypes';
 interface ExtendedButtonType extends buttonType {
   variant?: 'primary' | 'secondary' | 'cancel';
   className?: string;
+  disabled?: boolean;
 }
 
 const Button: FC<ExtendedButtonType> = ({ children, type, style, onClick, variant = 'primary', className = '' }) => {
