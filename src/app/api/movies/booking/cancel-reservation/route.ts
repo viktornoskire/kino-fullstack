@@ -31,7 +31,6 @@ export async function DELETE(request: Request) {
       );
     }
 
-    console.log(`Deleted reservation ${idToDelete}`);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting reservation:", error);

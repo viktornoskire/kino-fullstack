@@ -45,7 +45,6 @@ export default function BookingConfirmationModal({
           method: "DELETE",
         }
       );
-      console.log("Reservation deleted successfully");
     } catch (error) {
       console.error("Error deleting reservation:", error);
     }
