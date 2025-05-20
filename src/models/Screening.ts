@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { InferSchemaType } from "mongoose";
 
 const screeningSchema = new mongoose.Schema({
   movieId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Movie" },
@@ -10,4 +10,5 @@ const screeningSchema = new mongoose.Schema({
 const Screening =
   mongoose.models.Screening || mongoose.model("Screening", screeningSchema);
 
+export type ScreeningType = InferSchemaType<typeof screeningSchema>;
 export { Screening };
