@@ -137,13 +137,13 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setRefreshSeats((prev) => !prev);
 
     if (reservationId) {
-      setRefreshSeats((prev) => !prev); // Toggle to trigger refresh
-
-      setReservationId(null); // Reset reservation ID
-      setSelectedSeats([]); // Clear selected seats
+      setReservationId(null);
     }
+
+    setSelectedSeats([]);
   };
 
   if (!selectedScreening || !movie) {
