@@ -52,7 +52,7 @@ const LoggedOut = () => {
           Register
         </Button>
         <p className='row-4'>
-          Become a member for free and start saving instantly! Registration is quick and easy—just enter your name,
+          Become a member for free and start saving instantly! Registration is quick and easy — just enter your name,
           email, and create a password. No payment needed. As a member, you’ll enjoy 10% off all ticket purchases,
           giving you more value every time you book. Sign up today and start enjoying exclusive savings with every
           cinema event!
@@ -67,18 +67,18 @@ const LoggedOut = () => {
         />
         <AboutCard
           title='How you profit!'
-          description="As a member, you enjoy exclusive benefits—most notably, 10% off all ticket purchases. It's a simple way to get more value, more experiences, and more entertainment—while spending less."
+          description="As a member, you enjoy exclusive benefits—most notably, 10% off all ticket purchases. It's a simple way to get more value, more experiences, and more entertainment — while spending less."
         />
         <div className='mt-[-25px]'>
           <AboutCard
             title='You are prioritized!'
-            description='As a member, you get early access to events before they’re available to the public. Be the first to book tickets for popular movies, special screenings, and exclusive events—no more missing out. It’s just one more way your free membership puts you ahead of the crowd.'
+            description='As a member, you get early access to events before they’re available to the public. Be the first to book tickets for popular movies, special screenings, and exclusive events — no more missing out. It’s just one more way your free membership puts you ahead of the crowd.'
           />
         </div>
         <div className='mt-[-25px]'>
           <AboutCard
             title='New feature!'
-            description="We're excited to introduce a new feature: you can now leave reviews after seeing a movie! Share your thoughts, rate your experience, and help other moviegoers decide what to watch. Your feedback matters—and now it’s easier than ever to be heard. Just head to the movie page and leave your review!"
+            description="We're excited to introduce a new feature: you can now leave reviews after seeing a movie! Share your thoughts, rate your experience, and help other moviegoers decide what to watch. Your feedback matters — and now it’s easier than ever to be heard. Just head to the movie page and leave your review!"
           />
         </div>
       </div>
