@@ -164,24 +164,20 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
       setIsBooking(false);
     }
   };
+  const handleCloseModal = useCallback(
+    async (wasDeleted: boolean) => {
+      setIsModalOpen(false);
 
-  const handleCloseModal = async () => {
-    setIsModalOpen(false);
+      setSelectedSeats([]);
 
-    // Clear selected seats immediately for UI feedback
-    setSelectedSeats([]);
-
-    // Add a short delay to ensure server has processed cancellation
-    setTimeout(async () => {
-      // Force refresh seats from server with latest data
-      await refreshSeatsData();
-
-      if (reservationId) {
-        setReservationId(null);
+      if (wasDeleted) {
+        await refreshSeatsData();
       }
-    }, 300); // Small delay to ensure server operations complete
-  };
 
+      setReservationId(null);
+    },
+    [refreshSeatsData]
+  );
   if (!selectedScreening || !movie) {
     return (
       <div className="flex items-center justify-center w-full h-screen">

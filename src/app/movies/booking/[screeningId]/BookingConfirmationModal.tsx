@@ -34,26 +34,24 @@ export default function BookingConfirmationModal({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
-  const deleteReservation = useCallback(async () => {
+  const deleteReservation = useCallback(async (): Promise<boolean> => {
     if (!reservationId || bookingId || isDeleting) {
-      return;
+      return false;
     }
 
     setIsDeleting(true);
-
     try {
       const response = await fetch(
         `/api/movies/booking/cancel-reservation?id=${reservationId}`,
-        {
-          method: "DELETE",
-        }
+        { method: "DELETE" }
       );
 
       if (!response.ok) {
         console.error("Failed to delete reservation:", await response.text());
+        return false;
       }
 
-      return true; // Successfully deleted
+      return true;
     } catch (error) {
       console.error("Error deleting reservation:", error);
       return false;
@@ -63,11 +61,14 @@ export default function BookingConfirmationModal({
   }, [reservationId, bookingId, isDeleting]);
 
   const handleClose = async () => {
+    let deleted = false;
+
     if (currentStep < 4) {
-      const deleted = await deleteReservation();
+      deleted = await deleteReservation();
       console.log("Reservation deleted:", deleted);
     }
-    onClose();
+
+    onClose(deleted);
   };
 
   const formatScreeningTime = (timeString: string) => {
@@ -346,7 +347,13 @@ export default function BookingConfirmationModal({
           )}
 
           {currentStep === 4 && (
-            <Button variant="primary" type="button" onClick={onClose}>
+            <Button
+              variant="primary"
+              type="button"
+              onClick={() => {
+                void handleClose();
+              }}
+            >
               Close
             </Button>
           )}
