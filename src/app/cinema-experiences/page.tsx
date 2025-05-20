@@ -32,6 +32,7 @@ export default function CinemaExperiences() {
         alt="Picture of jacuzzi Cinema Experience room"
         width={500}
         height={300}
+        priority
         className="rounded-xl m-4"
       />
       <div className="bg-kino-darkgrey p-4 rounded-xl m-4">
@@ -47,6 +48,7 @@ export default function CinemaExperiences() {
         alt="Picture of charcutertie board with melons, ham and cheese"
         width={500}
         height={300}
+        loading="lazy"
         className="rounded-xl m-4"
       />
     </div>
