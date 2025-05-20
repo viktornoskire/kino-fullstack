@@ -1,22 +1,18 @@
-import mongoose, { Document, Model, Schema } from 'mongoose';
-
-export interface ISeat extends Document {
+import Types from "mongoose";
+import mongoose, { Schema } from "mongoose";
+interface ISeat {
+  _id: Types.ObjectId | string;
   row: number;
   seatNumber: number;
 }
 
-const SeatSchema: Schema<ISeat> = new Schema(
+const SeatSchema = new Schema<ISeat>(
   {
     row: { type: Number, required: true },
     seatNumber: { type: Number, required: true },
   },
-  { collection: 'seatings' } // Behåll samma collection-namn
+  { collection: "seatings" }
 );
 
-// Lägg till denna loggning för att kontrollera vilken databas Mongoose använder
-console.log(`Mongoose använder databas: ${mongoose.connection.db?.databaseName || 'ingen databas än'}`);
-
-const Seat: Model<ISeat> =
-  mongoose.models.Seat || mongoose.model<ISeat>('Seat', SeatSchema);
-
+const Seat = mongoose.models.Seat || mongoose.model<ISeat>("Seat", SeatSchema);
 export default Seat;
