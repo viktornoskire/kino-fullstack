@@ -10,7 +10,7 @@ export interface UserDocument {
   updatedAt: Date;
 }
 
-const UserSchema = new Schema<UserDocument>(
+const UserSchema = new mongoose.Schema<UserDocument>(
   {
     name: {
       type: String,

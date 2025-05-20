@@ -6,7 +6,6 @@ export interface BookingConfirmationModalProps {
   screeningTime: string;
   seats: string[];
   totalPrice: number;
- 
 }
 
 export interface UserInfo {
@@ -16,7 +15,7 @@ export interface UserInfo {
   lastName: string;
 }
 
-export type PaymentMethod = "swish" | "card" | "atCinema";
+export type PaymentMethod = 'swish' | 'card' | 'atCinema';
 
 export interface BookingDetailsProps {
   movie: {
@@ -52,4 +51,3 @@ export interface Movie {
 export interface BookingManagerProps {
   screeningId: string;
 }
-

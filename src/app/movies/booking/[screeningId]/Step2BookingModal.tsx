@@ -1,10 +1,11 @@
-"use client";
-import { Step2BookingModalProps } from "./types/BookingModalTypes";
+'use client';
+import { Step2BookingModalProps } from './types/BookingModalTypes';
+import { useSession } from 'next-auth/react';
 
-export default function Step2BookingModal({
-  userInfo,
-  onInputChange,
-}: Step2BookingModalProps) {
+export default function Step2BookingModal({ userInfo, onInputChange }: Step2BookingModalProps) {
+  const session = useSession();
+  const user = session.data?.user;
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     onInputChange(name, value);
@@ -12,70 +13,50 @@ export default function Step2BookingModal({
 
   return (
     <>
-      <p className="text-sm mb-4">
-        Please provide your information to continue:
-      </p>
+      <p className='text-sm mb-4'>Please provide your information to continue:</p>
 
-      <div className="space-y-3">
+      <div className='space-y-3'>
         <div>
-          <label htmlFor="firstName" className="block text-sm font-medium mb-1">
-            First Name*
+          <label htmlFor='lastName' className='block text-sm font-medium mb-1'>
+            Name*
           </label>
           <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            value={userInfo.firstName}
+            type='text'
+            id='lastName'
+            name='lastName'
+            value={user?.name || ''}
             onChange={handleChange}
-            className="w-full p-2 bg-gray-800 rounded border border-gray-700"
+            className='w-full p-2 bg-gray-800 rounded border border-gray-700'
             required
           />
         </div>
 
         <div>
-          <label htmlFor="lastName" className="block text-sm font-medium mb-1">
-            Last Name*
-          </label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            value={userInfo.lastName}
-            onChange={handleChange}
-            className="w-full p-2 bg-gray-800 rounded border border-gray-700"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium mb-1">
+          <label htmlFor='email' className='block text-sm font-medium mb-1'>
             Email*
           </label>
           <input
-            type="email"
-            id="email"
-            name="email"
-            value={userInfo.email}
+            type='email'
+            id='email'
+            name='email'
+            value={user?.email || ''}
             onChange={handleChange}
-            className="w-full p-2 bg-gray-800 rounded border border-gray-700"
+            className='w-full p-2 bg-gray-800 rounded border border-gray-700'
             required
           />
         </div>
 
         <div>
-          <label
-            htmlFor="phoneNumber"
-            className="block text-sm font-medium mb-1"
-          >
+          <label htmlFor='phoneNumber' className='block text-sm font-medium mb-1'>
             Phone Number*
           </label>
           <input
-            type="tel"
-            id="phoneNumber"
-            name="phoneNumber"
-            value={userInfo.phoneNumber}
+            type='tel'
+            id='phoneNumber'
+            name='phoneNumber'
+            value={user?.number || ''}
             onChange={handleChange}
-            className="w-full p-2 bg-gray-800 rounded border border-gray-700"
+            className='w-full p-2 bg-gray-800 rounded border border-gray-700'
             required
           />
         </div>
