@@ -1,13 +1,31 @@
-"use client";
-import { useState, useEffect, useMemo } from "react";
-import TicketButton from "./TicketButton";
-import { Tickets, TicketSelectorProps } from "./types/TicketSelector.types";
+'use client';
+import { useState, useEffect, useMemo, FormEvent } from 'react';
+import TicketButton from './TicketButton';
+import { Tickets, TicketSelectorProps } from './types/TicketSelector.types';
+import { useSession } from 'next-auth/react';
+import Register from '@/components/Register';
+import Login from '@/components/Login';
 
-export default function TicketSelector({
-  onTotalTicketsChange,
-  onFinalPriceChange,
-}: TicketSelectorProps) {
-  const isLoggedIn = false; //TEMPORARY SET TO FALSE UNTIL WE IMPLEMENTED LOGIN.
+export default function TicketSelector({ onTotalTicketsChange, onFinalPriceChange }: TicketSelectorProps) {
+  const session = useSession();
+  const { status } = session;
+  const [showLoginModal, setLoginModal] = useState<string>('hidden');
+  const [showRegisterModal, setRegisterModal] = useState<string>('hidden');
+
+  const resetForm = (event: FormEvent<HTMLFormElement>) => {
+    const userForm = event.target as HTMLFormElement;
+    userForm.reset();
+  };
+
+  const toggleModal = (modal: string) => {
+    if (modal === 'login') {
+      showLoginModal === 'hidden' ? setLoginModal('') : setLoginModal('hidden');
+    } else if (modal === 'register') {
+      showRegisterModal === 'hidden' ? setRegisterModal('') : setRegisterModal('hidden');
+    }
+  };
+
+  const isLoggedIn = status === 'authenticated' ? true : false;
   const [ticketCounts, setTicketCounts] = useState<Tickets>({
     regular: 0,
     kids: 0,
@@ -28,7 +46,7 @@ export default function TicketSelector({
   );
 
   const handleTicketCountChange = (ticketType: string, count: number): void => {
-    setTicketCounts((prev) => ({
+    setTicketCounts(prev => ({
       ...prev,
       [ticketType]: count,
     }));
@@ -47,82 +65,74 @@ export default function TicketSelector({
     if (isLoggedIn) {
       discountAmount = Math.round(newTotal * 0.1);
     }
+    setTotalPrice(newTotal);
 
     const newFinalPrice = newTotal - discountAmount;
 
-    setTotalPrice(newTotal);
     setFinalPrice(newFinalPrice);
 
     onTotalTicketsChange(ticketCount);
     onFinalPriceChange(newFinalPrice);
-  }, [
-    ticketCounts,
-    ticketPrices,
-    onTotalTicketsChange,
-    onFinalPriceChange,
-    isLoggedIn,
-  ]);
+  }, [ticketCounts, ticketPrices, onTotalTicketsChange, onFinalPriceChange, isLoggedIn]);
 
   return (
-    <div className=" bg-white-900 rounded-xl max-w-sm mx auto ml-12">
-      <h2 className="mb-6 text-2xl font-bold">Select tickets</h2>
-      <TicketButton
-        price={ticketPrices.regular}
-        ticketType="regular"
-        onCountChange={handleTicketCountChange}
-      >
+    <div className=' bg-white-900 rounded-xl max-w-sm mx auto ml-12'>
+      <h2 className='mb-6 text-2xl font-bold'>Select tickets</h2>
+      <TicketButton price={ticketPrices.regular} ticketType='regular' onCountChange={handleTicketCountChange}>
         Regular
       </TicketButton>
-      <TicketButton
-        price={ticketPrices.kids}
-        ticketType="kids"
-        onCountChange={handleTicketCountChange}
-      >
+      <TicketButton price={ticketPrices.kids} ticketType='kids' onCountChange={handleTicketCountChange}>
         Kids (0-11)
       </TicketButton>
-      <TicketButton
-        price={ticketPrices.student}
-        ticketType="student"
-        onCountChange={handleTicketCountChange}
-      >
+      <TicketButton price={ticketPrices.student} ticketType='student' onCountChange={handleTicketCountChange}>
         Student
       </TicketButton>
-      <TicketButton
-        price={ticketPrices.senior}
-        ticketType="senior"
-        onCountChange={handleTicketCountChange}
-      >
+      <TicketButton price={ticketPrices.senior} ticketType='senior' onCountChange={handleTicketCountChange}>
         Senior
       </TicketButton>
-      <div className="mt-6 p-4 rounded-lg border border-kino-grey">
-        <div className="flex flex-col space-y-2">
-          <div className="flex justify-between">
-            <span className="font-medium">Price:</span>
-            <span className="font-medium">{totalPrice} kr</span>
+      <div className='mt-6 p-4 rounded-lg border border-kino-grey'>
+        <div className='flex flex-col space-y-2'>
+          <div className='flex justify-between'>
+            <span className='font-medium'>Price:</span>
+            <span className='font-medium'>{totalPrice} kr</span>
           </div>
 
           {isLoggedIn && (
-            <div className="flex justify-between">
-              <span className="font-medium">Discount (10%)</span>
-              <span className="font-medium">{totalPrice - finalPrice} kr</span>
+            <div className='flex justify-between'>
+              <span className='font-medium'>Discount (10%)</span>
+              <span className='font-medium'>{totalPrice - finalPrice} kr</span>
             </div>
           )}
-          <div className="flex justify-between">
-            <span className="font-medium">Discount (10%)</span>
-            <span className="font-medium">Not a member</span>
-          </div>
+          {!isLoggedIn && (
+            <div className='flex justify-between'>
+              <span className='font-medium'>Discount (10%)</span>
+              <span className='font-medium'>Not a member</span>
+            </div>
+          )}
 
-          <hr className="my-2 border-t-[0.5px]" />
-          <div className="flex justify-between">
-            <span className="font-bold">Total:</span>
-            <span className="font-bold text-lg">{finalPrice} kr</span>
+          <hr className='my-2 border-t-[0.5px]' />
+          <div className='flex justify-between'>
+            <span className='font-bold'>Total:</span>
+            <span className='font-bold text-lg'>{finalPrice} kr</span>
           </div>
-          <div className="mt-2 text-sm text-kino-grey">
-            <span className="text-kino-darkred">Login </span>
-            <span>to recieve discount</span>
-          </div>
+          {!isLoggedIn && (
+            <div className='mt-2 text-sm text-kino-grey'>
+              <small className='text-sm'>
+                <span
+                  onClick={() => {
+                    toggleModal('login');
+                  }}
+                  className='underline text-kino-darkred cursor-pointer'>
+                  Login
+                </span>{' '}
+                to recieve discount
+              </small>
+            </div>
+          )}
         </div>
       </div>
+      <Register showRegisterModal={showRegisterModal} onToggleModal={toggleModal} onResetForm={resetForm} />
+      <Login showLoginModal={showLoginModal} onToggleModal={toggleModal} onResetForm={resetForm} />
     </div>
   );
 }
