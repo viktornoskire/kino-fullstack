@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import BookingDetails from "./BookingDetails";
 import ScreeningSelector from "@/components/movies/movie-details/ScreeningSelector";
 import TicketSelector from "./TicketSelector";
@@ -29,6 +29,35 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
     Map<string, { row: number; seatNumber: number }>
   >(new Map());
   const [refreshSeats, setRefreshSeats] = useState<boolean>(false);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+
+  // New function to forcefully fetch the latest seat data
+  const refreshSeatsData = useCallback(async () => {
+    if (!selectedScreening) return;
+
+    setIsRefreshing(true);
+    try {
+      const response = await fetch(`/api/seats/${selectedScreening._id}`, {
+        cache: "no-store",
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to refresh seats");
+      }
+
+      // Trigger UI update after getting fresh data
+      setRefreshSeats((prev) => !prev);
+    } catch (error) {
+      console.error("Error refreshing seats:", error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [selectedScreening]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,6 +112,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
   const handleSelectedSeatsChange = (seats: string[]) => {
     setSelectedSeats(seats);
   };
+
   const handleFinalPriceChange = (price: number) => {
     setFinalPrice(price);
   };
@@ -135,15 +165,21 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
     }
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = async () => {
     setIsModalOpen(false);
-    setRefreshSeats((prev) => !prev);
 
-    if (reservationId) {
-      setReservationId(null);
-    }
-
+    // Clear selected seats immediately for UI feedback
     setSelectedSeats([]);
+
+    // Add a short delay to ensure server has processed cancellation
+    setTimeout(async () => {
+      // Force refresh seats from server with latest data
+      await refreshSeatsData();
+
+      if (reservationId) {
+        setReservationId(null);
+      }
+    }, 300); // Small delay to ensure server operations complete
   };
 
   if (!selectedScreening || !movie) {
@@ -198,11 +234,11 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
           disabled={
             totalTickets === 0 ||
             selectedSeats.length !== totalTickets ||
-            isBooking
+            isBooking ||
+            isRefreshing
           }
         >
-          {isBooking ? "Booking..." : "Book"}{" "}
-          {/* MAYBE KEEP THIS FOR LOADING??*/}
+          {isBooking ? "Booking..." : isRefreshing ? "Refreshing..." : "Book"}
         </Button>
 
         <Link href={`/movies/${movie.slug}`}>

@@ -32,27 +32,40 @@ export default function BookingConfirmationModal({
   const [bookingId, setBookingId] = useState<string | null>(null);
   const [bookingError, setBookingError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
 
   const deleteReservation = useCallback(async () => {
-    if (!reservationId || bookingId) {
+    if (!reservationId || bookingId || isDeleting) {
       return;
     }
 
+    setIsDeleting(true);
+
     try {
-      await fetch(
+      const response = await fetch(
         `/api/movies/booking/cancel-reservation?id=${reservationId}`,
         {
           method: "DELETE",
         }
       );
+
+      if (!response.ok) {
+        console.error("Failed to delete reservation:", await response.text());
+      }
+
+      return true; // Successfully deleted
     } catch (error) {
       console.error("Error deleting reservation:", error);
+      return false;
+    } finally {
+      setIsDeleting(false);
     }
-  }, [reservationId, bookingId]);
+  }, [reservationId, bookingId, isDeleting]);
 
-  const handleClose = () => {
+  const handleClose = async () => {
     if (currentStep < 4) {
-      deleteReservation();
+      const deleted = await deleteReservation();
+      console.log("Reservation deleted:", deleted);
     }
     onClose();
   };
