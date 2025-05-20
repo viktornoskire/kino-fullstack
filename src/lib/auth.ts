@@ -33,9 +33,14 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, session, trigger }) {
       console.log('jwt', { token, user });
       //Here you can pass in id and phonnumber info
+      if (trigger === 'update' && session?.name) {
+        token.name = session.name;
+        console.log('session name', session.name);
+      }
+
       if (user) {
         return { ...token, id: user.id };
       }
