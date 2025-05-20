@@ -35,7 +35,6 @@ export default function BookingConfirmationModal({
 
   const cancelReservation = useCallback(async () => {
     if (!reservationId || bookingId) {
-      // If there's no reservation ID or booking is already confirmed, do nothing
       return;
     }
 
