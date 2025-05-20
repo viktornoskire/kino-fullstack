@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     const capitalizedLast = capitalize(lastname);
     const name = `${capitalizedFirst} ${capitalizedLast}`;
 
-    const number = String(phone.trim()).replace(/\D/g, '');
+    const number = phone.trim().replace(/\D/g, '');
     const hashedPassword = await bcrypt.hash(password, 10);
     const emailToLower = email.toLowerCase().trim();
 

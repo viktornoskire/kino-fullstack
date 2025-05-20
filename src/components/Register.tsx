@@ -5,7 +5,6 @@ import { FC } from 'react';
 import Button from './Button';
 import PasswordInput from './PasswordInput';
 import Image from 'next/image';
-import { fromUnixTime } from 'date-fns';
 
 type Props = {
   showRegisterModal: string;
