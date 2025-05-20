@@ -6,9 +6,18 @@ import { buttonType } from '@/types/Buttontypes';
 interface ExtendedButtonType extends buttonType {
   variant?: 'primary' | 'secondary' | 'cancel';
   className?: string;
+  disabled?: boolean;
 }
 
-const Button: FC<ExtendedButtonType> = ({ children, type, style, onClick, variant = 'primary', className = '' }) => {
+const Button: FC<ExtendedButtonType> = ({
+  children,
+  type,
+  style,
+  onClick,
+  variant = "primary",
+  className = "",
+  disabled = false,
+}) => {
   const baseClasses =
     'rounded-3xl font-bold pt-2 pb-2 px-6 text-kino-white cursor-pointer transition-colors duration-200';
 
@@ -20,7 +29,13 @@ const Button: FC<ExtendedButtonType> = ({ children, type, style, onClick, varian
       : 'bg-transparent text-kino-white hover:opacity-80';
 
   return (
-    <button type={type} style={style} onClick={onClick} className={`${baseClasses} ${variantClasses} ${className}`}>
+    <button
+      type={type}
+      style={style}
+      onClick={onClick}
+      disabled={disabled}
+      className={`${baseClasses} ${variantClasses} ${className}`}
+    >
       {children}
     </button>
   );

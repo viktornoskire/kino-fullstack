@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import { movie } from "@/models/movies";
 import { review } from "@/models/reviews";
-import { authOptions } from '@/lib/auth';  
-import { getServerSession } from 'next-auth';
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
 
 export async function GET(
   request: Request,
@@ -20,7 +20,10 @@ export async function GET(
     return NextResponse.json({ error: "Movie not found" }, { status: 404 });
   }
 
-  const reviews = await review.find({ movieId: foundMovie._id }).sort({ createdAt: -1 }).lean();
+  const reviews = await review
+    .find({ movieId: foundMovie._id })
+    .sort({ createdAt: -1 })
+    .lean();
 
   return NextResponse.json({ reviews }, { status: 200 });
 }
@@ -28,7 +31,7 @@ export async function GET(
 export async function POST(request: Request) {
   await connectDB();
 
-   const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
 
   if (!session) {
     return new Response(JSON.stringify({ error: "Not signed in" }), {
