@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import Button from "@/components/Button";
 import Step1BookingModal from "./Step1BookingModal";
 import Step2BookingModal from "./Step2BookingModal";
@@ -33,40 +33,30 @@ export default function BookingConfirmationModal({
   const [bookingError, setBookingError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const cancelReservation = useCallback(async () => {
+  const deleteReservation = useCallback(async () => {
     if (!reservationId || bookingId) {
       return;
     }
 
     try {
-      await fetch(`/api/movies/booking/cancel-reservation`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          reservationId,
-        }),
-      });
+      await fetch(
+        `/api/movies/booking/cancel-reservation?id=${reservationId}`,
+        {
+          method: "DELETE",
+        }
+      );
+      console.log("Reservation deleted successfully");
     } catch (error) {
-      console.error("Error cancelling reservation:", error);
+      console.error("Error deleting reservation:", error);
     }
   }, [reservationId, bookingId]);
 
   const handleClose = () => {
     if (currentStep < 4) {
-      cancelReservation();
+      deleteReservation();
     }
     onClose();
   };
-
-  useEffect(() => {
-    return () => {
-      if (isOpen && currentStep < 4 && !bookingId) {
-        cancelReservation();
-      }
-    };
-  }, [isOpen, currentStep, bookingId, cancelReservation]);
 
   const formatScreeningTime = (timeString: string) => {
     const date = new Date(timeString);

@@ -1,3 +1,4 @@
+// In /api/movies/booking/confirmation/route.ts
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import Reservation from "@/models/reservation";
@@ -9,7 +10,7 @@ export async function POST(request: Request) {
 
     if (!reservationId || !userInfo || !paymentMethod) {
       return NextResponse.json(
-        { message: "Missing required fields" },
+        { error: "Missing required fields" },
         { status: 400 }
       );
     }
@@ -19,15 +20,33 @@ export async function POST(request: Request) {
     const reservation = await Reservation.findById(reservationId);
     if (!reservation) {
       return NextResponse.json(
-        { message: "Reservation not found or expired" },
+        { error: "Reservation not found or expired" },
         { status: 404 }
       );
     }
 
     if (reservation.status !== "reserved") {
       return NextResponse.json(
-        { message: "Reservation is no longer valid" },
+        {
+          error: `Reservation is no longer valid (status: ${reservation.status})`,
+        },
         { status: 400 }
+      );
+    }
+
+    const existingBooking = await Booking.findOne({
+      screeningId: reservation.screeningId,
+      seatIds: { $in: reservation.seats },
+      status: "confirmed",
+    });
+
+    if (existingBooking) {
+      reservation.status = "cancelled";
+      await reservation.save();
+
+      return NextResponse.json(
+        { error: "One or more seats have already been booked by someone else" },
+        { status: 409 }
       );
     }
 
@@ -54,7 +73,9 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Error in booking confirmation:", error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      {
+        error: error instanceof Error ? error.message : "Internal server error",
+      },
       { status: 500 }
     );
   }

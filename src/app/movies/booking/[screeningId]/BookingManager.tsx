@@ -100,7 +100,10 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
       return;
     }
     setIsBooking(true);
-
+    console.log(
+      "Creating new reservation, current reservationId:",
+      reservationId
+    );
     try {
       const response = await fetch(
         `/api/movies/booking/${screeningId}/reservation`,
@@ -122,6 +125,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
       }
 
       const data = await response.json();
+      console.log("Settings new reservation ID:", data.reservationId);
       setReservationId(data.reservationId);
       setIsModalOpen(true);
     } catch (error) {
@@ -133,14 +137,20 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
   };
 
   const handleCloseModal = () => {
+    console.log("Closing modal, current reservationId:", reservationId);
     setIsModalOpen(false);
 
     if (reservationId) {
       setRefreshSeats((prev) => !prev); // Toggle to trigger refresh
+      console.log("Setting reservationId to null");
       setReservationId(null); // Reset reservation ID
       setSelectedSeats([]); // Clear selected seats
     }
+    console.log("After closing modal, reservationId:", reservationId);
   };
+  useEffect(() => {
+    console.log("ReservationId state changed to:", reservationId);
+  }, [reservationId]);
 
   if (!selectedScreening || !movie) {
     return (
@@ -209,6 +219,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
       </div>
       {selectedScreening && (
         <BookingConfirmationModal
+          key={reservationId || "no-reservation"}
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           reservationId={reservationId}

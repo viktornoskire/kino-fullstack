@@ -1,37 +1,42 @@
+// /api/movies/booking/cancel-reservation/route.ts
+import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import Reservation from "@/models/reservation";
-import { NextResponse } from "next/server";
 
-export async function POST(request: Request) {
+export async function DELETE(request: Request) {
   try {
-    const { reservationId } = await request.json();
+    const { searchParams } = new URL(request.url);
+    const reservationId = searchParams.get("id");
 
     if (!reservationId) {
-      return NextResponse.json(
-        { error: "missing reservation id" },
-        { status: 400 }
-      );
+      const body = await request.json().catch(() => ({}));
+      if (!body.reservationId) {
+        return NextResponse.json(
+          { error: "Missing reservation ID" },
+          { status: 400 }
+        );
+      }
     }
+
+    const idToDelete = reservationId || (await request.json()).reservationId;
 
     await connectDB();
 
-    const reservation = await Reservation.findById(reservationId);
-    if (!reservation) {
+    const result = await Reservation.findByIdAndDelete(idToDelete);
+
+    if (!result) {
       return NextResponse.json(
         { error: "Reservation not found" },
         { status: 404 }
       );
     }
 
-    if (reservation.status === "reserved") {
-      reservation.status = "cancelled";
-      await reservation.save();
-    }
+    console.log(`Deleted reservation ${idToDelete}`);
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error cancelling reservation:", error);
+    console.error("Error deleting reservation:", error);
     return NextResponse.json(
-      { error: "Error cancelling reservation" },
+      { error: "Error deleting reservation" },
       { status: 500 }
     );
   }
