@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Button from "@/components/Button";
 import Step1BookingModal from "./Step1BookingModal";
 import Step2BookingModal from "./Step2BookingModal";
@@ -33,8 +33,9 @@ export default function BookingConfirmationModal({
   const [bookingError, setBookingError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const cancelReservation = async () => {
+  const cancelReservation = useCallback(async () => {
     if (!reservationId || bookingId) {
+      // If there's no reservation ID or booking is already confirmed, do nothing
       return;
     }
 
@@ -51,7 +52,7 @@ export default function BookingConfirmationModal({
     } catch (error) {
       console.error("Error cancelling reservation:", error);
     }
-  };
+  }, [reservationId, bookingId]);
 
   const handleClose = () => {
     if (currentStep < 4) {
@@ -66,7 +67,7 @@ export default function BookingConfirmationModal({
         cancelReservation();
       }
     };
-  }, [isOpen, currentStep, bookingId]);
+  }, [isOpen, currentStep, bookingId, cancelReservation]);
 
   const formatScreeningTime = (timeString: string) => {
     const date = new Date(timeString);
