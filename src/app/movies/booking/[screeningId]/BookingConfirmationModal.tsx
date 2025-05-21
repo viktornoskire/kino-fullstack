@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Button from "@/components/Button";
 import Step1BookingModal from "./Step1BookingModal";
 import Step2BookingModal from "./Step2BookingModal";
 import Step3BookingModal from "./Step3BookingModal";
 import Step4BookingModal from "./Step4BookingModal";
-import { BookingConfirmationModalProps, UserInfo, PaymentMethod } from "./types/Booking.types";
+import {
+  BookingConfirmationModalProps,
+  UserInfo,
+  PaymentMethod,
+} from "./types/Booking.types";
 
 export default function BookingConfirmationModal({
   isOpen,
@@ -16,8 +20,7 @@ export default function BookingConfirmationModal({
   screeningTime,
   seats,
   totalPrice,
-}: 
-BookingConfirmationModalProps) {
+}: BookingConfirmationModalProps) {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [userInfo, setUserInfo] = useState<UserInfo>({
     email: "",
@@ -29,6 +32,42 @@ BookingConfirmationModalProps) {
   const [bookingId, setBookingId] = useState<string | null>(null);
   const [bookingError, setBookingError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
+  const deleteReservation = useCallback(async (): Promise<boolean> => {
+    if (!reservationId || bookingId || isDeleting) {
+      return false;
+    }
+
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`/api/reservations/${reservationId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        console.error("Failed to delete reservation:", await response.text());
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Error deleting reservation:", error);
+      return false;
+    } finally {
+      setIsDeleting(false);
+    }
+  }, [reservationId, bookingId, isDeleting]);
+
+  const handleClose = async () => {
+    let deleted = false;
+
+    if (currentStep < 4) {
+      deleted = await deleteReservation();
+    }
+
+    onClose(deleted);
+  };
 
   const formatScreeningTime = (timeString: string) => {
     const date = new Date(timeString);
@@ -124,13 +163,18 @@ BookingConfirmationModalProps) {
 
   if (!isOpen) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 backdrop-blur-sm">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 backdrop-blur-sm"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) handleClose();
+      }}
+    >
       <div className="bg-kino-darkgrey rounded-lg border border-kino-grey shadow-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
         <div className="mb-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">{getStepTitle()}</h2>
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="text-gray-500 hover:text-gray-700"
             >
               &times;
@@ -235,7 +279,6 @@ BookingConfirmationModalProps) {
           )}
         </div>
 
-        {/* Action buttons */}
         <div className="flex flex-col gap-3">
           {currentStep === 1 && (
             <>
@@ -247,7 +290,7 @@ BookingConfirmationModalProps) {
                 Continue
               </Button>
 
-              <Button variant="secondary" type="button" onClick={onClose}>
+              <Button variant="secondary" type="button" onClick={handleClose}>
                 Back
               </Button>
             </>
@@ -302,7 +345,13 @@ BookingConfirmationModalProps) {
           )}
 
           {currentStep === 4 && (
-            <Button variant="primary" type="button" onClick={onClose}>
+            <Button
+              variant="primary"
+              type="button"
+              onClick={() => {
+                void handleClose();
+              }}
+            >
               Close
             </Button>
           )}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import BookingDetails from "./BookingDetails";
 import ScreeningSelector from "@/components/movies/movie-details/ScreeningSelector";
 import TicketSelector from "./TicketSelector";
@@ -14,7 +14,6 @@ import { Movie, Screening } from "./types/Booking.types";
 import { BookingManagerProps } from "./types/Booking.types";
 
 export default function BookingManager({ screeningId }: BookingManagerProps) {
-  
   const [selectedScreening, setSelectedScreening] = useState<Screening | null>(
     null
   );
@@ -29,6 +28,34 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
   const [seatDetails, setSeatDetails] = useState<
     Map<string, { row: number; seatNumber: number }>
   >(new Map());
+  const [refreshSeats, setRefreshSeats] = useState<boolean>(false);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+
+  const refreshSeatsData = useCallback(async () => {
+    if (!selectedScreening) return;
+
+    setIsRefreshing(true);
+    try {
+      const response = await fetch(`/api/seats/${selectedScreening._id}`, {
+        cache: "no-store",
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          Pragma: "no-cache",
+          Expires: "0",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to refresh seats");
+      }
+
+      setRefreshSeats((prev) => !prev);
+    } catch (error) {
+      console.error("Error refreshing seats:", error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [selectedScreening]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,6 +110,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
   const handleSelectedSeatsChange = (seats: string[]) => {
     setSelectedSeats(seats);
   };
+
   const handleFinalPriceChange = (price: number) => {
     setFinalPrice(price);
   };
@@ -100,7 +128,10 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
       return;
     }
     setIsBooking(true);
-
+    console.log(
+      "Creating new reservation, current reservationId:",
+      reservationId
+    );
     try {
       const response = await fetch(
         `/api/movies/booking/${screeningId}/reservation`,
@@ -131,13 +162,20 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
       setIsBooking(false);
     }
   };
+  const handleCloseModal = useCallback(
+    async (wasDeleted: boolean) => {
+      setIsModalOpen(false);
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+      setSelectedSeats([]);
 
+      if (wasDeleted) {
+        await refreshSeatsData();
+      }
 
-
+      setReservationId(null);
+    },
+    [refreshSeatsData]
+  );
   if (!selectedScreening || !movie) {
     return (
       <div className="flex items-center justify-center w-full h-screen">
@@ -178,6 +216,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
             totalTickets={totalTickets}
             screeningId={selectedScreening._id}
             onSelectedSeatsChange={handleSelectedSeatsChange}
+            refreshTrigger={refreshSeats}
           />
         </div>
       </div>
@@ -189,11 +228,11 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
           disabled={
             totalTickets === 0 ||
             selectedSeats.length !== totalTickets ||
-            isBooking
+            isBooking ||
+            isRefreshing
           }
         >
-          {isBooking ? "Booking..." : "Book"}{" "}
-          {/* MAYBE KEEP THIS FOR LOADING??*/}
+          {isBooking ? "Booking..." : isRefreshing ? "Refreshing..." : "Book"}
         </Button>
 
         <Link href={`/movies/${movie.slug}`}>
@@ -204,6 +243,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
       </div>
       {selectedScreening && (
         <BookingConfirmationModal
+          key={reservationId || "no-reservation"}
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           reservationId={reservationId}
@@ -211,7 +251,6 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
           screeningTime={selectedScreening.screeningTime}
           seats={formatSeatLabels(selectedSeats)}
           totalPrice={finalPrice}
-          
         />
       )}
     </main>

@@ -1,12 +1,11 @@
 export interface BookingConfirmationModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (wasDeleted: boolean) => void;
   reservationId: string | null;
   movieTitle: string;
   screeningTime: string;
   seats: string[];
   totalPrice: number;
- 
 }
 
 export interface UserInfo {
@@ -52,4 +51,3 @@ export interface Movie {
 export interface BookingManagerProps {
   screeningId: string;
 }
-

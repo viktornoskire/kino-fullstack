@@ -1,4 +1,3 @@
-// models/booking.ts
 import mongoose, { Schema, Document } from "mongoose";
 export interface BookingType extends Document {
   screeningId: mongoose.Types.ObjectId;
@@ -69,26 +68,24 @@ const BookingSchema = new Schema(
     },
     customerInfo: {
       type: CustomerInfoSchema,
-      required: false, 
+      required: false,
     },
     paymentMethod: {
       type: String,
       enum: ["swish", "card", "atCinema"],
-      required: false, 
+      required: false,
     },
     paymentStatus: {
       type: String,
       enum: ["pending", "completed", "failed"],
       default: "pending",
-      required: false, 
+      required: false,
     },
   },
   { timestamps: true, collection: "bookings" }
 );
 
-
 BookingSchema.pre("save", function (next) {
- 
   if (this.status === "confirmed") {
     if (!this.customerInfo) {
       return next(
@@ -103,7 +100,7 @@ BookingSchema.pre("save", function (next) {
     }
 
     if (!this.paymentStatus) {
-      this.paymentStatus = "pending"; 
+      this.paymentStatus = "pending";
     }
   }
 
