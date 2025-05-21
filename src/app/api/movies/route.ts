@@ -20,12 +20,16 @@ export async function GET(req: NextRequest) {
 
     const tagParams = req.nextUrl.searchParams.getAll("tags");
     const screeningDate = req.nextUrl.searchParams.get("screeningDate");
+    const searchQuery = req.nextUrl.searchParams.get("search");
 
     const filter: any = {};
+
+    // Filter by tags
     if (tagParams.length > 0) {
       filter.tags = { $all: tagParams };
     }
 
+    // Filter by screeningDate
     if (screeningDate) {
       const dateStart = new Date(`${screeningDate}T00:00:00Z`);
       const dateEnd = new Date(`${screeningDate}T23:59:59Z`);
@@ -43,8 +47,15 @@ export async function GET(req: NextRequest) {
       );
 
       if (movieIds.length === 0) return NextResponse.json([]);
-
       filter._id = { $in: movieIds };
+    }
+
+    // Filter by search query (title)
+    if (searchQuery) {
+      filter.$or = [
+        { title: { $regex: searchQuery, $options: "i" } },
+        { genre: { $regex: searchQuery, $options: "i" } },
+      ];
     }
 
     const movies = await movie.find(filter);
