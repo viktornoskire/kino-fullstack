@@ -184,11 +184,11 @@ export default function BookingConfirmationModal({
           <div className="flex items-center mb-4">
             <div
               className={`
-      w-10 h-10 rounded-full border flex items-center justify-center text-xs
+      w-10 h-10 rounded-full border-2 flex items-center justify-center text-xs
       ${
         currentStep >= 1
-          ? "bg-kino-darkgreen text-white border-kino-darkgreen"
-          : "bg-kino-white text-black border-kino-grey"
+          ? "bg-kino-darkgreen text-white border-kino-black"
+          : "bg-kino-white text-black border-kino-black"
       }
     `}
             >
@@ -202,11 +202,11 @@ export default function BookingConfirmationModal({
 
             <div
               className={`
-      w-10 h-10 rounded-full border flex items-center justify-center text-xs
+      w-10 h-10 rounded-full border-2 flex items-center justify-center text-xs
       ${
         currentStep >= 2
-          ? "bg-kino-darkgreen text-white border-kino-darkgreen"
-          : "bg-kino-white text-black border-kino-grey"
+          ? "bg-kino-darkgreen text-white border-kino-black"
+          : "bg-kino-white text-black border-kino-black"
       }
     `}
             >
@@ -220,11 +220,11 @@ export default function BookingConfirmationModal({
 
             <div
               className={`
-      w-10 h-10 rounded-full border flex items-center justify-center text-xs
+      w-10 h-10 rounded-full border-2 flex items-center justify-center text-xs
       ${
         currentStep >= 3
-          ? "bg-kino-darkgreen text-white border-kino-darkgreen"
-          : "bg-kino-white text-black border-kino-grey"
+          ? "bg-kino-darkgreen text-white border-kino-black"
+          : "bg-kino-white text-black border-kino-black"
       }
     `}
             >
@@ -238,11 +238,11 @@ export default function BookingConfirmationModal({
 
             <div
               className={`
-      w-10 h-10 rounded-full border flex items-center justify-center text-xs
+      w-10 h-10 rounded-full border-2 flex items-center justify-center text-xs
       ${
         currentStep >= 4
-          ? "bg-kino-darkgreen text-white border-kino-darkgreen"
-          : "bg-kino-white text-black border-kino-grey"
+          ? "bg-kino-darkgreen text-white border-kino-black"
+          : "bg-kino-white text-black border-kino-black"
       }
     `}
             >
