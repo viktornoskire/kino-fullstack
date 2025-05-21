@@ -28,34 +28,35 @@ export const authOptions: NextAuthOptions = {
         );
 
         if (!passwordMatch) throw new Error('Password incorrect!');
+
         return user;
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user, session, trigger }) {
-      console.log('jwt', { token, user });
-      //Here you can pass in id and phonnumber info
-      if (trigger === 'update' && session?.name) {
-        token.name = session.name;
-        console.log('session name', session.name);
+      if (user) {
+        return { ...token, id: user.id, number: user.number };
       }
 
-      if (user) {
-        return { ...token, id: user.id };
+      if (trigger === 'update' && session?.name) {
+        token.name = session.name;
+      }
+
+      if (trigger === 'update' && session?.number) {
+        token.number = session.number;
       }
 
       return token;
     },
     async session({ session, token }) {
-      console.log('session', { session, token });
-      //Pass in user id and phonnumber to session
       return {
         ...session,
         user: {
           ...session.user,
           id: token.id,
           name: token.name,
+          number: token.number,
         },
       };
     },
