@@ -175,7 +175,7 @@ export default function BookingConfirmationModal({
             <h2 className="text-xl font-bold">{getStepTitle()}</h2>
             <button
               onClick={handleClose}
-              className="text-gray-500 hover:text-gray-700"
+              className="text-kino-white text-4xl hover:text-kino-grey"
             >
               &times;
             </button>
@@ -184,11 +184,11 @@ export default function BookingConfirmationModal({
           <div className="flex items-center mb-4">
             <div
               className={`
-      w-10 h-10 rounded-full border-2 flex items-center justify-center text-xs
+      w-10 h-10 rounded-full border-2 border-kino-black flex items-center justify-center text-xs
       ${
         currentStep >= 1
-          ? "bg-kino-darkgreen text-white border-kino-black"
-          : "bg-kino-white text-black border-kino-black"
+          ? "bg-kino-darkgreen text-white"
+          : "bg-kino-white text-black"
       }
     `}
             >
@@ -202,11 +202,11 @@ export default function BookingConfirmationModal({
 
             <div
               className={`
-      w-10 h-10 rounded-full border-2 flex items-center justify-center text-xs
+      w-10 h-10 rounded-full border-kino-black border-2 flex items-center justify-center text-xs
       ${
         currentStep >= 2
-          ? "bg-kino-darkgreen text-white border-kino-black"
-          : "bg-kino-white text-black border-kino-black"
+          ? "bg-kino-darkgreen text-white"
+          : "bg-kino-white text-black"
       }
     `}
             >
@@ -220,11 +220,11 @@ export default function BookingConfirmationModal({
 
             <div
               className={`
-      w-10 h-10 rounded-full border-2 flex items-center justify-center text-xs
+      w-10 h-10 rounded-full border-kino-black border-2 flex items-center justify-center text-xs
       ${
         currentStep >= 3
-          ? "bg-kino-darkgreen text-white border-kino-black"
-          : "bg-kino-white text-black border-kino-black"
+          ? "bg-kino-darkgreen text-white"
+          : "bg-kino-white text-black"
       }
     `}
             >
@@ -238,11 +238,11 @@ export default function BookingConfirmationModal({
 
             <div
               className={`
-      w-10 h-10 rounded-full border-2 flex items-center justify-center text-xs
+      w-10 h-10 rounded-full border-kino-black border-2 flex items-center justify-center text-xs
       ${
         currentStep >= 4
-          ? "bg-kino-darkgreen text-white border-kino-black"
-          : "bg-kino-white text-black border-kino-black"
+          ? "bg-kino-darkgreen text-white"
+          : "bg-kino-white text-black"
       }
     `}
             >
@@ -292,7 +292,7 @@ export default function BookingConfirmationModal({
           )}
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 mr-20 ml-20">
           {currentStep === 1 && (
             <>
               <Button
