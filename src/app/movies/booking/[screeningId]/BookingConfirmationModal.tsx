@@ -21,8 +21,7 @@ export default function BookingConfirmationModal({
   const [userInfo, setUserInfo] = useState<UserInfo>({
     email: '',
     phoneNumber: '',
-    firstName: '',
-    lastName: '',
+    name: '',
   });
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card');
   const [bookingId, setBookingId] = useState<string | null>(null);
@@ -109,10 +108,9 @@ export default function BookingConfirmationModal({
   };
 
   const validateUserInfo = () => {
-    const { email, phoneNumber, firstName, lastName } = userInfo;
+    const { email, phoneNumber, name } = userInfo;
 
-    if (!firstName.trim()) return false;
-    if (!lastName.trim()) return false;
+    if (!name.trim()) return false;
     if (!email.trim() || !email.includes('@')) return false;
     if (!phoneNumber.trim()) return false;
 

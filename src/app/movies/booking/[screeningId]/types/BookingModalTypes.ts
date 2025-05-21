@@ -9,8 +9,7 @@ export interface Step1BookingModalProps {
 export interface UserInfo {
   email: string;
   phoneNumber: string;
-  firstName: string;
-  lastName: string;
+  name: string;
 }
 
 export interface Step2BookingModalProps {

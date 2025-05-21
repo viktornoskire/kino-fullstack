@@ -17,14 +17,14 @@ export default function Step2BookingModal({ userInfo, onInputChange }: Step2Book
 
       <div className='space-y-3'>
         <div>
-          <label htmlFor='lastName' className='block text-sm font-medium mb-1'>
+          <label htmlFor='name' className='block text-sm font-medium mb-1'>
             Name*
           </label>
           <input
             type='text'
-            id='lastName'
-            name='lastName'
-            value={user?.name || ''}
+            id='name'
+            name='name'
+            value={user?.name || userInfo.name}
             onChange={handleChange}
             className='w-full p-2 bg-gray-800 rounded border border-gray-700'
             required
@@ -39,7 +39,7 @@ export default function Step2BookingModal({ userInfo, onInputChange }: Step2Book
             type='email'
             id='email'
             name='email'
-            value={user?.email || ''}
+            value={user?.email || userInfo.email}
             onChange={handleChange}
             className='w-full p-2 bg-gray-800 rounded border border-gray-700'
             required
@@ -54,7 +54,7 @@ export default function Step2BookingModal({ userInfo, onInputChange }: Step2Book
             type='tel'
             id='phoneNumber'
             name='phoneNumber'
-            value={user?.number || ''}
+            value={user?.number || userInfo.phoneNumber}
             onChange={handleChange}
             className='w-full p-2 bg-gray-800 rounded border border-gray-700'
             required
