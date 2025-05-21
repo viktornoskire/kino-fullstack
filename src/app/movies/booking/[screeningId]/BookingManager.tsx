@@ -31,7 +31,6 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
   const [refreshSeats, setRefreshSeats] = useState<boolean>(false);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
-  // New function to forcefully fetch the latest seat data
   const refreshSeatsData = useCallback(async () => {
     if (!selectedScreening) return;
 
@@ -50,7 +49,6 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
         throw new Error("Unable to refresh seats");
       }
 
-      // Trigger UI update after getting fresh data
       setRefreshSeats((prev) => !prev);
     } catch (error) {
       console.error("Error refreshing seats:", error);
