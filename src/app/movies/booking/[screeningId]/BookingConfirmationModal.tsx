@@ -41,10 +41,9 @@ export default function BookingConfirmationModal({
 
     setIsDeleting(true);
     try {
-      const response = await fetch(
-        `/api/movies/booking/cancel-reservation?id=${reservationId}`,
-        { method: "DELETE" }
-      );
+      const response = await fetch(`/api/reservations/${reservationId}`, {
+        method: "DELETE",
+      });
 
       if (!response.ok) {
         console.error("Failed to delete reservation:", await response.text());
@@ -65,7 +64,6 @@ export default function BookingConfirmationModal({
 
     if (currentStep < 4) {
       deleted = await deleteReservation();
-      console.log("Reservation deleted:", deleted);
     }
 
     onClose(deleted);
