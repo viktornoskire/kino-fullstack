@@ -181,59 +181,72 @@ export default function BookingConfirmationModal({
             </button>
           </div>
 
-          <div className="flex justify-center items-center gap-2 mb-4">
-            <div className="flex items-center">
-              <div
-                className={`w-10 h-10 border border-black rounded-full ${
-                  currentStep >= 1
-                    ? "bg-kino-darkgreen"
-                    : "bg-kino-white text-black"
-                } flex items-center justify-center text-xs`}
-              >
-                1
-              </div>
-              <div className="h-1 w-4 bg-kino-white"></div>
+          <div className="flex items-center mb-4">
+            <div
+              className={`
+      w-10 h-10 rounded-full border flex items-center justify-center text-xs
+      ${
+        currentStep >= 1
+          ? "bg-kino-darkgreen text-white border-kino-darkgreen"
+          : "bg-kino-white text-black border-kino-grey"
+      }
+    `}
+            >
+              1
             </div>
-            <div className="flex items-center">
-              <div
-                className={`w-10 h-10 rounded-full border border-black ${
-                  currentStep >= 2
-                    ? "bg-kino-darkgreen"
-                    : "bg-kino-white text-black"
-                } flex items-center justify-center text-xs ${
-                  currentStep < 2 ? "text-black" : ""
-                }`}
-              >
-                2
-              </div>
-              <div className="h-1 w-4 bg-kino-white"></div>
+            <div
+              className={`flex-1 h-1 ${
+                currentStep > 1 ? "bg-kino-darkgreen" : "bg-kino-white"
+              }`}
+            />
+
+            <div
+              className={`
+      w-10 h-10 rounded-full border flex items-center justify-center text-xs
+      ${
+        currentStep >= 2
+          ? "bg-kino-darkgreen text-white border-kino-darkgreen"
+          : "bg-kino-white text-black border-kino-grey"
+      }
+    `}
+            >
+              2
             </div>
-            <div className="flex items-center">
-              <div
-                className={`w-10 h-10 rounded-full border border-black ${
-                  currentStep >= 3
-                    ? "bg-kino-darkgreen"
-                    : "bg-kino-white text-black"
-                } flex items-center justify-center text-xs ${
-                  currentStep < 3 ? "text-black" : ""
-                }`}
-              >
-                3
-              </div>
-              <div className="h-1 w-4 bg-kino-white"></div>
+            <div
+              className={`flex-1 h-1 ${
+                currentStep > 2 ? "bg-kino-darkgreen" : "bg-kino-white"
+              }`}
+            />
+
+            <div
+              className={`
+      w-10 h-10 rounded-full border flex items-center justify-center text-xs
+      ${
+        currentStep >= 3
+          ? "bg-kino-darkgreen text-white border-kino-darkgreen"
+          : "bg-kino-white text-black border-kino-grey"
+      }
+    `}
+            >
+              3
             </div>
-            <div className="flex items-center">
-              <div
-                className={`w-10 h-10 border border-black rounded-full ${
-                  currentStep >= 4
-                    ? "bg-kino-darkgreen"
-                    : "bg-kino-white text-black"
-                } flex items-center justify-center text-xs ${
-                  currentStep < 4 ? "text-black" : ""
-                }`}
-              >
-                4
-              </div>
+            <div
+              className={`flex-1 h-1 ${
+                currentStep > 3 ? "bg-kino-darkgreen" : "bg-kino-white"
+              }`}
+            />
+
+            <div
+              className={`
+      w-10 h-10 rounded-full border flex items-center justify-center text-xs
+      ${
+        currentStep >= 4
+          ? "bg-kino-darkgreen text-white border-kino-darkgreen"
+          : "bg-kino-white text-black border-kino-grey"
+      }
+    `}
+            >
+              4
             </div>
           </div>
         </div>
