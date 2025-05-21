@@ -100,7 +100,7 @@ export default function NowShowingWrapper() {
 
   // Render filters, movie list and pagination button
   return (
-    <div className="mt-10">
+    <div className="mt-10 mb-0">
       <FilterButtons selectedTag={selectedTag} onSelect={setSelectedTag} />
       <DateSelector selectedDate={selectedDate} onChange={setSelectedDate} />
       <RenderCurrentMovies movies={visibleMovies} />

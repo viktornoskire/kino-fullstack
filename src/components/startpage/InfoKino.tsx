@@ -1,9 +1,8 @@
 'use client';
 import { openType } from '@/types/Opentype';
 import { useEffect, useMemo, useState } from 'react';
-import OpeningHours from './OpeningHours';
 import InfoModal from './InfoModal';
-import Spinner from './Spinner';
+import Spinner from '../Spinner';
 
 const InfoKino = () => {
   const weekday = [
@@ -68,15 +67,12 @@ const InfoKino = () => {
   return (
     <>
       <div className="lg: grid lg:grid-cols-2 p-4">
-        <div className="lg:col-span-2 mb-4">
-          <h1 className="text-3xl font-bold">Kino Sandviken</h1>
-          <p>Open hours today {disp[0].hours}</p>
+        <div className="lg:col-span-2 mb-2">
+          <h1 className="text-3xl font-bold mb-2">Kino Sandviken</h1>
+          <p>Today's hours: {disp[0].hours}</p>
         </div>
         <div className="lg:col-span-2">
           <InfoModal display={disp} />
-        </div>
-        <div className="hidden lg:block lg:col-start-3 lg:row-start-1 lg:row-span-2">
-          <OpeningHours display={disp} />
         </div>
       </div>
     </>
