@@ -6,6 +6,7 @@ import Step1BookingModal from "./Step1BookingModal";
 import Step2BookingModal from "./Step2BookingModal";
 import Step3BookingModal from "./Step3BookingModal";
 import Step4BookingModal from "./Step4BookingModal";
+import { useRouter } from "next/navigation";
 import {
   BookingConfirmationModalProps,
   UserInfo,
@@ -21,6 +22,7 @@ export default function BookingConfirmationModal({
   seats,
   totalPrice,
 }: BookingConfirmationModalProps) {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [userInfo, setUserInfo] = useState<UserInfo>({
     email: "",
@@ -181,10 +183,10 @@ export default function BookingConfirmationModal({
             </button>
           </div>
 
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4 mr-18 ml-18">
             <div
               className={`
-      w-10 h-10 rounded-full border-2 border-kino-black flex items-center justify-center text-xs
+      w-9 h-9 rounded-full border-3 border-kino-black flex items-center justify-center text-xs
       ${
         currentStep >= 1
           ? "bg-kino-darkgreen text-white"
@@ -195,14 +197,14 @@ export default function BookingConfirmationModal({
               1
             </div>
             <div
-              className={`flex-1 h-1 ${
+              className={`flex-1 h-0.5 ${
                 currentStep > 1 ? "bg-kino-darkgreen" : "bg-kino-white"
               }`}
             />
 
             <div
               className={`
-      w-10 h-10 rounded-full border-kino-black border-2 flex items-center justify-center text-xs
+      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs
       ${
         currentStep >= 2
           ? "bg-kino-darkgreen text-white"
@@ -213,14 +215,14 @@ export default function BookingConfirmationModal({
               2
             </div>
             <div
-              className={`flex-1 h-1 ${
+              className={`flex-1 h-0.5 ${
                 currentStep > 2 ? "bg-kino-darkgreen" : "bg-kino-white"
               }`}
             />
 
             <div
               className={`
-      w-10 h-10 rounded-full border-kino-black border-2 flex items-center justify-center text-xs
+      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs
       ${
         currentStep >= 3
           ? "bg-kino-darkgreen text-white"
@@ -231,14 +233,14 @@ export default function BookingConfirmationModal({
               3
             </div>
             <div
-              className={`flex-1 h-1 ${
+              className={`flex-1 h-0.5 ${
                 currentStep > 3 ? "bg-kino-darkgreen" : "bg-kino-white"
               }`}
             />
 
             <div
               className={`
-      w-10 h-10 rounded-full border-kino-black border-2 flex items-center justify-center text-xs
+      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs
       ${
         currentStep >= 4
           ? "bg-kino-darkgreen text-white"
@@ -314,13 +316,8 @@ export default function BookingConfirmationModal({
               <Button
                 variant="primary"
                 type="button"
-                onClick={() => {
-                  if (validateUserInfo()) {
-                    handleGoToNextStep();
-                  } else {
-                    alert("Please fill in all fields correctly");
-                  }
-                }}
+                onClick={handleGoToNextStep}
+                disabled={!validateUserInfo()}
               >
                 Continue
               </Button>
@@ -361,8 +358,9 @@ export default function BookingConfirmationModal({
             <Button
               variant="primary"
               type="button"
-              onClick={() => {
-                void handleClose();
+              onClick={async () => {
+                await handleClose();
+                router.push("/");
               }}
             >
               Close

@@ -1,5 +1,8 @@
 "use client";
-import { PaymentMethod, Step4BookingModalProps } from "./types/BookingModalTypes";
+import {
+  PaymentMethod,
+  Step4BookingModalProps,
+} from "./types/BookingModalTypes";
 
 export default function Step4BookingModal({
   bookingId,

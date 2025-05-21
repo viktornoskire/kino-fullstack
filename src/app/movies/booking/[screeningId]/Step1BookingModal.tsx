@@ -38,7 +38,7 @@ export default function Step1BookingModal({
       <div className="border-t pt-3 mt-3">
         <div className="flex items-center justify-between">
           <span>Total:</span>
-          <span>{totalPrice}</span>
+          <span>{totalPrice}kr</span>
         </div>
       </div>
     </>

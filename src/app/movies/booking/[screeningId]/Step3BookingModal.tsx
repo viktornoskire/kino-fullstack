@@ -1,6 +1,9 @@
 "use client";
 
-import { Step3BookingModalProps, PaymentOptionProps } from "./types/BookingModalTypes";
+import {
+  Step3BookingModalProps,
+  PaymentOptionProps,
+} from "./types/BookingModalTypes";
 
 export default function Step3BookingModal({
   totalPrice,
@@ -50,14 +53,12 @@ export default function Step3BookingModal({
           <span>{totalPrice}</span>
         </div>
         <p className="text-xs text-gray-400 mt-2">
-          *This is a simulated payment for demonstration purposes
+          *This is a simulated payment for demonstration purposes*
         </p>
       </div>
     </>
   );
 }
-
-
 
 function PaymentOption({
   id,
@@ -73,8 +74,8 @@ function PaymentOption({
     <div
       className={`border rounded-lg p-3 cursor-pointer transition ${
         isSelected
-          ? "border-kino-darkred bg-gray-800"
-          : "border-gray-700 hover:bg-gray-800"
+          ? "border-kino-darkred bg-kino-black"
+          : "border-kino-grey hover:bg-kino-black"
       }`}
       onClick={onSelect}
     >
@@ -88,22 +89,13 @@ function PaymentOption({
             onChange={handleChange}
             className="sr-only"
           />
-          <div
-            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-              isSelected ? "border-kino-darkred" : "border-gray-400"
-            }`}
-          >
-            {isSelected && (
-              <div className="w-3 h-3 bg-kino-darkred rounded-full"></div>
-            )}
-          </div>
         </div>
 
         <div className="flex-1">
           <label htmlFor={id} className="font-medium block cursor-pointer">
             {title}
           </label>
-          <p className="text-sm text-gray-400">{description}</p>
+          <p className="text-sm text-kino-grey">{description}</p>
         </div>
       </div>
     </div>
