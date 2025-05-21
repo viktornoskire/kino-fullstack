@@ -27,7 +27,6 @@ export default function Step2BookingModal({ userInfo, onInputChange }: Step2Book
             value={user?.name || userInfo.name}
             onChange={handleChange}
             className='w-full p-2 bg-gray-800 rounded border border-gray-700'
-            required
           />
         </div>
 
@@ -42,7 +41,6 @@ export default function Step2BookingModal({ userInfo, onInputChange }: Step2Book
             value={user?.email || userInfo.email}
             onChange={handleChange}
             className='w-full p-2 bg-gray-800 rounded border border-gray-700'
-            required
           />
         </div>
 
@@ -57,7 +55,6 @@ export default function Step2BookingModal({ userInfo, onInputChange }: Step2Book
             value={user?.number || userInfo.phoneNumber}
             onChange={handleChange}
             className='w-full p-2 bg-gray-800 rounded border border-gray-700'
-            required
           />
         </div>
       </div>
