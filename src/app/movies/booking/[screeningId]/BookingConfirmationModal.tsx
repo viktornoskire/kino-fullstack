@@ -166,12 +166,12 @@ export default function BookingConfirmationModal({
   if (!isOpen) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
       onClick={(e) => {
         if (e.target === e.currentTarget) handleClose();
       }}
     >
-      <div className="bg-kino-darkgrey rounded-lg border border-kino-grey shadow-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
+      <div className="bg-kino-darkgrey rounded-lg shadow-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
         <div className="mb-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">{getStepTitle()}</h2>
@@ -363,7 +363,7 @@ export default function BookingConfirmationModal({
                 router.push("/");
               }}
             >
-              Close
+              Back to Homepage
             </Button>
           )}
         </div>
