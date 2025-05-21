@@ -3,6 +3,7 @@ import {
   PaymentMethod,
   Step4BookingModalProps,
 } from "./types/BookingModalTypes";
+import Image from "next/image";
 
 export default function Step4BookingModal({
   bookingId,
@@ -29,37 +30,42 @@ export default function Step4BookingModal({
 
   return (
     <div className="text-center">
-      <div className="text-kino-darkgreen text-5xl mb-4"></div>
-      <h3 className="text-xl font-bold mb-2">Booking Confirmed</h3>
+      <Image
+        src="/confirmed-order.png"
+        alt="Order Confirmed picture"
+        width={90}
+        height={90}
+        className="mx-auto mb-6"
+      />
       <p className="mb-4">
         Your booking for {movieTitle} is confirmed. We have sent a confirmation
         to {userInfo.email}.
       </p>
 
       <div className="bg-kino-gray-800 p-4 rounded text-left mb-4">
-        <p className="text-xs text-gray-400">Booking ID: {bookingId}</p>
-        <p className="text-xs text-gray-400">{movieTitle}</p>
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-kino-grey">Booking ID: {bookingId}</p>
+        <p className="text-xs text-kino-grey">Movie: {movieTitle}</p>
+        <p className="text-xs text-kino-grey">
           {formatScreeningTime(screeningTime)}
         </p>
-        <p className="text-xs text-gray-400">Seats: {seats.join(", ")}</p>
+        <p className="text-xs text-kino-grey">Seats: {seats.join(", ")}</p>
 
         <div className="border-t border-gray-700 my-3"></div>
 
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-kino-grey">
           Name: {userInfo.firstName} {userInfo.lastName}
         </p>
-        <p className="text-xs text-gray-400">Email: {userInfo.email}</p>
-        <p className="text-xs text-gray-400">Phone: {userInfo.phoneNumber}</p>
+        <p className="text-xs text-kino-grey">Email: {userInfo.email}</p>
+        <p className="text-xs text-kino-grey">Phone: {userInfo.phoneNumber}</p>
 
         <div className="border-t border-gray-700 my-3"></div>
 
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-kino-grey">
           Payment Method: {getPaymentMethodText(paymentMethod)}
         </p>
-        <p className="text-xs text-gray-400">Total: {totalPrice} SEK</p>
+        <p className="text-xs text-kino-grey">Total: {totalPrice} SEK</p>
       </div>
-      <p className="text-xs text-gray-400">
+      <p className="text-xs text-kino-grey">
         Please arrive at least 15 minutes before the screening time. Enjoy your
         movie!
       </p>
