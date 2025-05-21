@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 import { Step2BookingModalProps } from './types/BookingModalTypes';
 import { useSession } from 'next-auth/react';
 
@@ -10,6 +11,11 @@ export default function Step2BookingModal({ userInfo, onInputChange }: Step2Book
     const { name, value } = e.target;
     onInputChange(name, value);
   };
+  useEffect(() => {
+    onInputChange('name', user?.name || '');
+    onInputChange('email', user?.email || '');
+    onInputChange('phoneNumber', user?.number || '');
+  }, []);
 
   return (
     <>
