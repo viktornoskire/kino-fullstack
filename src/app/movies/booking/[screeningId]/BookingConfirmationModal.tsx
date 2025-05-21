@@ -7,6 +7,7 @@ import Step2BookingModal from './Step2BookingModal';
 import Step3BookingModal from './Step3BookingModal';
 import Step4BookingModal from './Step4BookingModal';
 import { BookingConfirmationModalProps, UserInfo, PaymentMethod } from './types/Booking.types';
+import Link from 'next/link';
 
 export default function BookingConfirmationModal({
   isOpen,
@@ -253,9 +254,11 @@ export default function BookingConfirmationModal({
           )}
 
           {currentStep === 4 && (
-            <Button variant='primary' type='button' onClick={onClose}>
-              Close
-            </Button>
+            <Link href={'/'} className='block mx-auto'>
+              <Button variant='primary' type='button' onClick={onClose}>
+                Close
+              </Button>
+            </Link>
           )}
         </div>
       </div>
