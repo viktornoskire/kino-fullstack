@@ -1,4 +1,3 @@
-// In /api/movies/booking/confirmation/route.ts
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import Reservation from "@/models/reservation";

@@ -1,4 +1,3 @@
-// In /api/movies/booking/[screeningId]/reservation/route.ts
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import Reservation from "@/models/reservation";
@@ -24,14 +23,12 @@ export async function POST(request: Request) {
 
     await connectDB();
 
-    // Check for existing active reservations
     const existingReservations = await Reservation.find({
       screeningId,
       seats: { $in: seats },
       status: "reserved",
     });
 
-    // Check for confirmed bookings
     const existingBookings = await Booking.find({
       screeningId,
       seatIds: { $in: seats },
