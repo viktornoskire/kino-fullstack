@@ -11,10 +11,15 @@ const Movies = () => {
     async function loadMovies() {
       try {
         const response = await fetch('/api/movies?tags=nowShowing');
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch movies');
+        }
+
         const dataMovies: movieType[] = await response.json();
         setMovies(dataMovies);
-      } catch (err) {
-        console.error("Couldn't get movies", err);
+      } catch (error) {
+        console.error("Couldn't get movies", error);
       }
     }
 
