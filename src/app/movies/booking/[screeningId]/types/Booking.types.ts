@@ -6,6 +6,7 @@ export interface BookingConfirmationModalProps {
   screeningTime: string;
   seats: string[];
   totalPrice: number;
+  ticketSummary: string;
 }
 
 export interface UserInfo {
