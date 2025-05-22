@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useState, useCallback, useRef } from 'react';
 import Button from '@/components/Button';
 import Step1BookingModal from './Step1BookingModal';
