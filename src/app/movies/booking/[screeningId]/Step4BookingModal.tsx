@@ -1,5 +1,10 @@
 "use client";
-import { PaymentMethod, Step4BookingModalProps } from "./types/BookingModalTypes";
+
+import Image from "next/image";
+import {
+  PaymentMethod,
+  Step4BookingModalProps,
+} from "./types/BookingModalTypes";
 
 export default function Step4BookingModal({
   bookingId,
@@ -11,54 +16,68 @@ export default function Step4BookingModal({
   totalPrice,
   formatScreeningTime,
 }: Step4BookingModalProps) {
-  const getPaymentMethodText = (method: PaymentMethod) => {
-    switch (method) {
-      case "swish":
-        return "Swish";
-      case "card":
-        return "Credit/Debit Card";
-      case "atCinema":
-        return "Pay at Cinema";
-      default:
-        return "unknown";
-    }
+  const paymentLabel: Record<PaymentMethod, string> = {
+    swish: "Swish",
+    card: "Credit/Debit Card",
+    atCinema: "Pay at Cinema",
   };
 
   return (
     <div className="text-center">
-      <div className="text-kino-darkgreen text-5xl mb-4"></div>
-      <h3 className="text-xl font-bold mb-2">Booking Confirmed</h3>
-      <p className="mb-4">
-        Your booking for {movieTitle} is confirmed. We have sent a confirmation
-        to {userInfo.email}.
+      <Image
+        src="/confirmed-order.png"
+        alt="Order confirmed"
+        width={80}
+        height={80}
+        className="mx-auto mb-4"
+      />
+
+      <h3 className="text-base font-semibold mb-1">Booking confirmed!</h3>
+      <p className="text-xs mb-4">
+        We emailed a receipt to&nbsp;
+        <span className="font-medium">{userInfo.email}</span>.
       </p>
 
-      <div className="bg-kino-gray-800 p-4 rounded text-left mb-4">
-        <p className="text-xs text-gray-400">Booking ID: {bookingId}</p>
-        <p className="text-xs text-gray-400">{movieTitle}</p>
-        <p className="text-xs text-gray-400">
-          {formatScreeningTime(screeningTime)}
-        </p>
-        <p className="text-xs text-gray-400">Seats: {seats.join(", ")}</p>
+      <div className="bg-kino-black/50 rounded-lg shadow-md p-5 text-left divide-y divide-gray-700">
+        <div className="grid gap-y-1 gap-x-4 text-xs sm:grid-cols-2">
+          <span className="text-kino-grey">Booking ID:</span>
+          <span>{bookingId}</span>
 
-        <div className="border-t border-gray-700 my-3"></div>
+          <span className="text-kino-grey">Movie:</span>
+          <span>{movieTitle}</span>
 
-        <p className="text-xs text-gray-400">
-          Name: {userInfo.firstName} {userInfo.lastName}
-        </p>
-        <p className="text-xs text-gray-400">Email: {userInfo.email}</p>
-        <p className="text-xs text-gray-400">Phone: {userInfo.phoneNumber}</p>
+          <span className="text-kino-grey">Date & Time:</span>
+          <span>{formatScreeningTime(screeningTime)}</span>
 
-        <div className="border-t border-gray-700 my-3"></div>
+          <span className="text-kino-grey">Seats</span>
+          <div className="flex flex-col">
+            {seats.map((seat) => (
+              <span key={seat}>{seat}</span>
+            ))}
+          </div>
+        </div>
 
-        <p className="text-xs text-gray-400">
-          Payment Method: {getPaymentMethodText(paymentMethod)}
-        </p>
-        <p className="text-xs text-gray-400">Total: {totalPrice} SEK</p>
+        <div className="grid gap-y-1 gap-x-4 text-xs pt-3 sm:grid-cols-2">
+          <span className="text-kino-grey">Name</span>
+          <span>
+            {userInfo.firstName} {userInfo.lastName}
+          </span>
+
+          <span className="text-kino-grey">Phone</span>
+          <span>{userInfo.phoneNumber}</span>
+        </div>
+
+        <div className="grid gap-y-1 gap-x-4 text-xs pt-3 sm:grid-cols-2">
+          <span className="text-kino-grey">Payment</span>
+          <span>{paymentLabel[paymentMethod]}</span>
+
+          <span className="text-kino-grey font-semibold">Total</span>
+          <span className="font-semibold">{totalPrice} SEK</span>
+        </div>
       </div>
-      <p className="text-xs text-gray-400">
-        Please arrive at least 15 minutes before the screening time. Enjoy your
-        movie!
+
+      <p className="mt-4 text-[10px] leading-tight text-kino-grey">
+        Please arrive at least 15 minutes early. Enjoy the show!
       </p>
     </div>
   );

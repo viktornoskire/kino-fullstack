@@ -1,13 +1,78 @@
 "use client";
+
+import { useState, useEffect } from "react";
 import { Step2BookingModalProps } from "./types/BookingModalTypes";
 
 export default function Step2BookingModal({
   userInfo,
   onInputChange,
 }: Step2BookingModalProps) {
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    const newErrors: Record<string, string> = {};
+
+    if (!userInfo.firstName.trim()) {
+      newErrors.firstName = "First name is required";
+    }
+    if (!userInfo.lastName.trim()) {
+      newErrors.lastName = "Last name is required";
+    }
+    if (!userInfo.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!userInfo.email.includes("@")) {
+      newErrors.email = "Enter a valid email address";
+    }
+    if (!userInfo.phoneNumber.trim()) {
+      newErrors.phoneNumber = "Phone number is required";
+    }
+
+    setErrors(newErrors);
+  }, [userInfo]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     onInputChange(name, value);
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setTouched((t) => ({ ...t, [e.target.name]: true }));
+  };
+
+  const renderField = (
+    name: keyof typeof userInfo,
+    label: string,
+    type: string = "text"
+  ) => {
+    const hasError = touched[name] && Boolean(errors[name]);
+    return (
+      <div>
+        <label htmlFor={name} className="block text-sm font-medium mb-1">
+          {label}
+        </label>
+        <input
+          id={name}
+          name={name}
+          type={type}
+          value={userInfo[name]}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          className={`
+            w-full p-3 rounded
+            ${
+              hasError
+                ? "border-2 border-red-500 bg-kino-darkgrey"
+                : "border bg-kino-darkgrey border-kino-grey"
+            }
+          `}
+        />
+        {hasError && (
+          <p className="mt-1 text-sm text-red-500">{errors[name]}</p>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -17,68 +82,10 @@ export default function Step2BookingModal({
       </p>
 
       <div className="space-y-3">
-        <div>
-          <label htmlFor="firstName" className="block text-sm font-medium mb-1">
-            First Name*
-          </label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            value={userInfo.firstName}
-            onChange={handleChange}
-            className="w-full p-2 bg-gray-800 rounded border border-gray-700"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="lastName" className="block text-sm font-medium mb-1">
-            Last Name*
-          </label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            value={userInfo.lastName}
-            onChange={handleChange}
-            className="w-full p-2 bg-gray-800 rounded border border-gray-700"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium mb-1">
-            Email*
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={userInfo.email}
-            onChange={handleChange}
-            className="w-full p-2 bg-gray-800 rounded border border-gray-700"
-            required
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="phoneNumber"
-            className="block text-sm font-medium mb-1"
-          >
-            Phone Number*
-          </label>
-          <input
-            type="tel"
-            id="phoneNumber"
-            name="phoneNumber"
-            value={userInfo.phoneNumber}
-            onChange={handleChange}
-            className="w-full p-2 bg-gray-800 rounded border border-gray-700"
-            required
-          />
-        </div>
+        {renderField("firstName", "First Name")}
+        {renderField("lastName", "Last Name")}
+        {renderField("email", "Email", "email")}
+        {renderField("phoneNumber", "Phone Number", "tel")}
       </div>
     </>
   );

@@ -1,6 +1,9 @@
 "use client";
-
-import { Step3BookingModalProps, PaymentOptionProps } from "./types/BookingModalTypes";
+import Image from "next/image";
+import {
+  Step3BookingModalProps,
+  PaymentOptionProps,
+} from "./types/BookingModalTypes";
 
 export default function Step3BookingModal({
   totalPrice,
@@ -25,6 +28,15 @@ export default function Step3BookingModal({
           description="Pay securely with your card"
           isSelected={selectedMethod === "card"}
           onSelect={() => onSelectMethod("card")}
+          icon={
+            <Image
+              src="/mastercard.svg"
+              alt="Swish logo"
+              width={28}
+              height={28}
+              className="w-8 h-8"
+            />
+          }
         />
 
         <PaymentOption
@@ -33,6 +45,15 @@ export default function Step3BookingModal({
           description="Pay with swish mobile payment"
           isSelected={selectedMethod === "swish"}
           onSelect={() => onSelectMethod("swish")}
+          icon={
+            <Image
+              src="/swish-logo.png"
+              alt="Swish logo"
+              width={28}
+              height={28}
+              className="w-8 h-8"
+            />
+          }
         />
 
         <PaymentOption
@@ -41,23 +62,30 @@ export default function Step3BookingModal({
           description="Pay when you arrive at the cinema"
           isSelected={selectedMethod === "atCinema"}
           onSelect={() => onSelectMethod("atCinema")}
+          icon={
+            <Image
+              src="/kinoLogo.png"
+              alt="Swish logo"
+              width={28}
+              height={28}
+              className="w-8 h-8"
+            />
+          }
         />
       </div>
 
       <div className="border-t pt-3 mt-4">
         <div className="flex justify-between font-semibold">
           <span>Total:</span>
-          <span>{totalPrice}</span>
+          <span>{totalPrice}kr</span>
         </div>
         <p className="text-xs text-gray-400 mt-2">
-          *This is a simulated payment for demonstration purposes
+          *This is a simulated payment for demonstration purposes*
         </p>
       </div>
     </>
   );
 }
-
-
 
 function PaymentOption({
   id,
@@ -65,6 +93,7 @@ function PaymentOption({
   description,
   isSelected,
   onSelect,
+  icon,
 }: PaymentOptionProps) {
   const handleChange = () => {
     onSelect();
@@ -73,37 +102,28 @@ function PaymentOption({
     <div
       className={`border rounded-lg p-3 cursor-pointer transition ${
         isSelected
-          ? "border-kino-darkred bg-gray-800"
-          : "border-gray-700 hover:bg-gray-800"
+          ? "border-kino-darkred bg-kino-black"
+          : "border-kino-grey hover:bg-kino-black"
       }`}
       onClick={onSelect}
     >
-      <div className="flex items-center">
-        <div className="mr-3">
-          <input
-            type="radio"
-            id={id}
-            name="paymentMethod"
-            checked={isSelected}
-            onChange={handleChange}
-            className="sr-only"
-          />
-          <div
-            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-              isSelected ? "border-kino-darkred" : "border-gray-400"
-            }`}
-          >
-            {isSelected && (
-              <div className="w-3 h-3 bg-kino-darkred rounded-full"></div>
-            )}
-          </div>
-        </div>
+      <div className="flex items-center gap-3">
+        <input
+          type="radio"
+          id={id}
+          name="paymentMethod"
+          checked={isSelected}
+          onChange={handleChange}
+          className="sr-only"
+        />
+
+        {icon && <div className="shrink-0">{icon}</div>}
 
         <div className="flex-1">
-          <label htmlFor={id} className="font-medium block cursor-pointer">
+          <label htmlFor={id} className="font-medium cursor-pointer">
             {title}
           </label>
-          <p className="text-sm text-gray-400">{description}</p>
+          <p className="text-sm text-kino-grey">{description}</p>
         </div>
       </div>
     </div>

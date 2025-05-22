@@ -22,6 +22,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
   const [totalTickets, setTotalTickets] = useState<number>(0);
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   const [finalPrice, setFinalPrice] = useState<number>(0);
+  const [ticketSummary, setTicketSummary] = useState<string>("");
   const [isBooking, setIsBooking] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [reservationId, setReservationId] = useState<string | null>(null);
@@ -128,10 +129,6 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
       return;
     }
     setIsBooking(true);
-    console.log(
-      "Creating new reservation, current reservationId:",
-      reservationId
-    );
     try {
       const response = await fetch(
         `/api/movies/booking/${screeningId}/reservation`,
@@ -206,6 +203,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
               <TicketSelector
                 onTotalTicketsChange={setTotalTickets}
                 onFinalPriceChange={handleFinalPriceChange}
+                onTicketSummaryChange={setTicketSummary}
               />
             </div>
           </div>
@@ -251,6 +249,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
           screeningTime={selectedScreening.screeningTime}
           seats={formatSeatLabels(selectedSeats)}
           totalPrice={finalPrice}
+          ticketSummary={ticketSummary}
         />
       )}
     </main>

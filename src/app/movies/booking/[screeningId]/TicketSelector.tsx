@@ -6,6 +6,7 @@ import { Tickets, TicketSelectorProps } from "./types/TicketSelector.types";
 export default function TicketSelector({
   onTotalTicketsChange,
   onFinalPriceChange,
+  onTicketSummaryChange,
 }: TicketSelectorProps) {
   const isLoggedIn = false; //TEMPORARY SET TO FALSE UNTIL WE IMPLEMENTED LOGIN.
   const [ticketCounts, setTicketCounts] = useState<Tickets>({
@@ -53,6 +54,13 @@ export default function TicketSelector({
     setTotalPrice(newTotal);
     setFinalPrice(newFinalPrice);
 
+    const summary = Object.entries(ticketCounts)
+      .filter(([, c]) => c > 0)
+      .map(([ticket, count]) => `${count}x ${ticket}`)
+      .join(", ");
+
+    onTicketSummaryChange(summary);
+
     onTotalTicketsChange(ticketCount);
     onFinalPriceChange(newFinalPrice);
   }, [
@@ -61,6 +69,7 @@ export default function TicketSelector({
     onTotalTicketsChange,
     onFinalPriceChange,
     isLoggedIn,
+    onTicketSummaryChange,
   ]);
 
   return (
