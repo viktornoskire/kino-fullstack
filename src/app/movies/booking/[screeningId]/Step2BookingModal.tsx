@@ -37,7 +37,7 @@ export default function Step2BookingModal({ userInfo, onInputChange }: Step2Book
     onInputChange('name', user?.name || '');
     onInputChange('email', user?.email || '');
     onInputChange('phoneNumber', user?.number || '');
-  }, []);
+  }, [user]);
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     setTouched(t => ({ ...t, [e.target.name]: true }));
