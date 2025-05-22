@@ -54,7 +54,7 @@ export default function Step2BookingModal({ userInfo, onInputChange }: Step2Book
           id={name}
           name={name}
           type={type}
-          value={(user?.[name as keyof typeof user] || userInfo[name as keyof typeof userInfo]) ?? ''}
+          value={userInfo[name] || ''}
           onChange={handleChange}
           onBlur={handleBlur}
           className={`
