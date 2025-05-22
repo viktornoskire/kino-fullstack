@@ -3,34 +3,20 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Button from '../Button';
+import { booking } from '@/types/Bookedmovietypes';
+import BookedMovies from './BookedMovies';
 
 const InfoMeber = () => {
   type user = { [value: string]: string };
-  type booking = {
-    movie: string;
-    url: string;
-    date: string;
-    time: string;
-  };
 
   const { data: session, update } = useSession();
-  const [newName, setName] = useState<user>();
-  const [newNumber, setNumber] = useState<user>();
+  const [newName, setName] = useState<user>({ name: '' });
+  const [newNumber, setNumber] = useState<user>({ number: '' });
   const [booked, setBooked] = useState<booking[]>([]);
-  const [svar, setSvar] = useState<null | {
+  const [svar, setSvar] = useState<{
     message: string;
     type: 'success' | 'error';
-  }>(null);
-
-  console.log('svar', svar);
-  console.log('booked', booked);
-
-  //Kontrollera och jämför om bokning har varit eller om det är en kommande visning
-  if (new Date('2025-05-08T12:00:00') < new Date()) {
-    console.log('Datumet har redan varit');
-  } else {
-    console.log('Datumet är i framtiden');
-  }
+  } | null>(null);
 
   useEffect(() => {
     async function loadMovies() {
@@ -67,9 +53,7 @@ const InfoMeber = () => {
       if (!res.ok) {
         throw new Error(data.message || 'Failed to update user');
       }
-
-      setSvar(data.message);
-      update(userInfo);
+      await update(userInfo);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -81,13 +65,22 @@ const InfoMeber = () => {
     }
   }
 
+  useEffect(() => {
+    if (svar) {
+      const timer = setTimeout(() => {
+        setSvar(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [svar]);
+
   return (
     <>
-      <div className="p-4">
-        <h1 className="text-3xl text-center">Member page</h1>
+      <div className="flex flex-col justify-center items-center p-4">
+        <h1 className="text-4xl text-center">Member page</h1>
 
-        <div className=" mt-8 mb-4 ">
-          <div className="h-[250px] w-[250px] relative">
+        <div className="mt-4 mb-4">
+          <div className="h-[300px] w-[300px] relative">
             <Image
               src="/inloggad-member.png"
               alt="icon for logged in member"
@@ -95,25 +88,29 @@ const InfoMeber = () => {
               height={350}
               className=" rounded-4xl "
             />
-            <p className="absolute bottom-16 right-[50%] translate-[50%] max-w-[100px] text-center">
+            <p className="absolute bottom-20 right-[50%] translate-[50%] max-w-[100px] text-center">
               {session?.user?.name}
             </p>
           </div>
+
+          <div className="pt-4">
+            <h2 className="text-2xl font-bold pb-2">Userinfo</h2>
+            <p>Name: {session?.user?.name} </p>
+            <p>Email: {session?.user.email}</p>
+            <p>Mobile: {session?.user.number}</p>
+          </div>
         </div>
 
-        <div className="p-4">
-          <h2 className="text-2xl">Userinfo</h2>
-          <p>Name: </p>
-          <span>{session?.user?.name} </span>
-          <p>Email: {session?.user.email}</p>
-          <p>Mobile: {session?.user.number}</p>
-        </div>
-
-        <div className="flex flex-col max-w-[450px] p-4">
-          <h2 className="text-2xl">Update userinfo</h2>
-
+        <div className="min-w-[300px]">
+          <h2 className="text-2xl font-bold pb-2">Update userinfo</h2>
+          {svar && (
+            <div className={'mb-2 text-xl text-kino-red'} role="alert">
+              {svar.message}
+            </div>
+          )}
           <div>
             <label htmlFor="nameInput">Name:</label>
+            <br />
             <input
               type="text"
               id="nameInput"
@@ -122,6 +119,7 @@ const InfoMeber = () => {
               onChange={(e) => setName({ name: e.target.value })}
               required
             />
+            <br />
             <Button
               type="button"
               onClick={() => {
@@ -129,7 +127,7 @@ const InfoMeber = () => {
                   updateUser(newName);
                 }
               }}
-              style={{ marginTop: '16px' }}
+              style={{ marginTop: '1rem', marginBottom: '1rem' }}
             >
               Update name
             </Button>
@@ -137,6 +135,7 @@ const InfoMeber = () => {
 
           <div>
             <label htmlFor="numberInput">Mobile:</label>
+            <br />
             <input
               type="text"
               id="numberInput"
@@ -145,6 +144,7 @@ const InfoMeber = () => {
               onChange={(e) => setNumber({ number: e.target.value })}
               required
             />
+            <br />
             <Button
               type="button"
               onClick={() => {
@@ -152,37 +152,14 @@ const InfoMeber = () => {
                   updateUser(newNumber);
                 }
               }}
-              style={{ marginTop: '16px' }}
+              style={{ marginTop: '1rem', marginBottom: '1rem' }}
             >
               Update number
             </Button>
           </div>
         </div>
-        <div className="p-4">
-          <h2 className="text-2xl">Booked movies</h2>
-          <ul>
-            {booked ? (
-              booked.map((book, index) => {
-                return (
-                  <li key={index} className="p-2 max-w-[240px]">
-                    <Image
-                      src={book.url}
-                      alt="Movie poster"
-                      width={300}
-                      height={450}
-                      className="w-auto h-auto mb-2 rounded-2xl"
-                    />
-                    <p>{book.movie}</p>
-                    <p>Date: {book.date}</p>
-                    <p className="text-xl mb-4">Time: {book.time}</p>
-                  </li>
-                );
-              })
-            ) : (
-              <li>No upcoming bookings</li>
-            )}
-          </ul>
-        </div>
+
+        <BookedMovies booked={booked} />
       </div>
     </>
   );
