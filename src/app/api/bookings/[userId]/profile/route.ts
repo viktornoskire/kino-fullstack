@@ -35,6 +35,7 @@ export async function GET(
     const screeningTime = bookedScreeing.map((time) => {
       return {
         movieId: time.movieId,
+        screening: time.screeningTime,
         date: time.screeningTime.toLocaleDateString('en-GB'),
         time: time.screeningTime.toLocaleTimeString([], {
           hour: '2-digit',
@@ -43,22 +44,25 @@ export async function GET(
       };
     });
 
-    const madeBookings = bookedMovie.map((movie) => {
-      const movieTime = screeningTime.find(
-        (time) => movie._id.toString() === time.movieId.toString()
-      );
-      console.log(movieTime);
-      if (movieTime) {
-        return {
-          movie: movie.title,
-          url: movie.posterUrl,
-          date: movieTime.date,
-          time: movieTime.time,
-        };
-      }
-    });
-
-    return NextResponse.json(madeBookings);
+    if (screeningTime) {
+      const madeBookings = bookedMovie.map((movie) => {
+        const movieTime = screeningTime.find(
+          (time) => movie._id.toString() === time?.movieId.toString()
+        );
+        if (movieTime) {
+          return {
+            movie: movie.title,
+            url: movie.posterUrl,
+            screening: movieTime.screening,
+            date: movieTime.date,
+            time: movieTime.time,
+          };
+        }
+      });
+      return NextResponse.json(madeBookings);
+    } else {
+      return NextResponse.json([]);
+    }
   } catch (error) {
     console.error("Couldn't get bookings", error);
   }
