@@ -14,10 +14,8 @@ export async function PUT(req: NextRequest) {
   try {
     await connectDB();
     const body = await req.json();
-    const name = body.name;
-    await User.findByIdAndUpdate(session.user.id, {
-      name: name,
-    });
+    const user = body.userInfo;
+    await User.findByIdAndUpdate(session.user.id, user);
     return NextResponse.json(
       { message: 'Updated!', type: 'succes' },
       { status: 201 }
