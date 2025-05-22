@@ -1,5 +1,8 @@
 "use client";
-import { PaymentMethod, Step4BookingModalProps } from "./types/BookingModalTypes";
+import {
+  PaymentMethod,
+  Step4BookingModalProps,
+} from "./types/BookingModalTypes";
 
 export default function Step4BookingModal({
   bookingId,
@@ -56,6 +59,12 @@ export default function Step4BookingModal({
         </p>
         <p className="text-xs text-gray-400">Total: {totalPrice} SEK</p>
       </div>
+      <button
+        onClick={() => window.open(`/ticket?bookingId=${bookingId}`, "_blank")}
+        className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+      >
+        Skriv ut biljett
+      </button>
       <p className="text-xs text-gray-400">
         Please arrive at least 15 minutes before the screening time. Enjoy your
         movie!
