@@ -4,6 +4,7 @@ export interface Step1BookingModalProps {
   seats: string[];
   totalPrice: number;
   formatScreeningTime: (time: string) => string;
+  ticketSummary: string;
 }
 
 export interface UserInfo {
@@ -32,6 +33,7 @@ export interface PaymentOptionProps {
   description: string;
   isSelected: boolean;
   onSelect: () => void;
+  icon?: React.ReactNode;
 }
 
 export interface Step4BookingModalProps {

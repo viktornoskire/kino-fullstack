@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import BookingDetails from './BookingDetails';
 import ScreeningSelector from '@/components/movies/movie-details/ScreeningSelector';
 import TicketSelector from './TicketSelector';
@@ -22,17 +22,47 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
   } else {
     userId = '';
   }
-
   const [selectedScreening, setSelectedScreening] = useState<Screening | null>(null);
+
   const [screenings, setScreenings] = useState<Screening[]>([]);
   const [movie, setMovie] = useState<Movie | null>(null);
   const [totalTickets, setTotalTickets] = useState<number>(0);
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   const [finalPrice, setFinalPrice] = useState<number>(0);
+  const [ticketSummary, setTicketSummary] = useState<string>('');
   const [isBooking, setIsBooking] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [reservationId, setReservationId] = useState<string | null>(null);
+
   const [seatDetails, setSeatDetails] = useState<Map<string, { row: number; seatNumber: number }>>(new Map());
+  const [refreshSeats, setRefreshSeats] = useState<boolean>(false);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+
+  const refreshSeatsData = useCallback(async () => {
+    if (!selectedScreening) return;
+
+    setIsRefreshing(true);
+    try {
+      const response = await fetch(`/api/seats/${selectedScreening._id}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          Pragma: 'no-cache',
+          Expires: '0',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Unable to refresh seats');
+      }
+
+      setRefreshSeats(prev => !prev);
+    } catch (error) {
+      console.error('Error refreshing seats:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [selectedScreening]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,6 +116,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
   const handleSelectedSeatsChange = (seats: string[]) => {
     setSelectedSeats(seats);
   };
+
   const handleFinalPriceChange = (price: number) => {
     setFinalPrice(price);
   };
@@ -103,7 +134,6 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
       return;
     }
     setIsBooking(true);
-
     try {
       const response = await fetch(`/api/movies/booking/${screeningId}/reservation`, {
         method: 'POST',
@@ -131,11 +161,20 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
       setIsBooking(false);
     }
   };
+  const handleCloseModal = useCallback(
+    async (wasDeleted: boolean) => {
+      setIsModalOpen(false);
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+      setSelectedSeats([]);
 
+      if (wasDeleted) {
+        await refreshSeatsData();
+      }
+
+      setReservationId(null);
+    },
+    [refreshSeatsData]
+  );
   if (!selectedScreening || !movie) {
     return (
       <div className='flex items-center justify-center w-full h-screen'>
@@ -163,7 +202,11 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
 
           <div className='w-full md:w-1/2 flex justify-end'>
             <div className='w-full max-w-md ml-auto'>
-              <TicketSelector onTotalTicketsChange={setTotalTickets} onFinalPriceChange={handleFinalPriceChange} />
+              <TicketSelector
+                onTotalTicketsChange={setTotalTickets}
+                onFinalPriceChange={handleFinalPriceChange}
+                onTicketSummaryChange={setTicketSummary}
+              />
             </div>
           </div>
         </div>
@@ -173,6 +216,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
             totalTickets={totalTickets}
             screeningId={selectedScreening._id}
             onSelectedSeatsChange={handleSelectedSeatsChange}
+            refreshTrigger={refreshSeats}
           />
         </div>
       </div>
@@ -181,8 +225,8 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
           variant='primary'
           type='button'
           onClick={handleBooking}
-          disabled={totalTickets === 0 || selectedSeats.length !== totalTickets || isBooking}>
-          {isBooking ? 'Booking...' : 'Book'} {/* MAYBE KEEP THIS FOR LOADING??*/}
+          disabled={totalTickets === 0 || selectedSeats.length !== totalTickets || isBooking || isRefreshing}>
+          {isBooking ? 'Booking...' : isRefreshing ? 'Refreshing...' : 'Book'}
         </Button>
 
         <Link href={`/movies/${movie.slug}`}>
@@ -193,6 +237,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
       </div>
       {selectedScreening && (
         <BookingConfirmationModal
+          key={reservationId || 'no-reservation'}
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           reservationId={reservationId}
@@ -200,6 +245,7 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
           screeningTime={selectedScreening.screeningTime}
           seats={formatSeatLabels(selectedSeats)}
           totalPrice={finalPrice}
+          ticketSummary={ticketSummary}
         />
       )}
     </main>

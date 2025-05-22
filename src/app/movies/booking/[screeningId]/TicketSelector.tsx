@@ -6,7 +6,11 @@ import { useSession } from 'next-auth/react';
 import Register from '@/components/Register';
 import Login from '@/components/Login';
 
-export default function TicketSelector({ onTotalTicketsChange, onFinalPriceChange }: TicketSelectorProps) {
+export default function TicketSelector({
+  onTotalTicketsChange,
+  onFinalPriceChange,
+  onTicketSummaryChange,
+}: TicketSelectorProps) {
   const session = useSession();
   const { status } = session;
   const [showLoginModal, setLoginModal] = useState<string>('hidden');
@@ -71,9 +75,16 @@ export default function TicketSelector({ onTotalTicketsChange, onFinalPriceChang
 
     setFinalPrice(newFinalPrice);
 
+    const summary = Object.entries(ticketCounts)
+      .filter(([, c]) => c > 0)
+      .map(([ticket, count]) => `${count}x ${ticket}`)
+      .join(', ');
+
+    onTicketSummaryChange(summary);
+
     onTotalTicketsChange(ticketCount);
     onFinalPriceChange(newFinalPrice);
-  }, [ticketCounts, ticketPrices, onTotalTicketsChange, onFinalPriceChange, isLoggedIn]);
+  }, [ticketCounts, ticketPrices, onTotalTicketsChange, onFinalPriceChange, isLoggedIn, onTicketSummaryChange]);
 
   return (
     <div className=' bg-white-900 rounded-xl max-w-sm mx auto ml-12'>

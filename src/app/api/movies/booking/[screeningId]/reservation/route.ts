@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/db';
 import Reservation from '@/models/reservation';
+import Booking from '@/models/booking';
 
 export async function POST(request: Request) {
   try {
@@ -15,11 +16,17 @@ export async function POST(request: Request) {
     const existingReservations = await Reservation.find({
       screeningId,
       seats: { $in: seats },
-      status: { $ne: 'cancelled' },
+      status: 'reserved',
     });
 
-    if (existingReservations.length > 0) {
-      return NextResponse.json({ error: 'Some seats are already booked' }, { status: 409 });
+    const existingBookings = await Booking.find({
+      screeningId,
+      seatIds: { $in: seats },
+      status: 'confirmed',
+    });
+
+    if (existingReservations.length > 0 || existingBookings.length > 0) {
+      return NextResponse.json({ error: 'Some seats are already booked or reserved' }, { status: 409 });
     }
 
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000);

@@ -1,4 +1,3 @@
-// models/booking.ts
 import mongoose, { Schema, Document } from 'mongoose';
 export interface BookingType extends Document {
   screeningId: mongoose.Types.ObjectId;
