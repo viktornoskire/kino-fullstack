@@ -30,16 +30,18 @@ export default function Step4BookingModal({
         alt="Order confirmed"
         width={80}
         height={80}
-        className="mx-auto mb-4"
+        className="mx-auto mb-4 print:hidden"
       />
-
-      <h3 className="text-base font-semibold mb-1">Booking confirmed!</h3>
-      <p className="text-xs mb-4">
+    
+      <h3 className="print:hidden text-base font-semibold mb-1">
+        Booking confirmed!
+      </h3>
+      <p className="text-xs mb-4 print:hidden">
         We emailed a receipt to&nbsp;
         <span className="font-medium">{userInfo.email}</span>.
       </p>
 
-      <div className="bg-kino-black/50 rounded-lg shadow-md p-5 text-left divide-y divide-gray-700">
+      <div className="bg-kino-black/50 rounded-lg shadow-md p-5 text-left divide-y divide-gray-700 print:hidden">
         <div className="grid gap-y-1 gap-x-4 text-xs sm:grid-cols-2">
           <span className="text-kino-grey">Booking ID:</span>
           <span>{bookingId}</span>
@@ -86,11 +88,14 @@ export default function Step4BookingModal({
         </div>
       </div>
 
-      <p className="mt-4 text-[10px] leading-tight text-kino-grey">
+      <p className="mt-4 text-[10px] leading-tight text-kino-grey print:hidden">
         Please arrive at least 15 minutes early. Enjoy the show!
       </p>
-      <div id="printable-area" className="hidden print:block">
-        <h1>Your ticket</h1>
+      <div
+        id="printable-area"
+        className="hidden print:block p-6 text-black bg-white"
+      >
+        <h1 className="text-2xl font-bold mb-4">Your ticket</h1>
         <p>
           <strong>Booking ID:</strong> {bookingId}
         </p>

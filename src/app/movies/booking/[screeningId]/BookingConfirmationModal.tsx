@@ -203,7 +203,7 @@ export default function BookingConfirmationModal({
           <div className="flex items-center mb-4 mr-18 ml-18">
             <div
               className={`
-      w-9 h-9 rounded-full border-3 border-kino-black flex items-center justify-center text-xs
+      w-9 h-9 rounded-full border-3 border-kino-black flex items-center justify-center text-xs print:hidden
       ${
         currentStep >= 1
           ? "bg-kino-darkgreen text-kino-white"
@@ -221,7 +221,7 @@ export default function BookingConfirmationModal({
 
             <div
               className={`
-      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs
+      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs print:hidden
       ${
         currentStep >= 2
           ? "bg-kino-darkgreen text-kino-white"
@@ -239,7 +239,7 @@ export default function BookingConfirmationModal({
 
             <div
               className={`
-      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs
+      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs print:hidden
       ${
         currentStep >= 3
           ? "bg-kino-darkgreen text-kino-white"
@@ -257,7 +257,7 @@ export default function BookingConfirmationModal({
 
             <div
               className={`
-      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs
+      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs print:hidden
       ${
         currentStep >= 4
           ? "bg-kino-darkgreen text-kino-white"
@@ -396,6 +396,7 @@ export default function BookingConfirmationModal({
             <Button
               variant="primary"
               type="button"
+              className="print:hidden"
               onClick={async () => {
                 await handleClose();
                 router.push("/");
