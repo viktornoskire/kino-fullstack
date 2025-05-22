@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import Button from "@/components/Button";
 import Step1BookingModal from "./Step1BookingModal";
 import Step2BookingModal from "./Step2BookingModal";
@@ -23,6 +23,7 @@ export default function BookingConfirmationModal({
   totalPrice,
   ticketSummary,
 }: BookingConfirmationModalProps) {
+  const mouseDownOnOverlay = useRef(false);
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [userInfo, setUserInfo] = useState<UserInfo>({
@@ -171,9 +172,20 @@ export default function BookingConfirmationModal({
   if (!isOpen) return null;
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-kino-black/80 backdrop-blur-sm"
+      onMouseDownCapture={(e) => {
+        mouseDownOnOverlay.current = e.target === e.currentTarget;
+      }}
       onClick={(e) => {
-        if (e.target === e.currentTarget) handleClose();
+        if (e.target !== e.currentTarget) return;
+
+        if (!mouseDownOnOverlay.current) return;
+
+        if (currentStep === 4) {
+          router.push("/");
+        } else {
+          handleClose();
+        }
       }}
     >
       <div className="bg-kino-darkgrey rounded-lg shadow-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
@@ -181,7 +193,7 @@ export default function BookingConfirmationModal({
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">{getStepTitle()}</h2>
             <button
-              onClick={handleClose}
+              onClick={currentStep === 4 ? () => router.push("/") : handleClose}
               className="text-kino-white text-4xl hover:text-kino-grey"
             >
               &times;
@@ -194,8 +206,8 @@ export default function BookingConfirmationModal({
       w-9 h-9 rounded-full border-3 border-kino-black flex items-center justify-center text-xs
       ${
         currentStep >= 1
-          ? "bg-kino-darkgreen text-white"
-          : "bg-kino-white text-black"
+          ? "bg-kino-darkgreen text-kino-white"
+          : "bg-kino-white text-kino-black"
       }
     `}
             >
@@ -212,8 +224,8 @@ export default function BookingConfirmationModal({
       w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs
       ${
         currentStep >= 2
-          ? "bg-kino-darkgreen text-white"
-          : "bg-kino-white text-black"
+          ? "bg-kino-darkgreen text-kino-white"
+          : "bg-kino-white text-kino-black"
       }
     `}
             >
@@ -230,8 +242,8 @@ export default function BookingConfirmationModal({
       w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs
       ${
         currentStep >= 3
-          ? "bg-kino-darkgreen text-white"
-          : "bg-kino-white text-black"
+          ? "bg-kino-darkgreen text-kino-white"
+          : "bg-kino-white text-kino-black"
       }
     `}
             >
@@ -248,8 +260,8 @@ export default function BookingConfirmationModal({
       w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs
       ${
         currentStep >= 4
-          ? "bg-kino-darkgreen text-white"
-          : "bg-kino-white text-black"
+          ? "bg-kino-darkgreen text-kino-white"
+          : "bg-kino-white text-kino-black"
       }
     `}
             >
@@ -320,23 +332,34 @@ export default function BookingConfirmationModal({
           {currentStep === 2 && (
             <>
               {step2Error && (
-                <p className="mt-2 text-sm text-kino-red">{step2Error}</p>
+                <p className="mb-2 text-sm text-kino-red">{step2Error}</p>
               )}
+
               <Button
                 variant="primary"
                 type="button"
                 onClick={() => {
-                  if (validateUserInfo()) {
-                    setStep2Error("");
-                    handleGoToNextStep();
-                  } else {
+                  const { firstName, lastName, email, phoneNumber } = userInfo;
+                  const allEmpty =
+                    !firstName.trim() &&
+                    !lastName.trim() &&
+                    !email.trim() &&
+                    !phoneNumber.trim();
+
+                  if (allEmpty) {
                     setStep2Error("Please fill in all fields to continue");
+                    return;
+                  }
+
+                  setStep2Error("");
+
+                  if (validateUserInfo()) {
+                    handleGoToNextStep();
                   }
                 }}
               >
                 Continue
               </Button>
-
               <Button
                 variant="secondary"
                 type="button"
