@@ -33,6 +33,7 @@ export interface PaymentOptionProps {
   description: string;
   isSelected: boolean;
   onSelect: () => void;
+  icon?: React.ReactNode;
 }
 
 export interface Step4BookingModalProps {
