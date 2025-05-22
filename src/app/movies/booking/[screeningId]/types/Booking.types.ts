@@ -12,11 +12,10 @@ export interface BookingConfirmationModalProps {
 export interface UserInfo {
   email: string;
   phoneNumber: string;
-  firstName: string;
-  lastName: string;
+  name: string;
 }
 
-export type PaymentMethod = "swish" | "card" | "atCinema";
+export type PaymentMethod = 'swish' | 'card' | 'atCinema';
 
 export interface BookingDetailsProps {
   movie: {

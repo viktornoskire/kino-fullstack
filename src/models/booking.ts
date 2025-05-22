@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document } from 'mongoose';
 export interface BookingType extends Document {
   screeningId: mongoose.Types.ObjectId;
   seatIds: mongoose.Types.ObjectId[];
@@ -10,11 +10,10 @@ export interface BookingType extends Document {
   customerInfo?: {
     email: string;
     phone: string;
-    firstName: string;
-    lastName: string;
+    name: string;
   };
-  paymentMethod?: "swish" | "card" | "atCinema";
-  paymentStatus?: "pending" | "completed" | "failed";
+  paymentMethod?: 'swish' | 'card' | 'atCinema';
+  paymentStatus?: 'pending' | 'completed' | 'failed';
 }
 
 const CustomerInfoSchema = new Schema(
@@ -27,11 +26,7 @@ const CustomerInfoSchema = new Schema(
       type: String,
       required: true,
     },
-    firstName: {
-      type: String,
-      required: true,
-    },
-    lastName: {
+    name: {
       type: String,
       required: true,
     },
@@ -43,13 +38,13 @@ const BookingSchema = new Schema(
   {
     screeningId: {
       type: Schema.Types.ObjectId,
-      ref: "Screening",
+      ref: 'Screening',
       required: true,
     },
     seatIds: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Seat",
+        ref: 'Seat',
         required: true,
       },
     ],
@@ -59,8 +54,8 @@ const BookingSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["reserved", "confirmed", "cancelled"],
-      default: "reserved",
+      enum: ['reserved', 'confirmed', 'cancelled'],
+      default: 'reserved',
     },
     totalPrice: {
       type: Number,
@@ -72,35 +67,31 @@ const BookingSchema = new Schema(
     },
     paymentMethod: {
       type: String,
-      enum: ["swish", "card", "atCinema"],
+      enum: ['swish', 'card', 'atCinema'],
       required: false,
     },
     paymentStatus: {
       type: String,
-      enum: ["pending", "completed", "failed"],
-      default: "pending",
+      enum: ['pending', 'completed', 'failed'],
+      default: 'pending',
       required: false,
     },
   },
-  { timestamps: true, collection: "bookings" }
+  { timestamps: true, collection: 'bookings' }
 );
 
-BookingSchema.pre("save", function (next) {
-  if (this.status === "confirmed") {
+BookingSchema.pre('save', function (next) {
+  if (this.status === 'confirmed') {
     if (!this.customerInfo) {
-      return next(
-        new Error("Customer information is required for confirmed bookings")
-      );
+      return next(new Error('Customer information is required for confirmed bookings'));
     }
 
     if (!this.paymentMethod) {
-      return next(
-        new Error("Payment method is required for confirmed bookings")
-      );
+      return next(new Error('Payment method is required for confirmed bookings'));
     }
 
     if (!this.paymentStatus) {
-      this.paymentStatus = "pending";
+      this.paymentStatus = 'pending';
     }
   }
 
@@ -109,10 +100,8 @@ BookingSchema.pre("save", function (next) {
 
 BookingSchema.index({ screeningId: 1 });
 BookingSchema.index({ status: 1 });
-BookingSchema.index({ "customerInfo.email": 1 });
+BookingSchema.index({ 'customerInfo.email': 1 });
 
-export const Booking =
-  mongoose.models.Booking ||
-  mongoose.model<BookingType>("Booking", BookingSchema);
+export const Booking = mongoose.models.Booking || mongoose.model<BookingType>('Booking', BookingSchema);
 
 export default Booking;
