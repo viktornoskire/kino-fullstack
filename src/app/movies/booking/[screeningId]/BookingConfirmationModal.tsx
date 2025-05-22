@@ -35,6 +35,7 @@ export default function BookingConfirmationModal({
   const [bookingError, setBookingError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [step2Error, setStep2Error] = useState<string>("");
 
   const deleteReservation = useCallback(async (): Promise<boolean> => {
     if (!reservationId || bookingId || isDeleting) {
@@ -91,6 +92,9 @@ export default function BookingConfirmationModal({
       ...prev,
       [name]: value,
     }));
+    if (step2Error) {
+      setStep2Error("");
+    }
   };
 
   const handlePaymentMethodSelect = (method: PaymentMethod) => {
@@ -313,11 +317,20 @@ export default function BookingConfirmationModal({
 
           {currentStep === 2 && (
             <>
+              {step2Error && (
+                <p className="mt-2 text-sm text-kino-red">{step2Error}</p>
+              )}
               <Button
                 variant="primary"
                 type="button"
-                onClick={handleGoToNextStep}
-                disabled={!validateUserInfo()}
+                onClick={() => {
+                  if (validateUserInfo()) {
+                    setStep2Error("");
+                    handleGoToNextStep();
+                  } else {
+                    setStep2Error("Please fill in all fields to continue");
+                  }
+                }}
               >
                 Continue
               </Button>

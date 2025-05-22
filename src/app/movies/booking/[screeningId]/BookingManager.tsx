@@ -128,10 +128,6 @@ export default function BookingManager({ screeningId }: BookingManagerProps) {
       return;
     }
     setIsBooking(true);
-    console.log(
-      "Creating new reservation, current reservationId:",
-      reservationId
-    );
     try {
       const response = await fetch(
         `/api/movies/booking/${screeningId}/reservation`,

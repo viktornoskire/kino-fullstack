@@ -34,7 +34,7 @@ export default function Step3BookingModal({
               alt="Swish logo"
               width={28}
               height={28}
-              className="rounded"
+              className="w-8 h-8"
             />
           }
         />
@@ -51,7 +51,7 @@ export default function Step3BookingModal({
               alt="Swish logo"
               width={28}
               height={28}
-              className="rounded"
+              className="w-8 h-8"
             />
           }
         />
@@ -68,7 +68,7 @@ export default function Step3BookingModal({
               alt="Swish logo"
               width={28}
               height={28}
-              className="rounded"
+              className="w-8 h-8"
             />
           }
         />
