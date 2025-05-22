@@ -1,5 +1,6 @@
 "use client";
 
+import { Printer } from "lucide-react";
 import Image from "next/image";
 import {
   PaymentMethod,
@@ -72,13 +73,49 @@ export default function Step4BookingModal({
           <span>{paymentLabel[paymentMethod]}</span>
 
           <span className="text-kino-grey font-semibold">Total</span>
-          <span className="font-semibold">{totalPrice} SEK</span>
+          <div className="flex items-center justify-between w-full print:hidden">
+            <span className="font-semibold">{totalPrice} SEK</span>
+            <button
+              onClick={() => window.print()}
+              className="ml-2 cursor-pointer hover:text-gray-300"
+              aria-label="Skriv ut biljett"
+            >
+              <Printer size={18} />
+            </button>
+          </div>
         </div>
       </div>
 
       <p className="mt-4 text-[10px] leading-tight text-kino-grey">
         Please arrive at least 15 minutes early. Enjoy the show!
       </p>
+      <div id="printable-area" className="hidden print:block">
+        <h1>Your ticket</h1>
+        <p>
+          <strong>Booking ID:</strong> {bookingId}
+        </p>
+        <p>
+          <strong>Movie:</strong> {movieTitle}
+        </p>
+        <p>
+          <strong>Date & Time:</strong> {formatScreeningTime(screeningTime)}
+        </p>
+        <p>
+          <strong>Seats:</strong> {seats.join(", ")}
+        </p>
+        <p>
+          <strong>Name:</strong> {userInfo.firstName} {userInfo.lastName}
+        </p>
+        <p>
+          <strong>Phone:</strong> {userInfo.phoneNumber}
+        </p>
+        <p>
+          <strong>Payment:</strong> {paymentLabel[paymentMethod]}
+        </p>
+        <p>
+          <strong>Total:</strong> {totalPrice} SEK
+        </p>
+      </div>
     </div>
   );
 }
