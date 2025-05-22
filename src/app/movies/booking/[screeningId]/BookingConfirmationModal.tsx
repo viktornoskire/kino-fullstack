@@ -191,10 +191,16 @@ export default function BookingConfirmationModal({
       <div className="bg-kino-darkgrey rounded-lg shadow-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
         <div className="mb-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">{getStepTitle()}</h2>
+            <h2
+              className={`text-xl font-bold ${
+                currentStep === 4 ? "print:hidden" : ""
+              }`}
+            >
+              {getStepTitle()}
+            </h2>
             <button
               onClick={currentStep === 4 ? () => router.push("/") : handleClose}
-              className="text-kino-white text-4xl hover:text-kino-grey"
+              className="text-kino-white text-4xl hover:text-kino-grey print:hidden"
             >
               &times;
             </button>
