@@ -22,9 +22,17 @@ const Header = () => {
 
   const toggleModal = (modal: string) => {
     if (modal === 'login') {
-      showLoginModal === 'hidden' ? setLoginModal('') : setLoginModal('hidden');
+      if (showLoginModal === 'hidden') {
+        setLoginModal('');
+      } else {
+        setLoginModal('hidden');
+      }
     } else if (modal === 'register') {
-      showRegisterModal === 'hidden' ? setRegisterModal('') : setRegisterModal('hidden');
+      if (showRegisterModal === 'hidden') {
+        setRegisterModal('');
+      } else {
+        setRegisterModal('hidden');
+      }
     }
   };
 
@@ -37,7 +45,14 @@ const Header = () => {
               href='/'
               onClick={() => setIsOpen(false)}
               className='transition-transform duration-200 hover:scale-105'>
-              <Image src='/kinoLogo.png' alt='Kino Logo' width={66} height={40} className='w-[66px] h-[40px]' />
+              <Image
+                src='/kinoLogo.png'
+                alt='Kino Logo'
+                width={66}
+                height={40}
+                className='w-[66px] h-[40px]'
+                priority
+              />
             </Link>
             <Link
               href='/'

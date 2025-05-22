@@ -8,4 +8,5 @@ export interface Tickets {
 export interface TicketSelectorProps {
   onTotalTicketsChange: (totalTickets: number) => void;
   onFinalPriceChange: (finalPrice: number) => void;
+  onTicketSummaryChange: (summary: string) => void;
 }

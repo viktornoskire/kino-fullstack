@@ -10,10 +10,11 @@ export type SeatsByRow = {
   [key: number]: Seat[];
 };
 
-export interface CinemaSeatingProps  {
+export interface CinemaSeatingProps {
   screeningId: string;
   onSelectedSeatsChange: (seats: string[]) => void;
   totalTickets: number;
+  refreshTrigger?: boolean;
 }
 export type DisableModalProps = {
   isOpen: boolean;

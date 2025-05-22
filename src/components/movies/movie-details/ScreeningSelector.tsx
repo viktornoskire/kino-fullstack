@@ -6,6 +6,13 @@ import { enGB } from "date-fns/locale";
 import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
 
+interface Seat {
+  _id: string;
+  row: number;
+  seatNumber: number;
+  disabled?: boolean;
+  isBooked: boolean;
+}
 interface Screening {
   _id: string;
   movieId: string;
@@ -33,6 +40,40 @@ export default function ScreeningSelector({
   customClass = "",
 }: ScreeningSelectorProps) {
   const router = useRouter();
+
+  // State for seatCounts per screening
+  const [seatCounts, setSeatCounts] = useState<
+    Record<string, { availableSeats: number; totalSeats: number }>
+  >({});
+
+  // When `screenings` change: load seats in parallel and count
+  useEffect(() => {
+    if (screenings.length === 0) return;
+    (async () => {
+      try {
+        const entries = await Promise.all(
+          screenings.map(async (s) => {
+            const res = await fetch(`/api/seats/${s._id}`);
+            if (!res.ok) throw new Error("Not able to fetsch seats");
+            const seats: Seat[] = await res.json();
+
+            const total = seats.length;
+            const available = seats.filter(
+              (seat) => !seat.isBooked && !seat.disabled
+            ).length;
+
+            return [
+              s._id,
+              { availableSeats: available, totalSeats: total },
+            ] as const;
+          })
+        );
+        setSeatCounts(Object.fromEntries(entries));
+      } catch (err) {
+        console.error("Error loading seats:", err);
+      }
+    })();
+  }, [screenings]);
 
   // Prepare and store screenings only once to avoid infinite re-renders
   const [limitedScreeningsArray] = useState(() => {
@@ -119,8 +160,8 @@ export default function ScreeningSelector({
   return (
     <div className={customClass}>
       {/* Screening dates */}
-      <div className="border border-[color:var(--color-kino-grey)] rounded-lg p-4 mb-4 w-full">
-        <h2 className="text-2xl text-[color:var(--color-kino-white)] font-bold mb-4">
+      <div className="border border-kino-grey rounded-lg p-4 mb-4 w-full">
+        <h2 className="text-2xl font-bold mb-4">
           Available Dates
         </h2>
         <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-[15px]">
@@ -134,8 +175,8 @@ export default function ScreeningSelector({
                 onClick={() => setSelectedDate(screening.date)}
                 className={`flex flex-col items-center justify-center px-4 py-2 rounded-lg border ${
                   isSelected
-                    ? "bg-[color:var(--color-kino-darkred)] text-[color:var(--color-kino-white)] border-[color:var(--color-kino-darkred)]"
-                    : "text-[color:var(--color-kino-white)] border-[color:var(--color-kino-grey)]"
+                    ? "bg-kino-darkred border-kino-darkred"
+                    : "border-kino-grey"
                 }`}
               >
                 <span className="font-bold">
@@ -154,13 +195,17 @@ export default function ScreeningSelector({
       </div>
 
       {/* Screening times */}
-      <div className="border border-[color:var(--color-kino-grey)] rounded-lg p-4 mb-4 w-full">
-        <h2 className="text-2xl text-[color:var(--color-kino-white)] font-bold mb-4">
+      <div className="border border-kino-grey rounded-lg p-4 mb-4 w-full">
+        <h2 className="text-2xl font-bold mb-4">
           Available Times
         </h2>
         <div className="flex flex-wrap gap-[15px]">
           {availableScreenings.length > 0 ? (
             availableScreenings.map((screening) => {
+              // Get counted value or show placeholder
+              const counts = seatCounts[screening._id];
+              const available = counts ? counts.availableSeats : "-";
+              const total = counts ? counts.totalSeats : "-";
               // Check if this is the selected screening
               const isSelected = selectedScreening
                 ? screening._id === selectedScreening._id
@@ -172,22 +217,22 @@ export default function ScreeningSelector({
                   onClick={() => handleScreeningSelect(screening)}
                   className={`flex flex-col items-center justify-center px-4 py-2 rounded-lg border ${
                     isSelected
-                      ? "bg-[color:var(--color-kino-darkred)] text-[color:var(--color-kino-white)] border-[color:var(--color-kino-darkred)]"
-                      : "text-[color:var(--color-kino-white)] border-[color:var(--color-kino-grey)]"
+                      ? "bg-kino-darkred border-kino-darkred"
+                      : "border-kino-grey"
                   }`}
                 >
                   <span className="font-bold text-lg">
                     {format(new Date(screening.screeningTime), "HH:mm")}
                   </span>
                   <span className="text-sm">{screening.auditorium}</span>
-                  <span className="text-sm text-[color:var(--color-kino-grey)]">
-                    93 of 93
+                  <span className="text-sm text-kino-grey">
+                    {available} of {total}
                   </span>
                 </button>
               );
             })
           ) : (
-            <p className="text-[color:var(--color-kino-white)]">
+            <p>
               No available times
             </p>
           )}

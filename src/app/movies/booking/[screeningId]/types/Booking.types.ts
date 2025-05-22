@@ -1,22 +1,21 @@
 export interface BookingConfirmationModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (wasDeleted: boolean) => void;
   reservationId: string | null;
   movieTitle: string;
   screeningTime: string;
   seats: string[];
   totalPrice: number;
- 
+  ticketSummary: string;
 }
 
 export interface UserInfo {
   email: string;
   phoneNumber: string;
-  firstName: string;
-  lastName: string;
+  name: string;
 }
 
-export type PaymentMethod = "swish" | "card" | "atCinema";
+export type PaymentMethod = 'swish' | 'card' | 'atCinema';
 
 export interface BookingDetailsProps {
   movie: {
@@ -52,4 +51,3 @@ export interface Movie {
 export interface BookingManagerProps {
   screeningId: string;
 }
-

@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from 'mongoose';
+import mongoose, { model } from 'mongoose';
 
 export interface UserDocument {
   _id: string;
@@ -10,7 +10,7 @@ export interface UserDocument {
   updatedAt: Date;
 }
 
-const UserSchema = new Schema<UserDocument>(
+const UserSchema = new mongoose.Schema<UserDocument>(
   {
     name: {
       type: String,

@@ -1,12 +1,13 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Button from "@/components/Button";
-import Step1BookingModal from "./Step1BookingModal";
-import Step2BookingModal from "./Step2BookingModal";
-import Step3BookingModal from "./Step3BookingModal";
-import Step4BookingModal from "./Step4BookingModal";
-import { BookingConfirmationModalProps, UserInfo, PaymentMethod } from "./types/Booking.types";
+import { useState, useCallback, useRef } from 'react';
+import Button from '@/components/Button';
+import Step1BookingModal from './Step1BookingModal';
+import Step2BookingModal from './Step2BookingModal';
+import Step3BookingModal from './Step3BookingModal';
+import Step4BookingModal from './Step4BookingModal';
+import { useRouter } from 'next/navigation';
+import { BookingConfirmationModalProps, UserInfo, PaymentMethod } from './types/Booking.types';
 
 export default function BookingConfirmationModal({
   isOpen,
@@ -16,40 +17,81 @@ export default function BookingConfirmationModal({
   screeningTime,
   seats,
   totalPrice,
-}: 
-BookingConfirmationModalProps) {
+  ticketSummary,
+}: BookingConfirmationModalProps) {
+  const mouseDownOnOverlay = useRef(false);
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [userInfo, setUserInfo] = useState<UserInfo>({
-    email: "",
-    phoneNumber: "",
-    firstName: "",
-    lastName: "",
+    email: '',
+    phoneNumber: '',
+    name: '',
   });
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card');
   const [bookingId, setBookingId] = useState<string | null>(null);
   const [bookingError, setBookingError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [step2Error, setStep2Error] = useState<string>('');
+
+  const deleteReservation = useCallback(async (): Promise<boolean> => {
+    if (!reservationId || bookingId || isDeleting) {
+      return false;
+    }
+
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`/api/reservations/${reservationId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        console.error('Failed to delete reservation:', await response.text());
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error deleting reservation:', error);
+      return false;
+    } finally {
+      setIsDeleting(false);
+    }
+  }, [reservationId, bookingId, isDeleting]);
+
+  const handleClose = async () => {
+    let deleted = false;
+
+    if (currentStep < 4) {
+      deleted = await deleteReservation();
+    }
+
+    onClose(deleted);
+  };
 
   const formatScreeningTime = (timeString: string) => {
     const date = new Date(timeString);
-    return new Intl.DateTimeFormat("sv-SE", {
-      dateStyle: "medium",
-      timeStyle: "short",
+    return new Intl.DateTimeFormat('sv-SE', {
+      dateStyle: 'medium',
+      timeStyle: 'short',
     }).format(date);
   };
 
   const handleGoToNextStep = () => {
-    setCurrentStep((prev) => prev + 1);
+    setCurrentStep(prev => prev + 1);
   };
   const handleGoToPreviousStep = () => {
-    setCurrentStep((prev) => prev - 1);
+    setCurrentStep(prev => prev - 1);
   };
 
   const handleUserInfoUpdate = (name: string, value: string) => {
-    setUserInfo((prev) => ({
+    setUserInfo(prev => ({
       ...prev,
       [name]: value,
     }));
+    if (step2Error) {
+      setStep2Error('');
+    }
   };
 
   const handlePaymentMethodSelect = (method: PaymentMethod) => {
@@ -58,7 +100,7 @@ BookingConfirmationModalProps) {
 
   const handleConfirmBooking = async () => {
     if (!reservationId) {
-      setBookingError("Missing reservation ID");
+      setBookingError('Missing reservation ID');
       return;
     }
 
@@ -67,9 +109,9 @@ BookingConfirmationModalProps) {
 
     try {
       const response = await fetch(`/api/movies/booking/confirmation`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           reservationId,
@@ -80,17 +122,15 @@ BookingConfirmationModalProps) {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to confirm booking");
+        throw new Error(errorData.error || 'Failed to confirm booking');
       }
 
       const { bookingId } = await response.json();
       setBookingId(bookingId);
       handleGoToNextStep();
     } catch (error) {
-      console.error("Booking confirmation error:", error);
-      setBookingError(
-        error instanceof Error ? error.message : "An unknown error occurred"
-      );
+      console.error('Booking confirmation error:', error);
+      setBookingError(error instanceof Error ? error.message : 'An unknown error occurred');
     } finally {
       setIsSubmitting(false);
     }
@@ -99,102 +139,97 @@ BookingConfirmationModalProps) {
   const getStepTitle = () => {
     switch (currentStep) {
       case 1:
-        return "Your booking";
+        return 'Your booking';
       case 2:
-        return "Your information";
+        return 'Your information';
       case 3:
-        return "Payment options";
+        return 'Payment options';
       case 4:
-        return "Booking confirmed";
+        return 'Booking confirmed';
       default:
-        return "Booking";
+        return 'Booking';
     }
   };
 
   const validateUserInfo = () => {
-    const { email, phoneNumber, firstName, lastName } = userInfo;
+    const { email, phoneNumber, name } = userInfo;
 
-    if (!firstName.trim()) return false;
-    if (!lastName.trim()) return false;
-    if (!email.trim() || !email.includes("@")) return false;
+    if (!name.trim()) return false;
+    if (!email.trim() || !email.includes('@')) return false;
     if (!phoneNumber.trim()) return false;
 
     return true;
   };
 
   if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-50 backdrop-blur-sm">
-      <div className="bg-kino-darkgrey rounded-lg border border-kino-grey shadow-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">{getStepTitle()}</h2>
+    <div
+      className='fixed inset-0 z-50 flex items-center justify-center bg-kino-black/80 backdrop-blur-sm'
+      onMouseDownCapture={e => {
+        mouseDownOnOverlay.current = e.target === e.currentTarget;
+      }}
+      onClick={e => {
+        if (e.target !== e.currentTarget) return;
+
+        if (!mouseDownOnOverlay.current) return;
+
+        if (currentStep === 4) {
+          router.push('/');
+        } else {
+          handleClose();
+        }
+      }}>
+      <div className='bg-kino-darkgrey rounded-lg shadow-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto'>
+        <div className='mb-6'>
+          <div className='flex justify-between items-center mb-4'>
+            <h2 className='text-xl font-bold'>{getStepTitle()}</h2>
             <button
-              onClick={onClose}
-              className="text-gray-500 hover:text-gray-700"
-            >
+              onClick={currentStep === 4 ? () => router.push('/') : handleClose}
+              className='text-kino-white text-4xl hover:text-kino-grey'>
               &times;
             </button>
           </div>
 
-          <div className="flex justify-center items-center gap-2 mb-4">
-            <div className="flex items-center">
-              <div
-                className={`w-10 h-10 border border-black rounded-full ${
-                  currentStep >= 1
-                    ? "bg-kino-darkgreen"
-                    : "bg-kino-white text-black"
-                } flex items-center justify-center text-xs`}
-              >
-                1
-              </div>
-              <div className="h-1 w-4 bg-kino-white"></div>
+          <div className='flex items-center mb-4 mr-18 ml-18'>
+            <div
+              className={`
+      w-9 h-9 rounded-full border-3 border-kino-black flex items-center justify-center text-xs
+      ${currentStep >= 1 ? 'bg-kino-darkgreen text-kino-white' : 'bg-kino-white text-kino-black'}
+    `}>
+              1
             </div>
-            <div className="flex items-center">
-              <div
-                className={`w-10 h-10 rounded-full border border-black ${
-                  currentStep >= 2
-                    ? "bg-kino-darkgreen"
-                    : "bg-kino-white text-black"
-                } flex items-center justify-center text-xs ${
-                  currentStep < 2 ? "text-black" : ""
-                }`}
-              >
-                2
-              </div>
-              <div className="h-1 w-4 bg-kino-white"></div>
+            <div className={`flex-1 h-0.5 ${currentStep > 1 ? 'bg-kino-darkgreen' : 'bg-kino-white'}`} />
+
+            <div
+              className={`
+      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs
+      ${currentStep >= 2 ? 'bg-kino-darkgreen text-kino-white' : 'bg-kino-white text-kino-black'}
+    `}>
+              2
             </div>
-            <div className="flex items-center">
-              <div
-                className={`w-10 h-10 rounded-full border border-black ${
-                  currentStep >= 3
-                    ? "bg-kino-darkgreen"
-                    : "bg-kino-white text-black"
-                } flex items-center justify-center text-xs ${
-                  currentStep < 3 ? "text-black" : ""
-                }`}
-              >
-                3
-              </div>
-              <div className="h-1 w-4 bg-kino-white"></div>
+            <div className={`flex-1 h-0.5 ${currentStep > 2 ? 'bg-kino-darkgreen' : 'bg-kino-white'}`} />
+
+            <div
+              className={`
+      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs
+      ${currentStep >= 3 ? 'bg-kino-darkgreen text-kino-white' : 'bg-kino-white text-kino-black'}
+    `}>
+              3
             </div>
-            <div className="flex items-center">
-              <div
-                className={`w-10 h-10 border border-black rounded-full ${
-                  currentStep >= 4
-                    ? "bg-kino-darkgreen"
-                    : "bg-kino-white text-black"
-                } flex items-center justify-center text-xs ${
-                  currentStep < 4 ? "text-black" : ""
-                }`}
-              >
-                4
-              </div>
+            <div className={`flex-1 h-0.5 ${currentStep > 3 ? 'bg-kino-darkgreen' : 'bg-kino-white'}`} />
+
+            <div
+              className={`
+      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs
+      ${currentStep >= 4 ? 'bg-kino-darkgreen text-kino-white' : 'bg-kino-white text-kino-black'}
+    `}>
+              4
             </div>
           </div>
         </div>
 
-        <div className="space-y-4 mb-6">
+        <div className='space-y-4 mb-6'>
           {currentStep === 1 && (
             <Step1BookingModal
               movieTitle={movieTitle}
@@ -202,15 +237,11 @@ BookingConfirmationModalProps) {
               seats={seats}
               totalPrice={totalPrice}
               formatScreeningTime={formatScreeningTime}
+              ticketSummary={ticketSummary}
             />
           )}
 
-          {currentStep === 2 && (
-            <Step2BookingModal
-              userInfo={userInfo}
-              onInputChange={handleUserInfoUpdate}
-            />
-          )}
+          {currentStep === 2 && <Step2BookingModal userInfo={userInfo} onInputChange={handleUserInfoUpdate} />}
 
           {currentStep === 3 && (
             <Step3BookingModal
@@ -235,19 +266,14 @@ BookingConfirmationModalProps) {
           )}
         </div>
 
-        {/* Action buttons */}
-        <div className="flex flex-col gap-3">
+        <div className='flex flex-col gap-3 mr-20 ml-20'>
           {currentStep === 1 && (
             <>
-              <Button
-                variant="primary"
-                type="button"
-                onClick={handleGoToNextStep}
-              >
+              <Button variant='primary' type='button' onClick={handleGoToNextStep}>
                 Continue
               </Button>
 
-              <Button variant="secondary" type="button" onClick={onClose}>
+              <Button variant='secondary' type='button' onClick={handleClose}>
                 Back
               </Button>
             </>
@@ -255,25 +281,29 @@ BookingConfirmationModalProps) {
 
           {currentStep === 2 && (
             <>
-              <Button
-                variant="primary"
-                type="button"
-                onClick={() => {
-                  if (validateUserInfo()) {
-                    handleGoToNextStep();
-                  } else {
-                    alert("Please fill in all fields correctly");
-                  }
-                }}
-              >
-                Continue
-              </Button>
+              {step2Error && <p className='mb-2 text-sm text-kino-red'>{step2Error}</p>}
 
               <Button
-                variant="secondary"
-                type="button"
-                onClick={handleGoToPreviousStep}
-              >
+                variant='primary'
+                type='button'
+                onClick={() => {
+                  const { name, email, phoneNumber } = userInfo;
+                  const allEmpty = !name.trim() && !email.trim() && !phoneNumber.trim();
+
+                  if (allEmpty) {
+                    setStep2Error('Please fill in all fields to continue');
+                    return;
+                  }
+
+                  setStep2Error('');
+
+                  if (validateUserInfo()) {
+                    handleGoToNextStep();
+                  }
+                }}>
+                Continue
+              </Button>
+              <Button variant='secondary' type='button' onClick={handleGoToPreviousStep}>
                 Back
               </Button>
             </>
@@ -281,29 +311,25 @@ BookingConfirmationModalProps) {
 
           {currentStep === 3 && (
             <>
-              <Button
-                variant="primary"
-                type="button"
-                onClick={handleConfirmBooking}
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Processing..." : "Confirm and Pay"}
+              <Button variant='primary' type='button' onClick={handleConfirmBooking} disabled={isSubmitting}>
+                {isSubmitting ? 'Processing...' : 'Confirm and Pay'}
               </Button>
 
-              <Button
-                variant="secondary"
-                type="button"
-                onClick={handleGoToPreviousStep}
-                disabled={isSubmitting}
-              >
+              <Button variant='secondary' type='button' onClick={handleGoToPreviousStep} disabled={isSubmitting}>
                 Back
               </Button>
             </>
           )}
 
           {currentStep === 4 && (
-            <Button variant="primary" type="button" onClick={onClose}>
-              Close
+            <Button
+              variant='primary'
+              type='button'
+              onClick={async () => {
+                await handleClose();
+                router.push('/');
+              }}>
+              Back to Homepage
             </Button>
           )}
         </div>

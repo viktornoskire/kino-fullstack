@@ -11,6 +11,7 @@ export const authOptions: NextAuthOptions = {
       id: 'credentials',
       credentials: {
         email: { label: 'Email', type: 'text' },
+        number: { label: 'Number', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
@@ -29,7 +30,12 @@ export const authOptions: NextAuthOptions = {
 
         if (!passwordMatch) throw new Error('Password incorrect!');
 
-        return user;
+        return {
+          id: user._id.toString(),
+          name: user.name,
+          email: user.email,
+          number: user.number, // should work now
+        };
       },
     }),
   ],
@@ -46,7 +52,6 @@ export const authOptions: NextAuthOptions = {
       if (trigger === 'update' && session?.number) {
         token.number = session.number;
       }
-
       return token;
     },
     async session({ session, token }) {

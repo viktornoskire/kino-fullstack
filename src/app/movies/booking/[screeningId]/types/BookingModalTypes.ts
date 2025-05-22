@@ -4,13 +4,13 @@ export interface Step1BookingModalProps {
   seats: string[];
   totalPrice: number;
   formatScreeningTime: (time: string) => string;
+  ticketSummary: string;
 }
 
 export interface UserInfo {
   email: string;
   phoneNumber: string;
-  firstName: string;
-  lastName: string;
+  name: string;
 }
 
 export interface Step2BookingModalProps {
@@ -18,7 +18,7 @@ export interface Step2BookingModalProps {
   onInputChange: (name: string, value: string) => void;
 }
 
-export type PaymentMethod = "swish" | "card" | "atCinema"; //Maybe not used anymore in bookingmodal step 3
+export type PaymentMethod = 'swish' | 'card' | 'atCinema'; //Maybe not used anymore in bookingmodal step 3
 
 export interface Step3BookingModalProps {
   totalPrice: number;
@@ -33,6 +33,7 @@ export interface PaymentOptionProps {
   description: string;
   isSelected: boolean;
   onSelect: () => void;
+  icon?: React.ReactNode;
 }
 
 export interface Step4BookingModalProps {

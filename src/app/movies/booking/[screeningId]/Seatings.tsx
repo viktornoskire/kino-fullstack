@@ -6,15 +6,15 @@ import {
   DisabledSeatIcon,
   TakenSeatIcon,
 } from "./SeatingIcons";
-import { Seat, SeatsByRow, CinemaSeatingProps} from "./types/Seatings.types";
+import { Seat, SeatsByRow, CinemaSeatingProps } from "./types/Seatings.types";
 import Spinner from "@/components/Spinner";
 import HandicapSeatHandler from "./HandicapSeatHandler";
-
 
 const CinemaSeating: React.FC<CinemaSeatingProps> = ({
   totalTickets,
   screeningId,
   onSelectedSeatsChange,
+  refreshTrigger,
 }) => {
   const [seats, setSeats] = useState<Seat[]>([]);
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
@@ -41,7 +41,7 @@ const CinemaSeating: React.FC<CinemaSeatingProps> = ({
     if (screeningId) {
       fetchSeats();
     }
-  }, [screeningId]);
+  }, [screeningId, refreshTrigger]);
 
   useEffect(() => {
     if (selectedSeats.length > totalTickets) {
