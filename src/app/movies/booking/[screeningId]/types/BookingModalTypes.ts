@@ -4,6 +4,7 @@ export interface Step1BookingModalProps {
   seats: string[];
   totalPrice: number;
   formatScreeningTime: (time: string) => string;
+  ticketSummary: string;
 }
 
 export interface UserInfo {

@@ -6,41 +6,48 @@ export default function Step1BookingModal({
   screeningTime,
   seats,
   totalPrice,
+  ticketSummary,
   formatScreeningTime,
 }: Step1BookingModalProps) {
-  return (
-    <>
-      <div className="flex items-center p-1 rounded-lg">
-        <div>
-          <p className="font-semibold">{movieTitle}</p>
-          <p className="text-sm text-kino-grey">
-            {formatScreeningTime(screeningTime)}
-          </p>
-          <p className="text-sm text-kino-grey">
-            {seats.length} tickets • {totalPrice} kr
-          </p>
-        </div>
-      </div>
-      <div>
-        <h3 className="font-semibold mb-1">Chosen seats</h3>
-        <div className="flex flex-col gap-1">
-          {seats.map((seat) => (
-            <span
-              key={seat}
-              className="px-2 py-1 bg-kino-gray-700 ronded text-sm"
-            >
-              • {seat}
-            </span>
-          ))}
-        </div>
-      </div>
+  const ticketItems = ticketSummary
+    ? ticketSummary
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)
+    : [];
 
-      <div className="border-t pt-3 mt-3">
-        <div className="flex items-center justify-between">
-          <span>Total:</span>
-          <span>{totalPrice}kr</span>
+  return (
+    <div className="text-left">
+      <div className="bg-kino-black/50 rounded-lg shadow-md p-5 divide-y divide-gray-700 text-xs sm:text-sm">
+        <div className="grid gap-y-1 gap-x-4 sm:grid-cols-2">
+          <span className="text-kino-grey">Movie</span>
+          <span className="font-medium">{movieTitle}</span>
+
+          <span className="text-kino-grey">Date &amp; Time</span>
+          <span>{formatScreeningTime(screeningTime)}</span>
+
+          <span className="text-kino-grey">Tickets</span>
+          <div className="flex flex-col">
+            {ticketItems.map((item, i) => (
+              <span key={i}>{item}</span>
+            ))}
+          </div>
+        </div>
+
+        <div className="pt-3 grid gap-y-1 gap-x-4 sm:grid-cols-2">
+          <span className="text-kino-grey">Seats</span>
+          <div className="flex flex-col">
+            {seats.map((seat) => (
+              <span key={seat}>{seat}</span>
+            ))}
+          </div>
+        </div>
+
+        <div className="pt-3 grid gap-y-1 gap-x-4 sm:grid-cols-2">
+          <span className="text-kino-grey font-semibold">Total</span>
+          <span className="font-semibold">{totalPrice} kr</span>
         </div>
       </div>
-    </>
+    </div>
   );
 }

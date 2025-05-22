@@ -21,6 +21,7 @@ export default function BookingConfirmationModal({
   screeningTime,
   seats,
   totalPrice,
+  ticketSummary,
 }: BookingConfirmationModalProps) {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -265,6 +266,7 @@ export default function BookingConfirmationModal({
               seats={seats}
               totalPrice={totalPrice}
               formatScreeningTime={formatScreeningTime}
+              ticketSummary={ticketSummary}
             />
           )}
 
