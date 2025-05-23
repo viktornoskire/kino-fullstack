@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 export interface BookingType extends Document {
+  movieId: mongoose.Types.ObjectId;
   screeningId: mongoose.Types.ObjectId;
   seatIds: mongoose.Types.ObjectId[];
   userId: string | null;

@@ -45,7 +45,7 @@ export default function Step1BookingModal({
 
         <div className="pt-3 grid gap-y-1 gap-x-4 sm:grid-cols-2">
           <span className="text-kino-grey font-semibold">Total</span>
-          <span className="font-semibold">{totalPrice} kr</span>
+          <span className="font-semibold">{totalPrice} SEK</span>
         </div>
       </div>
     </div>

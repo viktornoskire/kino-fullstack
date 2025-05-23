@@ -179,14 +179,22 @@ export default function BookingConfirmationModal({
         } else {
           handleClose();
         }
-      }}>
-      <div className='bg-kino-darkgrey rounded-lg shadow-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto'>
-        <div className='mb-6'>
-          <div className='flex justify-between items-center mb-4'>
-            <h2 className='text-xl font-bold'>{getStepTitle()}</h2>
+      }}
+    >
+      <div className="bg-kino-darkgrey rounded-lg shadow-xl max-w-md w-full p-6 max-h-[90vh] overflow-y-auto">
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2
+              className={`text-xl font-bold ${
+                currentStep === 4 ? "print:hidden" : ""
+              }`}
+            >
+              {getStepTitle()}
+            </h2>
             <button
-              onClick={currentStep === 4 ? () => router.push('/') : handleClose}
-              className='text-kino-white text-4xl hover:text-kino-grey'>
+              onClick={currentStep === 4 ? () => router.push("/") : handleClose}
+              className="text-kino-white text-4xl hover:text-kino-grey print:hidden"
+            >
               &times;
             </button>
           </div>
@@ -194,36 +202,56 @@ export default function BookingConfirmationModal({
           <div className='flex items-center mb-4 mr-18 ml-18'>
             <div
               className={`
-      w-9 h-9 rounded-full border-3 border-kino-black flex items-center justify-center text-xs
-      ${currentStep >= 1 ? 'bg-kino-darkgreen text-kino-white' : 'bg-kino-white text-kino-black'}
-    `}>
+      w-9 h-9 rounded-full border-3 border-kino-black flex items-center justify-center text-xs print:hidden
+      ${
+        currentStep >= 1
+          ? "bg-kino-darkgreen text-kino-white"
+          : "bg-kino-white text-kino-black"
+      }
+    `}
+            >
               1
             </div>
             <div className={`flex-1 h-0.5 ${currentStep > 1 ? 'bg-kino-darkgreen' : 'bg-kino-white'}`} />
 
             <div
               className={`
-      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs
-      ${currentStep >= 2 ? 'bg-kino-darkgreen text-kino-white' : 'bg-kino-white text-kino-black'}
-    `}>
+      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs print:hidden
+      ${
+        currentStep >= 2
+          ? "bg-kino-darkgreen text-kino-white"
+          : "bg-kino-white text-kino-black"
+      }
+    `}
+            >
               2
             </div>
             <div className={`flex-1 h-0.5 ${currentStep > 2 ? 'bg-kino-darkgreen' : 'bg-kino-white'}`} />
 
             <div
               className={`
-      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs
-      ${currentStep >= 3 ? 'bg-kino-darkgreen text-kino-white' : 'bg-kino-white text-kino-black'}
-    `}>
+      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs print:hidden
+      ${
+        currentStep >= 3
+          ? "bg-kino-darkgreen text-kino-white"
+          : "bg-kino-white text-kino-black"
+      }
+    `}
+            >
               3
             </div>
             <div className={`flex-1 h-0.5 ${currentStep > 3 ? 'bg-kino-darkgreen' : 'bg-kino-white'}`} />
 
             <div
               className={`
-      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs
-      ${currentStep >= 4 ? 'bg-kino-darkgreen text-kino-white' : 'bg-kino-white text-kino-black'}
-    `}>
+      w-9 h-9 rounded-full border-kino-black border-3 flex items-center justify-center text-xs print:hidden
+      ${
+        currentStep >= 4
+          ? "bg-kino-darkgreen text-kino-white"
+          : "bg-kino-white text-kino-black"
+      }
+    `}
+            >
               4
             </div>
           </div>
@@ -323,8 +351,9 @@ export default function BookingConfirmationModal({
 
           {currentStep === 4 && (
             <Button
-              variant='primary'
-              type='button'
+              variant="primary"
+              type="button"
+              className="print:hidden"
               onClick={async () => {
                 await handleClose();
                 router.push('/');

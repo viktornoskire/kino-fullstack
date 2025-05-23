@@ -109,17 +109,17 @@ export default function TicketSelector({
       <TicketButton price={ticketPrices.senior} ticketType='senior' onCountChange={handleTicketCountChange}>
         Senior
       </TicketButton>
-      <div className='mt-6 p-4 rounded-lg border border-kino-grey'>
-        <div className='flex flex-col space-y-2'>
-          <div className='flex justify-between'>
-            <span className='font-medium'>Price:</span>
-            <span className='font-medium'>{totalPrice} kr</span>
+      <div className="mt-6 p-4 rounded-lg border border-kino-grey">
+        <div className="flex flex-col space-y-2">
+          <div className="flex justify-between">
+            <span className="font-medium">Price:</span>
+            <span className="font-medium">{totalPrice} SEK</span>
           </div>
 
           {isLoggedIn && (
-            <div className='flex justify-between'>
-              <span className='font-medium'>Discount (10%)</span>
-              <span className='font-medium'>{totalPrice - finalPrice} kr</span>
+            <div className="flex justify-between">
+              <span className="font-medium">Discount (10%)</span>
+              <span className="font-medium">{totalPrice - finalPrice} SEK</span>
             </div>
           )}
           {!isLoggedIn && (
@@ -129,10 +129,10 @@ export default function TicketSelector({
             </div>
           )}
 
-          <hr className='my-2 border-t-[0.5px]' />
-          <div className='flex justify-between'>
-            <span className='font-bold'>Total:</span>
-            <span className='font-bold text-lg'>{finalPrice} kr</span>
+          <hr className="my-2 border-t-[0.5px]" />
+          <div className="flex justify-between">
+            <span className="font-bold">Total:</span>
+            <span className="font-bold text-lg">{finalPrice} SEK</span>
           </div>
           {!isLoggedIn && (
             <div className='mt-2 text-sm text-kino-grey'>
