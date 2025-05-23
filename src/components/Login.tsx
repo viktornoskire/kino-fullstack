@@ -67,7 +67,7 @@ const Login: FC<Props> = ({ showLoginModal, onToggleModal, onResetForm }) => {
                 onToggleModal('login');
               }
             } catch (error) {
-              throw new Error('Error signing in!');
+              throw new Error(error as string);
             }
           }}>
           <input
