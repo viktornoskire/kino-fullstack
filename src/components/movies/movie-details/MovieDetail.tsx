@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface MovieDetailProps {
   movie: {
     title: string;
@@ -31,9 +33,12 @@ export default function MovieDetail({ movie }: MovieDetailProps) {
       </p>
 
       <div className="flex flex-col md:flex-row gap-4">
-        <img
+        <Image
           src={movie.posterUrl}
-          alt={movie.title}
+          alt={movie.title || "Movieposter"}
+          width={400}
+          height={600}
+          loading="lazy"
           className="rounded-4xl w-full md:w-1/2 max-h-[550px]"
         />
 

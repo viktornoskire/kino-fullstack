@@ -14,7 +14,7 @@ const InfoButton: FC<buttonType> = ({
   return (
     <button
       type={type}
-      className="flex flex-row pt-1 pb-1"
+      className="flex flex-row pt-1 pb-1 cursor-pointer"
       style={style}
       onClick={onClick}
     >

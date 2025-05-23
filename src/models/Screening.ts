@@ -10,5 +10,10 @@ const screeningSchema = new mongoose.Schema({
 const Screening =
   mongoose.models.Screening || mongoose.model("Screening", screeningSchema);
 
-export type ScreeningType = InferSchemaType<typeof screeningSchema>;
+export type ScreeningType = InferSchemaType<typeof screeningSchema> & {
+  _id: string;
+  movieId: string;
+  screeningTime: string;
+};
+
 export { Screening };

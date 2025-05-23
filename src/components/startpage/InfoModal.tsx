@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import InfoButton from './InfoButton';
-import { displayOpen } from '@/types/Opentype';
+import { useState } from "react";
+import InfoButton from "../InfoButton";
+import { displayOpen } from "@/types/Opentype";
 
 const InfoModal = ({ display }: { display: displayOpen[] }) => {
   const update = [
@@ -25,18 +25,17 @@ const InfoModal = ({ display }: { display: displayOpen[] }) => {
   }
 
   return (
-    <div className="bg-kino-black max-w-[700px] rounded-b-2xl p-4">
+    <div className="bg-kino-darkgrey max-w-[700px] rounded-2xl p-4">
       <h3 className="text-2xl mb-2">Frequently asked questions</h3>
       <ul>
         <li>
           <InfoButton
             type="button"
-            open={open[0].display}
             onClick={() => {
               readMore(1);
             }}
           >
-            {'About the cinema'}
+            {"Kort om biografen"}
           </InfoButton>
 
           {open[0].display && (
@@ -55,12 +54,11 @@ const InfoModal = ({ display }: { display: displayOpen[] }) => {
         <li>
           <InfoButton
             type="button"
-            open={open[1].display}
             onClick={() => {
               readMore(2);
             }}
           >
-            {'Accessibility'}
+            {"Tillgänglighet"}
           </InfoButton>
           {open[1].display && (
             <p className="p-2">
@@ -77,12 +75,11 @@ const InfoModal = ({ display }: { display: displayOpen[] }) => {
         <li>
           <InfoButton
             type="button"
-            open={open[2].display}
             onClick={() => {
               readMore(3);
             }}
           >
-            {'Opening hours'}
+            {"Öppettider"}
           </InfoButton>
           {open[2].display && (
             <div>
@@ -94,7 +91,7 @@ const InfoModal = ({ display }: { display: displayOpen[] }) => {
                 {display.map((show, index) => {
                   return (
                     <li key={index} className="p-2  grid grid-cols-3">
-                      <span className="col-start-1">{show.day} </span>{' '}
+                      <span className="col-start-1">{show.day} </span>{" "}
                       <span className="col-start-2">{show.date}</span>
                       <span className="col-start-3">{show.hours}</span>
                     </li>

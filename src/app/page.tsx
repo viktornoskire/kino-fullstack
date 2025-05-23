@@ -1,11 +1,13 @@
-import InfoKino from "@/components/InfoKino";
-import Movies from "@/components/Movies";
+import InfoKino from "@/components/startpage/InfoKino";
+import MoviesWrapper from "@/components/startpage/MoviesWrapper";
+import SearchBar from "@/components/startpage/SearchBar";
 
 export default async function Home() {
   return (
     <>
       <InfoKino />
-      <Movies />
+      <SearchBar />
+      <MoviesWrapper />
     </>
   );
 }
