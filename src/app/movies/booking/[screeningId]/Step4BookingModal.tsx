@@ -32,7 +32,7 @@ export default function Step4BookingModal({
         height={80}
         className="mx-auto mb-4 print:hidden"
       />
-    
+
       <h3 className="print:hidden text-base font-semibold mb-1">
         Booking confirmed!
       </h3>
@@ -91,35 +91,44 @@ export default function Step4BookingModal({
       <p className="mt-4 text-[10px] leading-tight text-kino-grey print:hidden">
         Please arrive at least 15 minutes early. Enjoy the show!
       </p>
+
       <div
         id="printable-area"
-        className="hidden print:block p-6 text-black bg-white"
+        className="hidden print:block p-6 text-black bg-white text-left divide-y"
       >
         <h1 className="text-2xl font-bold mb-4">Your ticket</h1>
-        <p>
-          <strong>Booking ID:</strong> {bookingId}
-        </p>
-        <p>
-          <strong>Movie:</strong> {movieTitle}
-        </p>
-        <p>
-          <strong>Date & Time:</strong> {formatScreeningTime(screeningTime)}
-        </p>
-        <p>
-          <strong>Seats:</strong> {seats.join(", ")}
-        </p>
-        <p>
-          <strong>Name:</strong> {userInfo.firstName} {userInfo.lastName}
-        </p>
-        <p>
-          <strong>Phone:</strong> {userInfo.phoneNumber}
-        </p>
-        <p>
-          <strong>Payment:</strong> {paymentLabel[paymentMethod]}
-        </p>
-        <p>
-          <strong>Total:</strong> {totalPrice} SEK
-        </p>
+
+        <div className="grid gap-y-1 gap-x-4 text-sm grid-cols-2">
+          <span className="font-semibold">Booking ID:</span>
+          <span>{bookingId}</span>
+
+          <span className="font-semibold">Movie:</span>
+          <span>{movieTitle}</span>
+
+          <span className="font-semibold">Date & Time:</span>
+          <span>{formatScreeningTime(screeningTime)}</span>
+
+          <span className="font-semibold">Seats:</span>
+          <div className="flex flex-col">
+            {seats.map((seat) => (
+              <span key={seat}>{seat}</span>
+            ))}
+          </div>
+
+          <span className="font-semibold">Name:</span>
+          <span>
+            {userInfo.firstName} {userInfo.lastName}
+          </span>
+
+          <span className="font-semibold">Phone:</span>
+          <span>{userInfo.phoneNumber}</span>
+
+          <span className="font-semibold">Payment:</span>
+          <span>{paymentLabel[paymentMethod]}</span>
+
+          <span className="font-semibold">Total:</span>
+          <span>{totalPrice} SEK</span>
+        </div>
       </div>
     </div>
   );

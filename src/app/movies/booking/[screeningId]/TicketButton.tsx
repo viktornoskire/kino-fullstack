@@ -30,7 +30,7 @@ export default function TicketButton({
     <div className="flex items-center justify-between w-full max-w-sm p-4 mb-3 border border-kino-grey bg-kino-black rounded-lg">
       <div className="flex flex-col">
         <div className="text-lg font-medium">{children}</div>
-        <div className="text-sm italic">{price} kr</div>
+        <div className="text-sm italic">{price} SEK</div>
       </div>
       <div className="flex items-center">
         <button
