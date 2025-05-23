@@ -10,8 +10,10 @@ const InfoMeber = () => {
   type user = { [value: string]: string };
 
   const { data: session, update } = useSession();
-  const [newName, setName] = useState<user>({ name: '' });
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [newNumber, setNumber] = useState<user>({ number: '' });
+  const [error, setError] = useState<string | null>(null);
   const [booked, setBooked] = useState<booking[]>([]);
   const [svar, setSvar] = useState<{
     message: string;
@@ -66,13 +68,33 @@ const InfoMeber = () => {
   }
 
   useEffect(() => {
-    if (svar) {
+    if (svar || error) {
       const timer = setTimeout(() => {
         setSvar(null);
+        setError(null);
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [svar]);
+  }, [svar, error]);
+
+  function updateName(first: string, last: string) {
+    if (!first || !last) {
+      setError('Please fill in all fields');
+      return;
+    }
+    const firstname = first[0].toUpperCase() + first.slice(1).toLowerCase();
+    const lastname = last[0].toUpperCase() + last.slice(1).toLowerCase();
+    const name = `${firstname} ${lastname}`;
+    updateUser({ name: name });
+  }
+
+  function updateNumber(num: user) {
+    if (num.number.length != 10) {
+      setError('Please fill in correct mobilenumber');
+      return;
+    }
+    updateUser(newNumber);
+  }
 
   return (
     <>
@@ -103,30 +125,42 @@ const InfoMeber = () => {
 
         <div className="min-w-[300px]">
           <h2 className="text-2xl font-bold pb-2">Update userinfo</h2>
+          {error && (
+            <div className={'mb-2 text-xl text-kino-red'} role="alert">
+              {error}
+            </div>
+          )}
           {svar && (
             <div className={'mb-2 text-xl text-kino-red'} role="alert">
               {svar.message}
             </div>
           )}
           <div>
-            <label htmlFor="nameInput">Name:</label>
+            <label htmlFor="firstInput">Firstname:</label>
             <br />
             <input
               type="text"
-              id="nameInput"
-              value={newName?.name}
+              id="firstInput"
+              value={firstName}
               className="border-solid border-kino-darkred border rounded-md font-bold p-1"
-              onChange={(e) => setName({ name: e.target.value })}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+            <br />
+            <label htmlFor="lastInput">Lastname:</label>
+            <br />
+            <input
+              type="text"
+              id="lastInput"
+              value={lastName}
+              className="border-solid border-kino-darkred border rounded-md font-bold p-1"
+              onChange={(e) => setLastName(e.target.value)}
               required
             />
             <br />
             <Button
               type="button"
-              onClick={() => {
-                if (newName !== undefined) {
-                  updateUser(newName);
-                }
-              }}
+              onClick={() => updateName(firstName, lastName)}
               style={{ marginTop: '1rem', marginBottom: '1rem' }}
             >
               Update name
@@ -140,18 +174,17 @@ const InfoMeber = () => {
               type="text"
               id="numberInput"
               value={newNumber?.number}
+              placeholder="070XXXXXXXX"
               className="border-solid border-kino-darkred border rounded-md font-bold p-1"
-              onChange={(e) => setNumber({ number: e.target.value })}
+              onChange={(e) =>
+                setNumber({ number: e.target.value.trim().replace(/\D/g, '') })
+              }
               required
             />
             <br />
             <Button
               type="button"
-              onClick={() => {
-                if (newNumber !== undefined) {
-                  updateUser(newNumber);
-                }
-              }}
+              onClick={() => updateNumber(newNumber)}
               style={{ marginTop: '1rem', marginBottom: '1rem' }}
             >
               Update number
