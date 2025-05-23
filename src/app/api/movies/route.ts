@@ -1,67 +1,80 @@
-<<<<<<< HEAD
-import { NextResponse, NextRequest } from 'next/server';
-import { movie } from '@/models/movies';
-import connectDB from '@/lib/db';
-=======
 import { NextResponse, NextRequest } from "next/server";
 import { movie } from "@/models/movies";
 import { Screening } from "@/models/Screening";
 import connectDB from "@/lib/db";
-import { Types } from "mongoose";
->>>>>>> a319700 (Added filtering by date and tag to NowShowingWrapper and movie API route)
+import { FilterQuery } from "mongoose";
+import { movieType } from "@/types/Movietypes";
+
+type MovieWithNextScreening = movieType & {
+  nextScreeningTime: Date | null;
+};
 
 export async function GET(req: NextRequest) {
   try {
     await connectDB();
-<<<<<<< HEAD
-    const movieTag = req.nextUrl.searchParams.get('tags');
-    const movies = await movie.find({ tags: movieTag });
-=======
 
-    const tagParams = req.nextUrl.searchParams.getAll("tags");
-    const screeningDate = req.nextUrl.searchParams.get("screeningDate");
-    const searchQuery = req.nextUrl.searchParams.get("search");
+    // Read URL parameters
+    const tags = req.nextUrl.searchParams.getAll("tags");
+    const date = req.nextUrl.searchParams.get("screeningDate");
+    const search = req.nextUrl.searchParams.get("search");
 
-    const filter: any = {};
-
-    // Filter by tags
-    if (tagParams.length > 0) {
-      filter.tags = { $all: tagParams };
+    // Build movie filter
+    const filter: FilterQuery<movieType> = {};
+    if (tags.length > 0) {
+      filter.tags = { $all: tags };
     }
-
-    // Filter by screeningDate
-    if (screeningDate) {
-      const dateStart = new Date(`${screeningDate}T00:00:00Z`);
-      const dateEnd = new Date(`${screeningDate}T23:59:59Z`);
-
-      const allScreenings = await Screening.find({});
-      const matchingScreenings = allScreenings.filter((s) => {
-        const time = new Date(s.screeningTime);
-        return time >= dateStart && time < dateEnd;
-      });
-
-      const movieIds = matchingScreenings.map((s) =>
-        typeof s.movieId === "string"
-          ? new Types.ObjectId(s.movieId)
-          : s.movieId
-      );
-
-      if (movieIds.length === 0) return NextResponse.json([]);
-      filter._id = { $in: movieIds };
-    }
-
-    // Filter by search query (title)
-    if (searchQuery) {
+    if (search) {
       filter.$or = [
-        { title: { $regex: searchQuery, $options: "i" } },
-        { genre: { $regex: searchQuery, $options: "i" } },
+        { title: { $regex: search, $options: "i" } },
+        { genre: { $regex: search, $options: "i" } },
       ];
     }
 
-    const movies = await movie.find(filter);
->>>>>>> b970c69 (Added tag-based filtering to NowShowingWrapper and updated movie API to support multiple tags with getAll)
-    return NextResponse.json(movies);
-  } catch (error) {
-    console.error("Couldn't get movies:", error);
+    // Get movies and all screenings
+    const movies: movieType[] = await movie.find(filter).lean<movieType[]>();
+    const screenings = await Screening.find({}).lean();
+    const now = new Date();
+
+    // If a date is selected, prepare the day range
+    const dayStart = date ? new Date(date) : null;
+    const dayEnd = date
+      ? new Date(new Date(date).setHours(23, 59, 59, 999))
+      : null;
+
+    // Prepare and sort movies
+    const result: MovieWithNextScreening[] = movies
+      .map((m) => {
+        // Find all screenings for this movie
+        let times = screenings.filter((s) => s.movieId.equals(m._id));
+
+        // Filter screenings by selected date (if any)
+        if (dayStart && dayEnd) {
+          times = times.filter((s) => {
+            const t = new Date(s.screeningTime);
+            return t >= dayStart && t <= dayEnd;
+          });
+        }
+
+        // Find the next future screening
+        const next = times
+          .map((s) => new Date(s.screeningTime))
+          .filter((t) => t >= now)
+          .sort((a, b) => a.getTime() - b.getTime())[0];
+
+        return { ...m, nextScreeningTime: next || null };
+      })
+      // If filtering by date, remove movies with no screenings that day
+      .filter((m) => !date || m.nextScreeningTime)
+      // Sort movies by the next screening time
+      .sort((a, b) => {
+        const aTime = a.nextScreeningTime?.getTime() ?? Infinity;
+        const bTime = b.nextScreeningTime?.getTime() ?? Infinity;
+        return aTime - bTime;
+      });
+
+    return NextResponse.json(result, { status: 200 });
+  } catch (err) {
+    console.error("Could not load movies:", err);
+    return new NextResponse("Internal server error", { status: 500 });
   }
 }

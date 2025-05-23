@@ -78,7 +78,7 @@ export default function SearchBar() {
       {/* Search box container */}
       <div
         ref={wrapperRef}
-        className="relative z-20 w-full max-w-xl mx-auto my-12 px-2"
+        className="relative z-20 w-full max-w-xl mx-auto mt-12 mb-16 px-2"
       >
         {/* Heading */}
         <h2 className="text-xl sm:text-xl md:text-2xl font-semibold text-center mb-2 px-2 text-white">
@@ -133,7 +133,7 @@ export default function SearchBar() {
                 <li className="px-4 py-4 text-kino-white">
                   <strong>No match</strong>
                   <p className="text-sm">
-                    We couldn't find anything based on your search
+                    We couldn&apos;s find anything based on your search
                   </p>
                 </li>
               )}

@@ -25,7 +25,8 @@ const InfoModal = ({ display }: { display: displayOpen[] }) => {
   }
 
   return (
-    <div className="max-w-[400px] rounded-2xl">
+    <div className="bg-kino-darkgrey max-w-[700px] rounded-2xl p-4">
+      <h3 className="text-2xl mb-2">Frequently asked questions</h3>
       <ul>
         <li>
           <InfoButton
@@ -34,7 +35,7 @@ const InfoModal = ({ display }: { display: displayOpen[] }) => {
               readMore(1);
             }}
           >
-            {"About the cinema"}
+            {"Kort om biografen"}
           </InfoButton>
 
           {open[0].display && (
@@ -57,7 +58,7 @@ const InfoModal = ({ display }: { display: displayOpen[] }) => {
               readMore(2);
             }}
           >
-            {"Accessibility"}
+            {"Tillgänglighet"}
           </InfoButton>
           {open[1].display && (
             <p className="p-2">
@@ -78,7 +79,7 @@ const InfoModal = ({ display }: { display: displayOpen[] }) => {
               readMore(3);
             }}
           >
-            {"Opening hours"}
+            {"Öppettider"}
           </InfoButton>
           {open[2].display && (
             <div>

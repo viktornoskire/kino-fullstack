@@ -36,7 +36,7 @@ function generateDateOptions() {
 
 export default function DateSelector({ selectedDate, onChange }: Props) {
   return (
-    <div className="mt-8">
+    <div className="mt-6">
       {/* Date selection dropdown */}
       <select
         onChange={(e) => onChange(e.target.value)}

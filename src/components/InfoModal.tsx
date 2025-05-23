@@ -25,7 +25,7 @@ const InfoModal = ({ display }: { display: displayOpen[] }) => {
   }
 
   return (
-    <div className="bg-kino-darkgrey max-w-[700px] rounded-2xl p-4">
+    <div className="bg-kino-black max-w-[700px] rounded-b-2xl p-4">
       <h3 className="text-2xl mb-2">Frequently asked questions</h3>
       <ul>
         <li>

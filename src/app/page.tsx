@@ -7,7 +7,7 @@ export default async function Home() {
     <>
       <InfoKino />
       <SearchBar />
-      <MoviesWrapper  />
+      <MoviesWrapper />
     </>
   );
 }

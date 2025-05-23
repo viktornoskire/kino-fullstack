@@ -11,7 +11,7 @@ const RenderCurrentMovies: FC<RenderCurrentMoviesProps> = ({ movies, title }) =>
   return (
     <>
       <div>
-        <h2 className="text-2xl sm:text-2xl md:text-3xl font-bold text-center pt-4 pb-4 sm:pb-4">
+        <h2 className="text-2xl sm:text-2xl md:text-3xl font-bold text-center py-3 sm:pb-3">
           {title}
         </h2>
         <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 justify-center mx-2">
