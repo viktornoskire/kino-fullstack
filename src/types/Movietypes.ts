@@ -3,7 +3,7 @@ export type movieType = {
   title: string;
   description: string;
   genre: [string];
-  durationMinutes: string;
+  durationMinutes: number;
   posterUrl: string;
   premiereDate: Date;
   tags: [string];
