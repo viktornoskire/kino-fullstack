@@ -17,11 +17,16 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         await connectDB();
 
-        const user = await User.findOne({ email: credentials?.email }).select('+password');
+        const user = await User.findOne({ email: credentials?.email }).select(
+          '+password'
+        );
 
         if (!user) throw new Error('Email invalid!');
 
-        const passwordMatch = await bcrypt.compare(credentials!.password, user.password);
+        const passwordMatch = await bcrypt.compare(
+          credentials!.password,
+          user.password
+        );
 
         if (!passwordMatch) throw new Error('Password incorrect!');
 
@@ -35,9 +40,17 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, session, trigger }) {
       if (user) {
-        return { ...token, id: user.id, name: user.name, email: user.email, number: user.number };
+        return { ...token, id: user.id, number: user.number };
+      }
+
+      if (trigger === 'update' && session?.name) {
+        token.name = session.name;
+      }
+
+      if (trigger === 'update' && session?.number) {
+        token.number = session.number;
       }
       return token;
     },

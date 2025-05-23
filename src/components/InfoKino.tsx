@@ -32,10 +32,12 @@ const InfoKino = () => {
     loadHours();
   }, []);
 
-  if (open.length === 0) return;
-  <div className="text-center">
-    <Spinner />
-  </div>;
+  if (open.length === 0)
+    return (
+      <div className="text-center">
+        <Spinner />
+      </div>
+    );
 
   type dates = {
     weekday: string;

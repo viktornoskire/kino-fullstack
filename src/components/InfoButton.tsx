@@ -1,10 +1,16 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { FC } from "react";
-import { buttonType } from "@/types/Buttontypes";
+import Image from 'next/image';
+import { FC } from 'react';
+import { buttonType } from '@/types/Buttontypes';
 
-const InfoButton: FC<buttonType> = ({ children, type, style, onClick }) => {
+const InfoButton: FC<buttonType> = ({
+  children,
+  type,
+  style,
+  open,
+  onClick,
+}) => {
   return (
     <button
       type={type}
@@ -13,7 +19,7 @@ const InfoButton: FC<buttonType> = ({ children, type, style, onClick }) => {
       onClick={onClick}
     >
       <Image
-        src="/QnAOpen.png"
+        src={open ? '/QnAClose.png' : '/QnAOpen.png'}
         alt="Open"
         width={25}
         height={25}

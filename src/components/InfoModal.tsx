@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import InfoButton from "./InfoButton";
-import { displayOpen } from "@/types/Opentype";
+import { useState } from 'react';
+import InfoButton from './InfoButton';
+import { displayOpen } from '@/types/Opentype';
 
 const InfoModal = ({ display }: { display: displayOpen[] }) => {
   const update = [
@@ -31,11 +31,12 @@ const InfoModal = ({ display }: { display: displayOpen[] }) => {
         <li>
           <InfoButton
             type="button"
+            open={open[0].display}
             onClick={() => {
               readMore(1);
             }}
           >
-            {"Kort om biografen"}
+            {'About the cinema'}
           </InfoButton>
 
           {open[0].display && (
@@ -54,11 +55,12 @@ const InfoModal = ({ display }: { display: displayOpen[] }) => {
         <li>
           <InfoButton
             type="button"
+            open={open[1].display}
             onClick={() => {
               readMore(2);
             }}
           >
-            {"Tillgänglighet"}
+            {'Accessibility'}
           </InfoButton>
           {open[1].display && (
             <p className="p-2">
@@ -75,11 +77,12 @@ const InfoModal = ({ display }: { display: displayOpen[] }) => {
         <li>
           <InfoButton
             type="button"
+            open={open[2].display}
             onClick={() => {
               readMore(3);
             }}
           >
-            {"Öppettider"}
+            {'Opening hours'}
           </InfoButton>
           {open[2].display && (
             <div>
@@ -91,7 +94,7 @@ const InfoModal = ({ display }: { display: displayOpen[] }) => {
                 {display.map((show, index) => {
                   return (
                     <li key={index} className="p-2  grid grid-cols-3">
-                      <span className="col-start-1">{show.day} </span>{" "}
+                      <span className="col-start-1">{show.day} </span>{' '}
                       <span className="col-start-2">{show.date}</span>
                       <span className="col-start-3">{show.hours}</span>
                     </li>

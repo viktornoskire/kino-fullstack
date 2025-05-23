@@ -6,7 +6,6 @@ import { authOptions } from '@/lib/auth';
 
 export async function PUT(req: NextRequest) {
   const session = await getServerSession(authOptions);
-  console.log('session', session);
 
   if (!session) {
     return NextResponse.json({ message: 'Not authenticated' }, { status: 401 });
@@ -15,19 +14,17 @@ export async function PUT(req: NextRequest) {
   try {
     await connectDB();
     const body = await req.json();
-    const name = body.name;
-    const userFound = await User.findByIdAndUpdate(session.user.id, {
-      name: name,
-    });
-
-    console.log('user', userFound);
-
+    const user = body.userInfo;
+    await User.findByIdAndUpdate(session.user.id, user);
     return NextResponse.json(
-      { created: true, message: 'Updated!' },
+      { message: 'Updated!', type: 'succes' },
       { status: 201 }
     );
-  } catch (error) {
-    console.error('Failed to update', error);
-    return new NextResponse('Failes', { status: 500 });
+  } catch (err) {
+    console.error('error', err);
+    return NextResponse.json(
+      { message: 'Failed', type: 'error' },
+      { status: 500 }
+    );
   }
 }

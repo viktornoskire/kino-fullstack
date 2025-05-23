@@ -9,14 +9,10 @@ export default function Member() {
   const { status } = session;
 
   if (status === 'authenticated') {
-    return (
-      <main className='max-w-6xl mx-auto pb-10 px-4 mt-4 md:px-6 lg:mt-10 text-white'>
-        <InfoMeber />
-      </main>
-    );
+    return <InfoMeber />;
   } else if (status === 'unauthenticated') {
     return (
-      <main className='max-w-6xl mx-auto pb-10 px-4 mt-4 md:px-6 lg:mt-10 text-white'>
+      <main className="max-w-6xl mx-auto pb-10 px-4 mt-4 md:px-6 lg:mt-10 text-white">
         <LoggedOut />
       </main>
     );
