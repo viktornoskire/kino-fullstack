@@ -33,45 +33,16 @@ export default function Step4BookingModal({
         className="mx-auto mb-4 print:hidden"
       />
 
-      <h3
-        className="
-          print:hidden
-          text-base         /* original mobile size */
-          sm:text-sm        /* NEW: desktop size matches Step1 */
-          font-semibold
-          mb-1
-        "
-      >
+      <h3 className="print:hidden text-base font-semibold mb-1">
         Booking confirmed!
       </h3>
-
-      <p
-        className="
-          text-xs            /* original mobile size */
-          sm:text-sm         /* NEW: desktop size matches Step1 */
-          mb-4
-          print:hidden
-        "
-      >
+      <p className="text-xs mb-4 print:hidden">
         We emailed a receipt to&nbsp;
         <span className="font-medium">{userInfo.email}</span>.
       </p>
 
-      <div
-        className="
-          bg-kino-black/50
-          rounded-lg
-          shadow-md
-          p-5
-          text-left
-          divide-y
-          divide-gray-700
-          text-xs            /* ORIGINAL mobile size for labels/text */
-          sm:text-sm         /* NEW: desktop size matches Step1 */
-          print:hidden       /* hide on print */
-        "
-      >
-        <div className="grid gap-y-1 gap-x-4 sm:grid-cols-2">
+      <div className="bg-kino-black/50 rounded-lg shadow-md p-5 text-left divide-y divide-gray-700 print:hidden">
+        <div className="grid gap-y-1 gap-x-4 text-xs sm:grid-cols-2">
           <span className="text-kino-grey">Booking ID:</span>
           <span>{bookingId}</span>
 
@@ -89,7 +60,7 @@ export default function Step4BookingModal({
           </div>
         </div>
 
-        <div className="grid gap-y-1 gap-x-4 pt-3 sm:grid-cols-2">
+        <div className="grid gap-y-1 gap-x-4 text-xs pt-3 sm:grid-cols-2">
           <span className="text-kino-grey">Name</span>
           <span>{userInfo.name}</span>
 
@@ -97,17 +68,17 @@ export default function Step4BookingModal({
           <span>{userInfo.phoneNumber}</span>
         </div>
 
-        <div className="grid gap-y-1 gap-x-4 pt-3 sm:grid-cols-2">
+        <div className="grid gap-y-1 gap-x-4 text-xs pt-3 sm:grid-cols-2">
           <span className="text-kino-grey">Payment</span>
           <span>{paymentLabel[paymentMethod]}</span>
 
           <span className="text-kino-grey font-semibold">Total</span>
-          <div className="flex items-center justify-between w-full">
+          <div className="flex items-center justify-between w-full print:hidden">
             <span className="font-semibold">{totalPrice} SEK</span>
             <button
               onClick={() => window.print()}
               className="ml-2 cursor-pointer hover:text-gray-300"
-              aria-label="Print ticket"
+              aria-label="Skriv ut biljett"
             >
               <Printer size={18} />
             </button>
