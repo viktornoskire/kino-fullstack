@@ -1,5 +1,7 @@
 "use client";
+import React from "react";
 import Image from "next/image";
+import { Box, Stack, Typography, Alert, Divider } from "@mui/material";
 import {
   Step3BookingModalProps,
   PaymentOptionProps,
@@ -12,16 +14,14 @@ export default function Step3BookingModal({
   error,
 }: Step3BookingModalProps) {
   return (
-    <>
-      <h3 className="font-semibold mb-2">Select payment method</h3>
+    <Stack spacing={2}>
+      <Typography variant="h6" component="h3">
+        Select payment method
+      </Typography>
 
-      {error && (
-        <div className="p-2 mb-4 bg-red-900 text-white rounded text-sm">
-          {error}
-        </div>
-      )}
+      {error && <Alert severity="error">{error}</Alert>}
 
-      <div className="space-y-3">
+      <Stack spacing={2}>
         <PaymentOption
           id="card"
           title="Credit/Debit Card"
@@ -31,14 +31,13 @@ export default function Step3BookingModal({
           icon={
             <Image
               src="/mastercard.svg"
-              alt="Swish logo"
+              alt="…"
               width={28}
               height={28}
-              className="w-8 h-8"
+              style={{ width: "32px", height: "auto" }}
             />
           }
         />
-
         <PaymentOption
           id="swish"
           title="Swish"
@@ -48,14 +47,13 @@ export default function Step3BookingModal({
           icon={
             <Image
               src="/swish-logo.png"
-              alt="Swish logo"
+              alt="Swish"
               width={28}
               height={28}
-              className="w-8 h-8"
+              style={{ width: "32px", height: "auto" }}
             />
           }
         />
-
         <PaymentOption
           id="atCinema"
           title="Pay at cinema"
@@ -65,25 +63,26 @@ export default function Step3BookingModal({
           icon={
             <Image
               src="/kinoLogo.png"
-              alt="Swish logo"
+              alt="Pay at cinema"
               width={28}
               height={28}
-              className="w-8 h-8"
+              style={{ width: "32px", height: "auto" }}
             />
           }
         />
-      </div>
+      </Stack>
 
-      <div className="border-t pt-3 mt-4">
-        <div className="flex justify-between font-semibold">
-          <span>Total:</span>
-          <span>{totalPrice}kr</span>
-        </div>
-        <p className="text-xs text-gray-400 mt-2">
+      <Divider />
+      <Box>
+        <Box display="flex" justifyContent="space-between" mb={1}>
+          <Typography fontWeight="bold">Total:</Typography>
+          <Typography>{totalPrice} kr</Typography>
+        </Box>
+        <Typography variant="caption" color="text.secondary">
           *This is a simulated payment for demonstration purposes*
-        </p>
-      </div>
-    </>
+        </Typography>
+      </Box>
+    </Stack>
   );
 }
 
@@ -95,37 +94,39 @@ function PaymentOption({
   onSelect,
   icon,
 }: PaymentOptionProps) {
-  const handleChange = () => {
-    onSelect();
-  };
   return (
-    <div
-      className={`border rounded-lg p-3 cursor-pointer transition ${
-        isSelected
-          ? "border-kino-darkred bg-kino-black"
-          : "border-kino-grey hover:bg-kino-black"
-      }`}
+    <Box
       onClick={onSelect}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 2,
+        p: 2,
+        border: 1,
+        borderColor: isSelected ? "primary.main" : "divider",
+        borderRadius: 1,
+        bgcolor: isSelected ? "background.paper" : "transparent",
+        cursor: "pointer",
+        "&:hover": {
+          bgcolor: isSelected ? "background.paper" : "action.hover",
+        },
+      }}
     >
-      <div className="flex items-center gap-3">
-        <input
-          type="radio"
-          id={id}
-          name="paymentMethod"
-          checked={isSelected}
-          onChange={handleChange}
-          className="sr-only"
-        />
-
-        {icon && <div className="shrink-0">{icon}</div>}
-
-        <div className="flex-1">
-          <label htmlFor={id} className="font-medium cursor-pointer">
-            {title}
-          </label>
-          <p className="text-sm text-kino-grey">{description}</p>
-        </div>
-      </div>
-    </div>
+      <Box component="span">{icon}</Box>
+      <Box flex="1">
+        <Typography fontWeight={500}>{title}</Typography>
+        <Typography variant="body2" color="text.secondary">
+          {description}
+        </Typography>
+      </Box>
+      <input
+        type="radio"
+        id={id}
+        name="paymentMethod"
+        checked={isSelected}
+        onChange={onSelect}
+        style={{ display: "none" }}
+      />
+    </Box>
   );
 }
