@@ -1,8 +1,13 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @layer utilities {
   .bg-gradient-60 {
-    background-image: linear-gradient(60deg, rgb(220, 0, 0), rgb(0, 0, 190), rgb(255, 0, 0));
+    background-image: linear-gradient(
+      60deg,
+      rgb(220, 0, 0),
+      rgb(0, 0, 190),
+      rgb(255, 0, 0)
+    );
   }
 }
 
@@ -16,13 +21,13 @@
   --color-kino-green: #64dd17;
   --color-kino-darkgreen: #154e10;
   --color-kino-yellow: #ffca28;
-  --font-poppins: 'Poppins';
+  --font-poppins: "Poppins";
 }
 
 html {
   background-color: var(--color-kino-black);
   color: var(--color-kino-white);
-  font-family: var(--Poppins, sans-serif);
+  font-family: var(--font-poppins, sans-serif);
 }
 
 body {

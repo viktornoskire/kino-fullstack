@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Printer } from "lucide-react";
 import Image from "next/image";
@@ -18,9 +18,9 @@ export default function Step4BookingModal({
   formatScreeningTime,
 }: Step4BookingModalProps) {
   const paymentLabel: Record<PaymentMethod, string> = {
-    swish: 'Swish',
-    card: 'Credit/Debit Card',
-    atCinema: 'Pay at Cinema',
+    swish: "Swish",
+    card: "Credit/Debit Card",
+    atCinema: "Pay at Cinema",
   };
 
   return (
@@ -38,7 +38,7 @@ export default function Step4BookingModal({
       </h3>
       <p className="text-xs mb-4 print:hidden">
         We emailed a receipt to&nbsp;
-        <span className='font-medium'>{userInfo.email}</span>.
+        <span className="font-medium">{userInfo.email}</span>.
       </p>
 
       <div className="bg-kino-black/50 rounded-lg shadow-md p-5 text-left divide-y divide-gray-700 print:hidden">
@@ -46,30 +46,30 @@ export default function Step4BookingModal({
           <span className="text-kino-grey">Booking ID:</span>
           <span>{bookingId}</span>
 
-          <span className='text-kino-grey'>Movie:</span>
+          <span className="text-kino-grey">Movie:</span>
           <span>{movieTitle}</span>
 
-          <span className='text-kino-grey'>Date & Time:</span>
+          <span className="text-kino-grey">Date & Time:</span>
           <span>{formatScreeningTime(screeningTime)}</span>
 
-          <span className='text-kino-grey'>Seats</span>
-          <div className='flex flex-col'>
-            {seats.map(seat => (
+          <span className="text-kino-grey">Seats</span>
+          <div className="flex flex-col">
+            {seats.map((seat) => (
               <span key={seat}>{seat}</span>
             ))}
           </div>
         </div>
 
-        <div className='grid gap-y-1 gap-x-4 text-xs pt-3 sm:grid-cols-2'>
-          <span className='text-kino-grey'>Name</span>
+        <div className="grid gap-y-1 gap-x-4 text-xs pt-3 sm:grid-cols-2">
+          <span className="text-kino-grey">Name</span>
           <span>{userInfo.name}</span>
 
-          <span className='text-kino-grey'>Phone</span>
+          <span className="text-kino-grey">Phone</span>
           <span>{userInfo.phoneNumber}</span>
         </div>
 
-        <div className='grid gap-y-1 gap-x-4 text-xs pt-3 sm:grid-cols-2'>
-          <span className='text-kino-grey'>Payment</span>
+        <div className="grid gap-y-1 gap-x-4 text-xs pt-3 sm:grid-cols-2">
+          <span className="text-kino-grey">Payment</span>
           <span>{paymentLabel[paymentMethod]}</span>
 
           <span className="text-kino-grey font-semibold">Total</span>
@@ -114,9 +114,7 @@ export default function Step4BookingModal({
           </div>
 
           <span className="font-semibold">Name:</span>
-          <span>
-            {userInfo.name}
-          </span>
+          <span>{userInfo.name}</span>
 
           <span className="font-semibold">Phone:</span>
           <span>{userInfo.phoneNumber}</span>
