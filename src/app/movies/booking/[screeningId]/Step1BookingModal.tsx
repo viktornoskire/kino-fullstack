@@ -1,4 +1,12 @@
 "use client";
+
+import React from "react";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+
 import { Step1BookingModalProps } from "./types/BookingModalTypes";
 
 export default function Step1BookingModal({
@@ -17,37 +25,67 @@ export default function Step1BookingModal({
     : [];
 
   return (
-    <div className="text-left">
-      <div className="bg-kino-black/50 rounded-lg shadow-md p-5 divide-y divide-gray-700 text-xs sm:text-sm">
-        <div className="grid gap-y-1 gap-x-4 sm:grid-cols-2">
-          <span className="text-kino-grey">Movie</span>
-          <span className="font-medium">{movieTitle}</span>
+    <Paper elevation={3} sx={{ p: 3, bgcolor: "background.paper" }}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography variant="caption" color="text.secondary">
+            Movie
+          </Typography>
+          <Typography fontWeight={500}>{movieTitle}</Typography>
+        </Box>
 
-          <span className="text-kino-grey">Date &amp; Time</span>
-          <span>{formatScreeningTime(screeningTime)}</span>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography variant="caption" color="text.secondary">
+            Date &amp; Time
+          </Typography>
+          <Typography>{formatScreeningTime(screeningTime)}</Typography>
+        </Box>
 
-          <span className="text-kino-grey">Tickets</span>
-          <div className="flex flex-col">
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+          }}
+        >
+          <Typography variant="caption" color="text.secondary">
+            Tickets
+          </Typography>
+          <Stack spacing={0.5} sx={{ textAlign: "right" }}>
             {ticketItems.map((item, i) => (
-              <span key={i}>{item}</span>
+              <Typography key={i}>{item}</Typography>
             ))}
-          </div>
-        </div>
+          </Stack>
+        </Box>
+      </Box>
 
-        <div className="pt-3 grid gap-y-1 gap-x-4 sm:grid-cols-2">
-          <span className="text-kino-grey">Seats</span>
-          <div className="flex flex-col">
+      <Divider sx={{ my: 2, borderColor: "divider" }} />
+
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+          }}
+        >
+          <Typography variant="caption" color="text.secondary">
+            Seats
+          </Typography>
+          <Stack spacing={0.5} sx={{ textAlign: "right" }}>
             {seats.map((seat) => (
-              <span key={seat}>{seat}</span>
+              <Typography key={seat}>{seat}</Typography>
             ))}
-          </div>
-        </div>
+          </Stack>
+        </Box>
 
-        <div className="pt-3 grid gap-y-1 gap-x-4 sm:grid-cols-2">
-          <span className="text-kino-grey font-semibold">Total</span>
-          <span className="font-semibold">{totalPrice} SEK</span>
-        </div>
-      </div>
-    </div>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography variant="caption" color="text.secondary" fontWeight={600}>
+            Total
+          </Typography>
+          <Typography fontWeight={600}>{totalPrice} SEK</Typography>
+        </Box>
+      </Box>
+    </Paper>
   );
 }
