@@ -17,8 +17,9 @@ export default function Step2BookingModal({
     const e: Record<string, string> = {};
     if (!userInfo.name.trim()) e.name = "Name is required";
     if (!userInfo.email.trim()) e.email = "Email is required";
-    else if (!userInfo.email.includes("@")) e.email = "Enter valid email";
-    if (!userInfo.phoneNumber.trim()) e.phoneNumber = "Phone is required";
+    else if (!userInfo.email.includes("@")) e.email = "Enter a valid email";
+    if (!userInfo.phoneNumber.trim())
+      e.phoneNumber = "Phone number is required";
     setErrors(e);
   }, [userInfo]);
 
