@@ -1,4 +1,3 @@
-// src/app/movies/[slug]/page.tsx
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import MovieLayout from "@/components/movies/movie-details/MovieLayout";
