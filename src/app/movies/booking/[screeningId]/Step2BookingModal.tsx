@@ -24,10 +24,12 @@ export default function Step2BookingModal({
   }, [userInfo]);
 
   useEffect(() => {
-    onInputChange("name", user?.name || "");
-    onInputChange("email", user?.email || "");
-    onInputChange("phoneNumber", user?.number || "");
-  }, [user]);
+    if (user) {
+      onInputChange("name", user.name || "");
+      onInputChange("email", user.email || "");
+      onInputChange("phoneNumber", user.number || "");
+    }
+  }, [user, onInputChange]);
 
   const field = (
     name: keyof typeof userInfo,

@@ -1,57 +1,50 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
-import { Types } from "mongoose";
 import Seat from "@/models/seat";
 import Booking from "@/models/booking";
 import Reservation from "@/models/reservation";
-import {
+import type {
   SeatDocument,
-  ReservationDocument,
   BookingDocument,
+  ReservationDocument,
 } from "./ScreeningId.types";
 
 export async function GET(
   request: Request,
-  context: { params: { screeningId: string } }
+  { params }: { params: Promise<{ screeningId: string }> }
 ) {
-  const resolvedParams = await context.params;
-  const screeningId = resolvedParams.screeningId;
+  const { screeningId } = await params;
 
   try {
     await connectDB();
 
-    const allSeats = (await Seat.find().lean()) as unknown as SeatDocument[];
+    const allSeatsRaw = await Seat.find().lean();
+    const allSeats = allSeatsRaw as unknown as SeatDocument[];
 
-    const bookings = (await Booking.find({
+    const bookingsRaw = await Booking.find({
       screeningId,
       status: { $ne: "cancelled" },
-    }).lean()) as unknown as BookingDocument[];
+    }).lean();
+    const bookings = bookingsRaw as unknown as BookingDocument[];
 
-    const activeReservations = (await Reservation.find({
+    const activeResRaw = await Reservation.find({
       screeningId,
       status: "reserved",
-    }).lean()) as unknown as ReservationDocument[];
+    }).lean();
+    const activeReservations = activeResRaw as unknown as ReservationDocument[];
 
-    const bookedSeatIds = new Set(
-      bookings.flatMap((booking: BookingDocument) =>
-        (booking.seatIds || []).map((seatId: Types.ObjectId | string) =>
-          seatId.toString()
-        )
-      )
+    const bookedSeatIds = new Set<string>();
+    bookings.forEach((b) =>
+      (b.seatIds || []).forEach((id) => bookedSeatIds.add(id.toString()))
+    );
+    activeReservations.forEach((r) =>
+      (r.seats || []).forEach((id) => bookedSeatIds.add(id.toString()))
     );
 
-    activeReservations.forEach((reservation: ReservationDocument) => {
-      (reservation.seats || []).forEach((seatId: Types.ObjectId | string) => {
-        bookedSeatIds.add(seatId.toString());
-      });
-    });
-
-    const seatsWithStatus: SeatDocument[] = allSeats.map(
-      (seat: SeatDocument) => ({
-        ...seat,
-        isBooked: bookedSeatIds.has(seat._id.toString()),
-      })
-    );
+    const seatsWithStatus: SeatDocument[] = allSeats.map((seat) => ({
+      ...seat,
+      isBooked: bookedSeatIds.has(seat._id.toString()),
+    }));
 
     return NextResponse.json(seatsWithStatus);
   } catch (error) {
