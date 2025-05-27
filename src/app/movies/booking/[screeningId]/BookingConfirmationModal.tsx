@@ -92,15 +92,13 @@ export default function BookingConfirmationModal({
     setCurrentStep((prev) => prev - 1);
   };
 
-  const handleUserInfoUpdate = (name: string, value: string) => {
-    setUserInfo((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    if (step2Error) {
-      setStep2Error("");
-    }
-  };
+  const handleUserInfoUpdate = useCallback(
+    (name: string, value: string) => {
+      setUserInfo((prev) => ({ ...prev, [name]: value }));
+      if (step2Error) setStep2Error("");
+    },
+    [step2Error]
+  );
 
   const handlePaymentMethodSelect = (method: PaymentMethod) => {
     setPaymentMethod(method);

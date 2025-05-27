@@ -1,31 +1,32 @@
-import { notFound } from 'next/navigation';
-import { headers } from 'next/headers';
-import MovieLayout from '@/components/movies/movie-details/MovieLayout';
+import { notFound } from "next/navigation";
+import { headers } from "next/headers";
+import MovieLayout from "@/components/movies/movie-details/MovieLayout";
+import type { movieType } from "@/types/Movietypes";
+import type { ScreeningType } from "@/models/Screening";
 
-export default async function MovieDetailPage({ params }: { params: { slug: string } }) {
-  // Using await params here to silence Next.js warning about params.slug
-  const resolvedParams = await params;
-  const resolvedHeaders = await headers();
-  const host = resolvedHeaders.get('host');
-  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+type ApiResponse = {
+  movie: movieType;
+  screenings: ScreeningType[];
+};
 
-  const res = await fetch(`${protocol}://${host}/api/movies/${resolvedParams.slug}`, {
-    cache: 'no-store',
-  });
+export default async function MovieDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
 
-  if (res.status === 404) {
-    notFound();
-  }
+  const hdrs = await headers();
+  const host = hdrs.get("host") ?? "localhost:3000";
+  const proto = hdrs.get("x-forwarded-proto") ?? "http";
+  const baseUrl = `${proto}://${host}`;
 
-  if (!res.ok) {
-    throw new Error('Failed to fetch movie');
-  }
+  const url = new URL(`/api/movies/${slug}`, baseUrl).toString();
+  const res = await fetch(url, { cache: "no-store" });
 
-  const { movie, screenings } = await res.json();
+  if (res.status === 404) notFound();
+  if (!res.ok) throw new Error("Failed to fetch movie");
 
-  return (
-    <>
-      <MovieLayout movie={movie} screenings={screenings} />
-    </>
-  );
+  const data = (await res.json()) as ApiResponse;
+  return <MovieLayout movie={data.movie} screenings={data.screenings} />;
 }
