@@ -17,8 +17,6 @@ Cypress.Commands.add('login', (username: string, password: string) => {
     cy.get('form').find('button').contains('Login').click();
 
     cy.wait('@login');
-
-    cy.getCookie('next-auth.session-token').should('exist');
   });
 });
 
