@@ -8,11 +8,12 @@ import Image from 'next/image';
 
 type Props = {
   showRegisterModal: string;
+  showRegisteredModal: string;
   onToggleModal: (modal: string) => void;
   onResetForm: (event: FormEvent<HTMLFormElement>) => void;
 };
 
-const Register: FC<Props> = ({ showRegisterModal, onToggleModal, onResetForm }) => {
+const Register: FC<Props> = ({ showRegisterModal, showRegisteredModal, onToggleModal, onResetForm }) => {
   const [error, setError] = useState<string>('');
   const resetError = () => {
     if (error !== '') {
@@ -74,6 +75,7 @@ const Register: FC<Props> = ({ showRegisterModal, onToggleModal, onResetForm }) 
               } else {
                 setError('');
                 onToggleModal('register');
+                onToggleModal('registered');
                 onResetForm(event);
               }
             } catch (error) {
@@ -130,6 +132,40 @@ const Register: FC<Props> = ({ showRegisterModal, onToggleModal, onResetForm }) 
             Close
           </p>
         </form>
+      </div>
+      <div
+        className={`fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-51 ${showRegisteredModal}`}
+        onClick={() => {
+          onToggleModal('registered');
+        }}></div>
+      <div
+        className={`w-full max-w-100 flex items-center z-999 bg-neutral-800 top-1/4 bottom-1/4 text-white p-8 rounded-xl shadow-lg fixed flex-col right-2 left-2 ml-auto mr-auto overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 ${showRegisteredModal}`}>
+        <Image src={'/kinoLogoOverlay.png'} alt='kino logo' width={200} height={120} className='w-auto h-auto' />
+        <h2 className='text-2xl font-bold mt-4 mb-6'>Welcome to the club!</h2>
+        <Image
+          src='/confirmed-order.png'
+          alt='Register completed'
+          width={80}
+          height={80}
+          className='mx-auto mb-4 print:hidden'
+        />
+        <p className=''>
+          <span
+            className='underline cursor-pointer'
+            onClick={() => {
+              onToggleModal('login');
+              onToggleModal('registered');
+            }}>
+            Login
+          </span>
+        </p>
+        <p
+          className='hover:text-gray-300 text-center mt-4 cursor-pointer'
+          onClick={() => {
+            onToggleModal('registered');
+          }}>
+          Close
+        </p>
       </div>
     </div>
   );

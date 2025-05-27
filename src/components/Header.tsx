@@ -11,6 +11,8 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showLoginModal, setLoginModal] = useState<string>('hidden');
   const [showRegisterModal, setRegisterModal] = useState<string>('hidden');
+  const [showLoggedInModal, setLoggedInModal] = useState<string>('hidden');
+  const [showRegisteredModal, setRegisteredModal] = useState<string>('hidden');
   const pathname = usePathname();
 
   const isActive = (path: string) => pathname === path;
@@ -32,6 +34,18 @@ const Header = () => {
         setRegisterModal('');
       } else {
         setRegisterModal('hidden');
+      }
+    } else if (modal === 'logged in') {
+      if (showLoggedInModal === 'hidden') {
+        setLoggedInModal('');
+      } else {
+        setLoggedInModal('hidden');
+      }
+    } else if (modal === 'registered') {
+      if (showRegisteredModal === 'hidden') {
+        setRegisteredModal('');
+      } else {
+        setRegisteredModal('hidden');
       }
     }
   };
@@ -136,8 +150,18 @@ const Header = () => {
         )}
       </nav>
 
-      <Register showRegisterModal={showRegisterModal} onToggleModal={toggleModal} onResetForm={resetForm} />
-      <Login showLoginModal={showLoginModal} onToggleModal={toggleModal} onResetForm={resetForm} />
+      <Register
+        showRegisterModal={showRegisterModal}
+        showRegisteredModal={showRegisteredModal}
+        onToggleModal={toggleModal}
+        onResetForm={resetForm}
+      />
+      <Login
+        showLoginModal={showLoginModal}
+        showLoggedInModal={showLoggedInModal}
+        onToggleModal={toggleModal}
+        onResetForm={resetForm}
+      />
     </header>
   );
 };
