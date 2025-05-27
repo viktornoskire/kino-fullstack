@@ -5,13 +5,13 @@ import { movie } from "@/models/movies";
 
 export async function GET(
   request: Request,
-  context: { params: { screeningId: string } }
+  { params }: { params: Promise<{ screeningId: string }> }
 ) {
-  const resolvedParams = await context.params;
-  const screeningId = resolvedParams.screeningId;
+  const { screeningId } = await params;
 
   try {
     await connectDB();
+
     const screening = await Screening.findById(
       screeningId
     ).lean<ScreeningType>();
@@ -36,7 +36,8 @@ export async function GET(
       movie: movieData,
       screenings: screeningsForThisMovie,
     });
-  } catch {
+  } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

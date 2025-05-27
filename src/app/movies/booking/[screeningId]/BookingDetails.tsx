@@ -19,7 +19,6 @@ export default function BookingDetails({
           width={160}
           height={240}
           className="w-full rounded-xl object-cover"
-          priority
         />
       </div>
 
