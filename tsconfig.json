@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/lib/db.tsx"
+    "src/lib/db.tsx",
+    "cypress/cypress.env"
   ],
   "exclude": ["node_modules"]
 }
