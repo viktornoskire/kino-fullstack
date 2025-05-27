@@ -43,7 +43,7 @@ const Login: FC<Props> = ({ showLoginModal, onToggleModal, onResetForm }) => {
           </span>
         </p>
         <form
-          className=''
+          className='login-form'
           onSubmit={async (event: FormEvent<HTMLFormElement>) => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
@@ -77,6 +77,7 @@ const Login: FC<Props> = ({ showLoginModal, onToggleModal, onResetForm }) => {
             name='email'
             className='w-full p-3 bg-neutral-900 rounded-lg text-white mb-4 outline-none focus:ring-2 border-2 border-s-gray-300'
             autoComplete='email'
+            id='login-email'
           />
           <input
             onChange={resetError}
@@ -85,6 +86,7 @@ const Login: FC<Props> = ({ showLoginModal, onToggleModal, onResetForm }) => {
             name='password'
             className='w-full p-3 bg-neutral-900 rounded-lg text-white mb-4 outline-none focus:ring-2 border-2 border-s-gray-300'
             autoComplete='current-password'
+            id='login-password'
           />
           <small className='block pb-4 mr-auto ml-auto'>{error}</small>
           <Button type='submit' className='block mr-auto ml-auto'>

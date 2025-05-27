@@ -44,7 +44,7 @@ const Register: FC<Props> = ({ showRegisterModal, onToggleModal, onResetForm }) 
           </span>
         </p>
         <form
-          className=''
+          className='register-form'
           onSubmit={async (event: FormEvent<HTMLFormElement>) => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
@@ -87,6 +87,7 @@ const Register: FC<Props> = ({ showRegisterModal, onToggleModal, onResetForm }) 
             placeholder='first name...'
             name='firstname'
             className='w-full p-3 bg-neutral-900 rounded-lg text-white mb-4 outline-none focus:ring-2 border-2 border-s-gray-300'
+            id='register-first'
           />
           <input
             onChange={resetError}
@@ -94,6 +95,7 @@ const Register: FC<Props> = ({ showRegisterModal, onToggleModal, onResetForm }) 
             placeholder='last name...'
             name='lastname'
             className='w-full p-3 bg-neutral-900 rounded-lg text-white mb-4 outline-none focus:ring-2 border-2 border-s-gray-300'
+            id='register-last'
           />
           <input
             onChange={resetError}
@@ -102,6 +104,7 @@ const Register: FC<Props> = ({ showRegisterModal, onToggleModal, onResetForm }) 
             name='email'
             className='w-full p-3 bg-neutral-900 rounded-lg text-white mb-4 outline-none focus:ring-2 border-2 border-s-gray-300'
             autoComplete='email'
+            id='register-email'
           />
           <input
             onChange={resetError}
@@ -110,6 +113,7 @@ const Register: FC<Props> = ({ showRegisterModal, onToggleModal, onResetForm }) 
             name='phone'
             className='w-full p-3 bg-neutral-900 rounded-lg text-white mb-4 outline-none focus:ring-2 border-2 border-s-gray-300'
             autoComplete='tel'
+            id='register-phone'
           />
           <PasswordInput resetError={resetError} />
           <small className='block pb-4 mr-auto ml-auto text-red-500'>{error}</small>
