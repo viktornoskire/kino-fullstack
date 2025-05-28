@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "cy:open": "cypress open"
+    "cypress": "cypress open"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
