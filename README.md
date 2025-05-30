@@ -33,5 +33,6 @@ Louise writes here.
 
 ### Emily
 
-Emily writes here.
+Deployed on Vercel: https://mock-cinema-xi.vercel.app/
+
 
