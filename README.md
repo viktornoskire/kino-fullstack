@@ -1,11 +1,44 @@
-# Kino-Fullstack
+# Install
 
-# Mapp struktur under arbete
+1. npm install.
+2. npm run dev.
 
-### Components - alla komponenter
+### --OR--
 
-### app - Routing
+1. npm install.
+2. npm run build.
+3. npm start.
 
-### lib - databas connection, authentisering. (Testa er fram / googla etc..)
+# Other instructions
 
-### models - typning för typescript
+Here we can put other instuctions if needed.
+
+# VG-Assignment for each member to explain their reasoning.
+
+### Rikard
+
+Rikard writes here.
+
+### Johannes
+
+Johannes writes here.
+
+### Viktor
+
+Viktor writes here.
+
+### Louise 
+
+Louise writes here.
+
+### Emily
+
+Emily writes here.
+
+### Johnny
+
+Johnny writes here.
+
+### Oscar
+
+Oscar writes here
