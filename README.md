@@ -33,27 +33,27 @@ In summary, I think MUI is interesting because it makes the UI look really good 
 ## Johannes
 
 1. Förberedelser
-Forkade vårt projekt på GitHub.
+   Forkade vårt projekt på GitHub.
 
-Såg till att allt var redo för produktion:
-npm run build
-npm start
+   Såg till att allt var redo för produktion:
+   npm run build
+   npm start
 
 2. Skapade konto på Vercel
-Registrerade mig på vercel.com med mitt GitHub-konto.
+   Registrerade mig på vercel.com med mitt GitHub-konto.
 
 3. Importerade mitt projekt till Vercel
-Klickade på "New Project" i dashboarden.
+   Klickade på "New Project" i dashboarden.
 
-Valde det forkade Kino-repot.
+   Valde det forkade Kino-repot.
 
 4. Automatisk konfiguration
-Vercel identifierar automatiskt att det är ett Next.js-projekt och konfigurerar deployment-inställningar.
+   Vercel identifierar automatiskt att det är ett Next.js-projekt och konfigurerar deployment-inställningar.
 
 5. Jag angav våra environment variablar.
 
 6. Deploy!
-Klickade på "Deploy" och Vercel löste resten.
+   Klickade på "Deploy" och Vercel löste resten.
 
 Länk till sidan: https://kino-fullstack-jp.vercel.app/
 
