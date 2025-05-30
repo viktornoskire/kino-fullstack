@@ -35,10 +35,3 @@ Louise writes here.
 
 Emily writes here.
 
-### Johnny
-
-Johnny writes here.
-
-### Oscar
-
-Oscar writes here
