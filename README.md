@@ -15,6 +15,8 @@ Here we can put other instuctions if needed.
 
 # VG-Assignment for each member to explain their reasoning.
 
+In this section, each member of this project will have the chance to explain their choices for their VG-assignments.
+
 ## Rikard
 
 ### The reason why i chose to use MUI (Material UI).
