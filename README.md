@@ -42,6 +42,7 @@ In summary, I think MUI is interesting because it makes the UI look really good 
 2. Registrerade mig på vercel.com med mitt GitHub-konto.
 
 3. Importerade mitt projekt till Vercel
+   
    Klickade på "New Project" i dashboarden.
 
    Valde det forkade Kino-repot.
@@ -52,6 +53,7 @@ In summary, I think MUI is interesting because it makes the UI look really good 
 5. Jag angav våra environment variablar.
 
 6. Deploy!
+   
    Klickade på "Deploy" och Vercel löste resten.
 
 Länk till sidan: https://kino-fullstack-jp.vercel.app/
