@@ -39,8 +39,7 @@ In summary, I think MUI is interesting because it makes the UI look really good 
    npm run build
    npm start
 
-2. Skapade konto på Vercel
-   Registrerade mig på vercel.com med mitt GitHub-konto.
+2. Registrerade mig på vercel.com med mitt GitHub-konto.
 
 3. Importerade mitt projekt till Vercel
    Klickade på "New Project" i dashboarden.
