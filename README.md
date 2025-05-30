@@ -40,14 +40,14 @@ Viktor writes here.
 
 ## Louise
 
-###Test strategy for member page for logged in member
+### Test strategy for member page for logged in member
 
 I have chosen to create a e2e test for logged in members, with the purpose to test interaction with the member page.
 The test checks if the visitor can log in to the site and get access to the member page.
 The test checks that a session has been created, which is necessary to get access to the member page and information from the database.
 The test checks that information about the member is accessed from the database and that it is displayed on the member page for the visitor.
 
-###Instructions to the test
+### Instructions to the test
 
 The be able to run the test a registered member must exist in the database. Then a cypress.env.json file must be created at the same level as the cypress.config.ts file. The file must consist of log in information for the registered member.
 Add following information in the cypress.env.json file:
