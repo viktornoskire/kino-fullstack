@@ -18,16 +18,7 @@ export default function CinemaExperiences() {
           your own soothing jacuzzi while you watch your favorite films.
           State-of-the-art technology – Enjoy crystal-clear visuals and
           immersive surround sound for an unparalleled cinematic experience.
-        </p>
-        <p className="mb-10 text-lg text-kino-white">
-          Personalized service – Order gourmet snacks, premium drinks, and
-          champagne to complete your VIP movie night. Perfect for special
-          occasions – Celebrate birthdays, anniversaries, or just a luxurious
-          night out with an unforgettable private screening. Whether it’s an
-          intimate date night, a gathering with friends, or simply a way to
-          treat yourself, our private cinema suites provide the ultimate
-          atmosphere for relaxation and entertainment.
-        </p>
+        </p>        
       </div>
       <div className="md:row-start-2 flex justify-center">
         <Image
