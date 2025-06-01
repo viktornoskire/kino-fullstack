@@ -1,8 +1,20 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [new URL("https://image.tmdb.org/**")],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'image.tmdb.org',
+        pathname: '/',
+      },
+
+      {
+        protocol: 'https',
+        hostname: 'kino-fullstack-*.vercel.app',
+        pathname: '/',
+      },
+    ],
   },
 };
 
