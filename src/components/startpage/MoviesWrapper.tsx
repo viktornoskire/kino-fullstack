@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { format } from "date-fns";
-import RenderCurrentMovies from "../current-movies/RenderCurrentMovies";
-import Spinner from "../Spinner";
+import { useEffect, useState } from 'react';
+import { format } from 'date-fns';
+import RenderCurrentMovies from '../current-movies/RenderCurrentMovies';
+import Spinner from '../Spinner';
 
-import FilterButtons from "./FilterButtons";
-import DateSelector from "./DateSelector";
-import ShowMoreButton from "./ShowMoreButton";
+import FilterButtons from './FilterButtons';
+import DateSelector from './DateSelector';
+import ShowMoreButton from './ShowMoreButton';
 
-import { movieType } from "@/types/Movietypes";
+import { movieType } from '@/types/Movietypes';
 
 export default function NowShowingWrapper() {
   // Store all fetched movies
@@ -22,7 +22,7 @@ export default function NowShowingWrapper() {
 
   // Filter states
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const [selectedDate, setSelectedDate] = useState("all");
+  const [selectedDate, setSelectedDate] = useState('all');
 
   // Fetch movies when filters change
   useEffect(() => {
@@ -31,29 +31,29 @@ export default function NowShowingWrapper() {
       setError(null);
 
       try {
-        const url = new URL("/api/movies", window.location.origin);
-        url.searchParams.append("tags", "nowShowing");
+        const url = new URL('/api/movies', window.location.origin);
+        url.searchParams.append('tags', 'nowShowing');
 
         // Add extra tag filter if one is selected
         if (selectedTag) {
-          url.searchParams.append("tags", selectedTag);
+          url.searchParams.append('tags', selectedTag);
         }
 
         // Add date filter if applicable
         const dateFilter = getFormattedDate(selectedDate);
         if (dateFilter) {
-          url.searchParams.append("screeningDate", dateFilter);
+          url.searchParams.append('screeningDate', dateFilter);
         }
 
         const res = await fetch(url.toString());
-        if (!res.ok) throw new Error("Could not fetch movies");
+        if (!res.ok) throw new Error('Could not fetch movies');
 
         const data = await res.json();
         setMovies(data);
         setVisibleCount(10);
       } catch (err) {
         console.error(err);
-        setError("Failed to load movies");
+        setError('Failed to load movies');
       } finally {
         setLoading(false);
       }
@@ -67,16 +67,16 @@ export default function NowShowingWrapper() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    if (option === "all") return null;
+    if (option === 'all') return null;
 
-    if (option === "today") {
-      return format(today, "yyyy-MM-dd");
+    if (option === 'today') {
+      return format(today, 'yyyy-MM-dd');
     }
 
-    if (option === "tomorrow") {
+    if (option === 'tomorrow') {
       const tomorrow = new Date(today);
       tomorrow.setDate(today.getDate() + 1);
-      return format(tomorrow, "yyyy-MM-dd");
+      return format(tomorrow, 'yyyy-MM-dd');
     }
 
     return option;
@@ -92,7 +92,7 @@ export default function NowShowingWrapper() {
   // Show loading spinner while fetching
   if (loading) {
     return (
-      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div className='fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
         <Spinner />
       </div>
     );
@@ -100,13 +100,11 @@ export default function NowShowingWrapper() {
 
   // Render filters, movie list and pagination button
   return (
-    <div className="">
+    <div className='grid'>
       <FilterButtons selectedTag={selectedTag} onSelect={setSelectedTag} />
       <DateSelector selectedDate={selectedDate} onChange={setSelectedDate} />
       <RenderCurrentMovies movies={visibleMovies} />
-      {hasMoreMovies && (
-        <ShowMoreButton onClick={() => setVisibleCount((prev) => prev + 10)} />
-      )}
+      {hasMoreMovies && <ShowMoreButton onClick={() => setVisibleCount(prev => prev + 10)} />}
     </div>
   );
 }
