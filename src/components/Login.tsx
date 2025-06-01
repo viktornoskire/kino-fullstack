@@ -90,7 +90,7 @@ const Login: FC<Props> = ({ showLoginModal, showLoggedInModal, onToggleModal, on
             autoComplete='current-password'
             id='login-password'
           />
-          <small className='block pb-4 mr-auto ml-auto'>{error}</small>
+          <small className='block pb-4 mr-auto ml-auto text-kino-darkred'>{error}</small>
           <Button type='submit' className='block mr-auto ml-auto'>
             Login
           </Button>
