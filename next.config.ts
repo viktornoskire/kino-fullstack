@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'kino-fullstack-*.vercel.app',
+        hostname: 'kino-fullstack-git-main-viktornoskires-projects.vercel.app',
         pathname: '/**',
       },
     ],
