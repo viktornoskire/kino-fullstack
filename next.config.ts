@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         hostname: 'image.tmdb.org',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'kino-fullstack-q5b3unmvz-viktornoskires-projects.vercel.app',
+        pathname: '/**',
+      },
     ],
   },
 };
