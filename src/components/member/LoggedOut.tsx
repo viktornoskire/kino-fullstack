@@ -7,6 +7,8 @@ import { useState, FormEvent } from 'react';
 const LoggedOut = () => {
   const [showLoginModal, setLoginModal] = useState<string>('hidden');
   const [showRegisterModal, setRegisterModal] = useState<string>('hidden');
+  const [showLoggedInModal, setLoggedInModal] = useState<string>('hidden');
+  const [showRegisteredModal, setRegisteredModal] = useState<string>('hidden');
 
   const resetForm = (event: FormEvent<HTMLFormElement>) => {
     const userForm = event.target as HTMLFormElement;
@@ -25,6 +27,18 @@ const LoggedOut = () => {
         setRegisterModal('');
       } else {
         setRegisterModal('hidden');
+      }
+    } else if (modal === 'logged in') {
+      if (showLoggedInModal === 'hidden') {
+        setLoggedInModal('');
+      } else {
+        setLoggedInModal('hidden');
+      }
+    } else if (modal === 'registered') {
+      if (showRegisteredModal === 'hidden') {
+        setRegisteredModal('');
+      } else {
+        setRegisteredModal('hidden');
       }
     }
   };
@@ -66,8 +80,18 @@ const LoggedOut = () => {
           cinema event!
         </p>
       </div>
-      <Register showRegisterModal={showRegisterModal} onToggleModal={toggleModal} onResetForm={resetForm} />
-      <Login showLoginModal={showLoginModal} onToggleModal={toggleModal} onResetForm={resetForm} />
+      <Register
+        showRegisterModal={showRegisterModal}
+        showRegisteredModal={showRegisteredModal}
+        onToggleModal={toggleModal}
+        onResetForm={resetForm}
+      />
+      <Login
+        showLoginModal={showLoginModal}
+        showLoggedInModal={showLoggedInModal}
+        onToggleModal={toggleModal}
+        onResetForm={resetForm}
+      />
       <div className='grid grid-cols-2 gap-5'>
         <AboutCard
           title="What's required from you!"
