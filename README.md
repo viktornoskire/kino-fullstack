@@ -33,36 +33,100 @@ In summary, I think MUI is interesting because it makes the UI look really good 
 ## Johannes
 
 1. Förberedelser
-   
+
    Forkade vårt projekt på GitHub.
 
    Såg till att allt var redo för produktion:
-   
+
    npm run build
-   
+
    npm start
 
-4. Registrerade mig på vercel.com med mitt GitHub-konto.
+2. Registrerade mig på vercel.com med mitt GitHub-konto.
 
-5. Importerade mitt projekt till Vercel
-   
+3. Importerade mitt projekt till Vercel
+
    Klickade på "New Project" i dashboarden.
 
    Valde det forkade Kino-repot.
 
-5. Vercel identifierar automatiskt att det är ett Next.js-projekt och konfigurerar deployment-inställningar.
+4. Vercel identifierar automatiskt att det är ett Next.js-projekt och konfigurerar deployment-inställningar.
 
-6. Jag angav våra environment variablar.
+5. Jag angav våra environment variablar.
 
-7. Deploy!
-   
+6. Deploy!
+
    Klickade på "Deploy" och Vercel löste resten.
 
 Länk till sidan: https://kino-fullstack-jp.vercel.app/
 
 ## Viktor
 
-Viktor writes here.
+### **Scope**: User register and user login
+
+### **Objective**:
+
+**Register**:
+
+- Test register which always will be ok.
+- Test register with incorrect input
+
+**Login**:
+
+- Test login with correct credentials from the database.
+- Test login with incorrect credentials
+  **Register and login**:
+- Test register with mocked API call
+- Test login with mocked API call with same credentials as register
+
+### **Tests**:
+
+- 1: Login successful
+
+  - User visits site
+  - Searches for "Sign in" button
+  - Enters credentials
+  - Submits
+  - Another modal opens with a text: "Welcome back!"
+
+- 2: Login fail
+
+  - User visits site
+  - Searches for "Sign in" button
+  - Enters credentials with incorrect password
+  - Submits
+  - Should return a small text with "Incorrect password"
+
+- 3: Register successful
+
+  - User visits site
+  - Searches for "Sign in" button
+  - Searches for span with text "Register" and clicks on it
+  - Enters register credentials
+  - Submits
+  - Antoher modal opens with text "Welcome to the club!"
+
+- 4: Register fail
+
+  - User visits site
+  - Searches for "Sign in" button
+  - Searches for span with text "Register" and clicks it
+  - Enters register credentials with incorrect phone number
+  - Submits
+  - Small text with "Invalid phone number!"
+
+- 5: Register and login success
+
+  - User visits site
+  - Searches for "Sign in" button
+  - Searches for span with text "Register" and clicks it
+  - Enters register credentials
+  - Submits
+  - Antoher modal opens with text "Welcome to the club!"
+  - Searches for span with text "Login" and clicks it
+  - Enters credentials
+  - Submits
+  - Another modal opens with a text: "Welcome back!"
 
 ## Louise
 

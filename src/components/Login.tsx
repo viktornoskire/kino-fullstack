@@ -8,11 +8,12 @@ import Image from 'next/image';
 
 type Props = {
   showLoginModal: string;
+  showLoggedInModal: string;
   onToggleModal: (modal: string) => void;
   onResetForm: (event: FormEvent<HTMLFormElement>) => void;
 };
 
-const Login: FC<Props> = ({ showLoginModal, onToggleModal, onResetForm }) => {
+const Login: FC<Props> = ({ showLoginModal, showLoggedInModal, onToggleModal, onResetForm }) => {
   const [error, setError] = useState<string>('');
   const resetError = () => {
     if (error !== '') {
@@ -43,7 +44,7 @@ const Login: FC<Props> = ({ showLoginModal, onToggleModal, onResetForm }) => {
           </span>
         </p>
         <form
-          className=''
+          className='login-form'
           onSubmit={async (event: FormEvent<HTMLFormElement>) => {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
@@ -65,6 +66,7 @@ const Login: FC<Props> = ({ showLoginModal, onToggleModal, onResetForm }) => {
               } else {
                 onResetForm(event);
                 onToggleModal('login');
+                onToggleModal('logged in');
               }
             } catch (error) {
               throw new Error(error as string);
@@ -77,6 +79,7 @@ const Login: FC<Props> = ({ showLoginModal, onToggleModal, onResetForm }) => {
             name='email'
             className='w-full p-3 bg-neutral-900 rounded-lg text-white mb-4 outline-none focus:ring-2 border-2 border-s-gray-300'
             autoComplete='email'
+            id='login-email'
           />
           <input
             onChange={resetError}
@@ -85,8 +88,9 @@ const Login: FC<Props> = ({ showLoginModal, onToggleModal, onResetForm }) => {
             name='password'
             className='w-full p-3 bg-neutral-900 rounded-lg text-white mb-4 outline-none focus:ring-2 border-2 border-s-gray-300'
             autoComplete='current-password'
+            id='login-password'
           />
-          <small className='block pb-4 mr-auto ml-auto'>{error}</small>
+          <small className='block pb-4 mr-auto ml-auto text-kino-darkred'>{error}</small>
           <Button type='submit' className='block mr-auto ml-auto'>
             Login
           </Button>
@@ -98,6 +102,30 @@ const Login: FC<Props> = ({ showLoginModal, onToggleModal, onResetForm }) => {
             Close
           </p>
         </form>
+      </div>
+      <div
+        className={`fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-51 ${showLoggedInModal}`}
+        onClick={() => {
+          onToggleModal('logged in');
+        }}></div>
+      <div
+        className={`w-full max-w-100 flex items-center z-999 bg-neutral-800 top-1/4 bottom-1/4 text-white p-8 rounded-xl shadow-lg fixed flex-col right-2 left-2 ml-auto mr-auto overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 ${showLoggedInModal}`}>
+        <Image src={'/kinoLogoOverlay.png'} alt='kino logo' width={200} height={120} className='w-auto h-auto' />
+        <h2 className='text-2xl font-bold mt-4 mb-6'>Welcome back!</h2>
+        <Image
+          src='/confirmed-order.png'
+          alt='Order confirmed'
+          width={80}
+          height={80}
+          className='mx-auto mb-4 print:hidden'
+        />
+        <p
+          className='hover:text-gray-300 text-center mt-4 cursor-pointer'
+          onClick={() => {
+            onToggleModal('logged in');
+          }}>
+          Close
+        </p>
       </div>
     </div>
   );
