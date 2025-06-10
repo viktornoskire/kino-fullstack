@@ -1,47 +1,15 @@
 import AboutCard from '../about/AboutCard';
 import Button from '../Button';
-import Register from '../Register';
-import Login from '../Login';
-import { useState, FormEvent } from 'react';
+import SISO from '../SISOModal';
+import { useState } from 'react';
 
 const LoggedOut = () => {
-  const [showLoginModal, setLoginModal] = useState<string>('hidden');
-  const [showRegisterModal, setRegisterModal] = useState<string>('hidden');
-  const [showLoggedInModal, setLoggedInModal] = useState<string>('hidden');
-  const [showRegisteredModal, setRegisteredModal] = useState<string>('hidden');
-
-  const resetForm = (event: FormEvent<HTMLFormElement>) => {
-    const userForm = event.target as HTMLFormElement;
-    userForm.reset();
-  };
+  const [show, setShow] = useState('');
 
   const toggleModal = (modal: string) => {
-    if (modal === 'login') {
-      if (showLoginModal === 'hidden') {
-        setLoginModal('');
-      } else {
-        setLoginModal('hidden');
-      }
-    } else if (modal === 'register') {
-      if (showRegisterModal === 'hidden') {
-        setRegisterModal('');
-      } else {
-        setRegisterModal('hidden');
-      }
-    } else if (modal === 'logged in') {
-      if (showLoggedInModal === 'hidden') {
-        setLoggedInModal('');
-      } else {
-        setLoggedInModal('hidden');
-      }
-    } else if (modal === 'registered') {
-      if (showRegisteredModal === 'hidden') {
-        setRegisteredModal('');
-      } else {
-        setRegisteredModal('hidden');
-      }
-    }
+    setShow(modal);
   };
+
   return (
     <>
       <div className='max-w-6xl mx-auto bg-gradient-60 min-h-[100px] flex justify-center items-center rounded-lg'>
@@ -80,18 +48,7 @@ const LoggedOut = () => {
           cinema event!
         </p>
       </div>
-      <Register
-        showRegisterModal={showRegisterModal}
-        showRegisteredModal={showRegisteredModal}
-        onToggleModal={toggleModal}
-        onResetForm={resetForm}
-      />
-      <Login
-        showLoginModal={showLoginModal}
-        showLoggedInModal={showLoggedInModal}
-        onToggleModal={toggleModal}
-        onResetForm={resetForm}
-      />
+      <SISO show={show} onToggleModal={toggleModal} />
       <div className='grid grid-cols-2 gap-5'>
         <AboutCard
           title="What's required from you!"

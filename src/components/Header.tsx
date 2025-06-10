@@ -1,53 +1,20 @@
 'use client';
-import { useState, FormEvent } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import Register from './Register';
-import Login from './Login';
 import { SISO_Desktop, SISO_Mobile } from './SignIn_SignOut';
+import SISO from './SISOModal';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showLoginModal, setLoginModal] = useState<string>('hidden');
-  const [showRegisterModal, setRegisterModal] = useState<string>('hidden');
-  const [showLoggedInModal, setLoggedInModal] = useState<string>('hidden');
-  const [showRegisteredModal, setRegisteredModal] = useState<string>('hidden');
+  const [show, setShow] = useState('');
   const pathname = usePathname();
 
   const isActive = (path: string) => pathname === path;
 
-  const resetForm = (event: FormEvent<HTMLFormElement>) => {
-    const userForm = event.target as HTMLFormElement;
-    userForm.reset();
-  };
-
   const toggleModal = (modal: string) => {
-    if (modal === 'login') {
-      if (showLoginModal === 'hidden') {
-        setLoginModal('');
-      } else {
-        setLoginModal('hidden');
-      }
-    } else if (modal === 'register') {
-      if (showRegisterModal === 'hidden') {
-        setRegisterModal('');
-      } else {
-        setRegisterModal('hidden');
-      }
-    } else if (modal === 'logged in') {
-      if (showLoggedInModal === 'hidden') {
-        setLoggedInModal('');
-      } else {
-        setLoggedInModal('hidden');
-      }
-    } else if (modal === 'registered') {
-      if (showRegisteredModal === 'hidden') {
-        setRegisteredModal('');
-      } else {
-        setRegisteredModal('hidden');
-      }
-    }
+    setShow(modal);
   };
 
   return (
@@ -149,19 +116,7 @@ const Header = () => {
           </div>
         )}
       </nav>
-
-      <Register
-        showRegisterModal={showRegisterModal}
-        showRegisteredModal={showRegisteredModal}
-        onToggleModal={toggleModal}
-        onResetForm={resetForm}
-      />
-      <Login
-        showLoginModal={showLoginModal}
-        showLoggedInModal={showLoggedInModal}
-        onToggleModal={toggleModal}
-        onResetForm={resetForm}
-      />
+      <SISO show={show} onToggleModal={toggleModal} />
     </header>
   );
 };

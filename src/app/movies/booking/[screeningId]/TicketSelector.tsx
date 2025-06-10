@@ -1,10 +1,9 @@
 'use client';
-import { useState, useEffect, useMemo, FormEvent } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import TicketButton from './TicketButton';
 import { Tickets, TicketSelectorProps } from './types/TicketSelector.types';
 import { useSession } from 'next-auth/react';
-import Register from '@/components/Register';
-import Login from '@/components/Login';
+import SISO from '@/components/SISOModal';
 
 export default function TicketSelector({
   onTotalTicketsChange,
@@ -13,42 +12,11 @@ export default function TicketSelector({
 }: TicketSelectorProps) {
   const session = useSession();
   const { status } = session;
-  const [showLoginModal, setLoginModal] = useState<string>('hidden');
-  const [showRegisterModal, setRegisterModal] = useState<string>('hidden');
-  const [showLoggedInModal, setLoggedInModal] = useState<string>('hidden');
-  const [showRegisteredModal, setRegisteredModal] = useState<string>('hidden');
 
-  const resetForm = (event: FormEvent<HTMLFormElement>) => {
-    const userForm = event.target as HTMLFormElement;
-    userForm.reset();
-  };
+  const [show, setShow] = useState('');
 
   const toggleModal = (modal: string) => {
-    if (modal === 'login') {
-      if (showLoginModal === 'hidden') {
-        setLoginModal('');
-      } else {
-        setLoginModal('hidden');
-      }
-    } else if (modal === 'register') {
-      if (showRegisterModal === 'hidden') {
-        setRegisterModal('');
-      } else {
-        setRegisterModal('hidden');
-      }
-    } else if (modal === 'logged in') {
-      if (showLoggedInModal === 'hidden') {
-        setLoggedInModal('');
-      } else {
-        setLoggedInModal('hidden');
-      }
-    } else if (modal === 'registered') {
-      if (showRegisteredModal === 'hidden') {
-        setRegisteredModal('');
-      } else {
-        setRegisteredModal('hidden');
-      }
-    }
+    setShow(modal);
   };
 
   const isLoggedIn = status === 'authenticated' ? true : false;
@@ -164,18 +132,7 @@ export default function TicketSelector({
           )}
         </div>
       </div>
-      <Register
-        showRegisterModal={showRegisterModal}
-        showRegisteredModal={showRegisteredModal}
-        onToggleModal={toggleModal}
-        onResetForm={resetForm}
-      />
-      <Login
-        showLoginModal={showLoginModal}
-        showLoggedInModal={showLoggedInModal}
-        onToggleModal={toggleModal}
-        onResetForm={resetForm}
-      />
+      <SISO show={show} onToggleModal={toggleModal} />
     </div>
   );
 }
